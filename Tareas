@@ -1,0 +1,21 @@
+1. Instalar y configurar OpenGL 4.x
+	- Probar test y codigos
+
+2. Configurar QT 5 con OpenGL
+
+2.1 Leer openmesh 7.0
+
+3. Programar Data Structure, semi aristas aladas
+
+4. Leer una malla pli, usando el ya hecho.
+
+5. Sacar info de la malla ( nº de triangulos, nº de vertices, etc)
+
+5.5 flipping and collage
+
+6. Mesh decimation (mesh decimation algorimth
+
+D1. Usar Grant para planificación inicial y otra real
+D2. Diagrama conceptual y clases
+D1.1 Analisis de Requisitos, RF, RI, RNF, etc
+
