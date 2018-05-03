@@ -1,7 +1,7 @@
-1. Instalar y configurar OpenGL 4.x
-	- Probar test y codigos
+1. Instalar y configurar OpenGL 4.x - Done
+	- Probar test y codigos - Done
 
-2. Configurar QT 5 con OpenGL
+2. Configurar QT 5 con OpenGL - Done
 
 2.1 Leer openmesh 7.0
 
@@ -18,4 +18,10 @@
 D1. Usar Grant para planificación inicial y otra real
 D2. Diagrama conceptual y clases
 D1.1 Analisis de Requisitos, RF, RI, RNF, etc
+
+
+############# Preguntas #########
+Es necesario realmente crear una clase atributos?
+¿Porqué incluyen un "edge" en la estructura cuando indica que con halfedge hay bastante?
+¿Por qué no usa arrays para guardar los vertices y demás?
 

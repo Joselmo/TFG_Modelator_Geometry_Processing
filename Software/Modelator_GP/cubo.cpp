@@ -14,8 +14,8 @@ void Cubo::createGeometry(){
   // geometria del Cubo (+-1,+-1,+-1)
   // El vertice i corresponde con su interpretación en binario, suponiendo
   // -1 = 0 y 1 = 1;
-  vector<Tupla3r> vertices;
-  Tupla3r vertice;
+  vector<glm::vec3> vertices;
+  glm::vec3 vertice;
 
   //            X               Y               Z
   // Vertice 0 base atras izquierda

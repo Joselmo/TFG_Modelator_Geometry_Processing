@@ -1,6 +1,7 @@
 #ifndef CUBO_H
 #define CUBO_H
 #include "figura3d.h"
+#include <glm/glm.hpp>
 #include <GL/gl.h>
 #include <GL/glut.h>
 

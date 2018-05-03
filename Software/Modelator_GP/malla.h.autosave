@@ -8,7 +8,6 @@
 #include <vector>
 #include <GL/glut.h>
 #include <GL/gl.h>
-#include <QVector3D>
 #include <glm/glm.hpp>
 
 using namespace std;

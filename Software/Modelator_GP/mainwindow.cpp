@@ -33,11 +33,11 @@ MainWindow::MainWindow(QWidget *parent)
     mesh_scale = 1.0;
 
 
-    InfoDialog info;
-    info.setWindowTitle("Información");
-    info.exec();
+    //InfoDialog info;
+    //info.setWindowTitle("Información");
+    //info.exec();
 
-
+    std::cout<< "iniciar clase"<<std::endl;
 }
 
 MainWindow::~MainWindow()
@@ -60,7 +60,7 @@ void MainWindow::initializeGL()
     glViewport(0,0,this->width(),this->height());
     connect(this, SIGNAL(frameSwapped()), this, SLOT(update()));
     resizeGL(this->width(),this->height());
-
+    std::cout<< "iniciar opengl"<<std::endl;
 }
 
 void MainWindow::resizeGL(int w, int h)
@@ -123,7 +123,6 @@ void MainWindow::update()
         mode_view = 2;
     }
 
-    info.setTextVertex(cubo.getNumVertices()+"");
     // Schedule a redraw
     QOpenGLWindow::update();
 }

@@ -12,7 +12,6 @@
 #include <QKeyEvent>
 #include <input.h>
 #include <iostream>
-#include <infodialog.h>
 
 
 // tama�o de los ejes
@@ -77,9 +76,6 @@ private:
     // variables que controlan la ventana y la transformacion de perspectiva
     GLfloat Width,Height,Front_plane,Back_plane;
 
-    InfoDialog info;
-
-    friend InfoDialog;
 };
 
 #endif // MAINWINDOW_H

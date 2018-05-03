@@ -6,7 +6,7 @@ Malla::Malla(){}
 /** Constructor parametrizado
 * Crea una malla dados un vector de vertices y uno de triangulos
 */
-Malla::Malla(vector<Tupla3r> vertex_n,vector<Tupla3n> triangle_n){
+Malla::Malla(vector<glm::vec3> vertex_n, vector<Tupla3n> triangle_n){
   setVertexes(vertex_n);
   setTriangles(triangle_n);
 }
@@ -27,15 +27,15 @@ Malla& Malla::operator=(const Malla& malla_nueva){
 /******************************************************************************
 **********               MANEJO DE VERTICES                     ***************
 *******************************************************************************/
-void Malla::setVertexes(vector<Tupla3r> vertex_n){
+void Malla::setVertexes(vector<glm::vec3> vertex_n){
   vertexes=vertex_n;
 }
 
-Tupla3r* Malla::getVertexes(){
+glm::vec3 * Malla::getVertexes(){
   return &(vertexes.at(0));
 }
 
-vector<Tupla3r> Malla::getVertexesV(){
+vector<glm::vec3> Malla::getVertexesV(){
   return vertexes;
 }
 

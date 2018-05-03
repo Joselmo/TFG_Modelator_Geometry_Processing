@@ -1,0 +1,52 @@
+\chapter*{Especificación de requisitos}
+
+\section*{1. Objetivos}
+
+\begin{enumerate}[label=\textbf{\textit{OBJ-\arabic*}}]
+	\item El sistema a desarrollar es un motor gráfico capaz de renderizar y mostrar elementos geométricos al usuario.
+	\item El motor gráfico debe permitir la interacción con el usuario de una forma cómoda y agradable.
+	
+\end{enumerate}
+
+\section*{2. Requisitos Funcionales}
+
+
+\begin{enumerate}[label=\textbf{\textit{RF-\arabic*}}]
+	\item Almacenar mallas de triángulos.
+	
+	\begin{enumerate}[label*=\textbf{\textit{.\arabic*}}]
+		\item \textit{Almacenar los vértices de la malla.} El modelador tiene una estructura de datos para la manipulación de los vértices.
+		\item \textit{Almacenar las caras que componen la malla.} El modelador almacena las caras de la malla en una estructura de datos adecuada.
+		\item \textit{Almacenar las aristas de la malla.} El modelador posee una estructura de datos basada en semi-aristas aladas para las aristas. 
+	\end{enumerate}
+	
+	\item Lectura de mallas de triángulos.
+	
+	\item Mostrar información de mallas de triángulos.
+	
+	\item Interacción con la malla.
+		\begin{enumerate}[label*=\textbf{\textit{.\arabic*}}]
+		\item \textit{Seleccionar un vértice de la malla} El modelador permite seleccionar un vértice de la malla.
+		\item \textit{Almacenar las caras que componen la malla.} El modelador almacena las caras de la malla en una estructura de datos adecuada.
+		\item \textit{Almacenar las aristas de la malla.} El modelador posee una estructura de datos basada en semi-aristas aladas para las aristas. 
+	\end{enumerate}
+	
+	
+\end{enumerate}
+
+
+\section*{3. Requisitos No Funcionales}
+
+
+\begin{enumerate}[label=\textbf{\textit{RNF-\arabic*}}]
+	\item Que el renderizado sea rápido.
+	\item Modularizar el código para su posible reutilización.
+	\item Que la interfaz sea agradable.
+	\item Tiene que ser intuitivo para el usuario.
+	\item El código ha de ser abierto.
+	\item El código tiene que estar bien documentado.
+	\item Que los vértices seleccionados se diferencie de los vértices no seleccionados.
+	
+	
+	
+\end{enumerate}
