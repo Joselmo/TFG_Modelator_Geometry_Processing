@@ -31,7 +31,8 @@ SOURCES += \
         malla.cpp \
         cubo.cpp \
         figura3d.cpp \
-        input.cpp
+        input.cpp \
+    infodialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,4 +40,8 @@ HEADERS += \
         malla.h \
         cubo.h \
         figura3d.h \
-        input.h
+        input.h \
+    infodialog.h
+
+FORMS += \
+    infodialog.ui

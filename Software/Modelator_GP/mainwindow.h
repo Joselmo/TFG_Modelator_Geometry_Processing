@@ -12,6 +12,7 @@
 #include <QKeyEvent>
 #include <input.h>
 #include <iostream>
+#include <infodialog.h>
 
 
 // tama�o de los ejes
@@ -25,6 +26,8 @@ class MainWindow : public QOpenGLWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    Cubo cubo;
 
 public slots:
     //void UpdateAnimation();
@@ -60,11 +63,10 @@ private:
 
     float rotation;
     Ejes ejes;
-    Cubo cubo;
+
 
     // Variables de control
     int mode_view;
-    char figura;
     GLfloat mesh_scale;
 
     // variables que definen la posicion de la camara en coordenadas polares
@@ -75,7 +77,9 @@ private:
     // variables que controlan la ventana y la transformacion de perspectiva
     GLfloat Width,Height,Front_plane,Back_plane;
 
+    InfoDialog info;
 
+    friend InfoDialog;
 };
 
 #endif // MAINWINDOW_H

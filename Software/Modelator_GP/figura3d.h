@@ -70,6 +70,9 @@ public:
 
   void setColorAll(float r, float g, float b, int inicio, int inc);
 
+  int getNumVertices();
+  int getNumFaces();
+
 protected:
   /**
   * Crea la figura 3d de forma virtual, con lo que el hijo es quien se encarga de realizarla

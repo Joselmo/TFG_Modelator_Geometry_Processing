@@ -29,8 +29,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     Observer_angle_x+=30;
     Observer_angle_y-=10;
-
+    mode_view = 0;
     mesh_scale = 1.0;
+
+
+    InfoDialog info;
+    info.setWindowTitle("Información");
+    info.exec();
+
 
 }
 
@@ -38,6 +44,7 @@ MainWindow::~MainWindow()
 {
 
 }
+
 
 void MainWindow::initializeGL()
 {
@@ -74,7 +81,7 @@ void MainWindow::paintGL()
     ejes.draw();
     // Draw Objects
 
-    cubo.draw(GL_FRONT,2,mesh_scale);
+    cubo.draw(GL_FRONT,mode_view,mesh_scale);
 
 
 
@@ -84,71 +91,77 @@ void MainWindow::paintGL()
 
 void MainWindow::update()
 {
-  // Update input
-  Input::update();
+    // Update input
+    Input::update();
 
-  // Camera Transformation
-
-  if (Input::buttonReleased(Qt::RightButton))
-  {
-    std::cout<< "pulsado click derecho"<<std::endl;
-    static const float transSpeed = 0.5f;
-    static const float rotSpeed   = 0.5f;
-
-    // Handle rotations
-   // m_camera.rotate(-rotSpeed * Input::mouseDelta().x(), Camera3D::LocalUp);
-   // m_camera.rotate(-rotSpeed * Input::mouseDelta().y(), m_camera.right());
-
-    // Handle translations
-    QVector3D translation;
-    if (Input::keyPressed(Qt::Key_W))
-    {
-      //translation += m_camera.forward();
+    // Camera Transformation
+    if (Input::keyPressed(Qt::Key_Up)){
+        Observer_angle_x--;
+    }
+    if (Input::keyPressed(Qt::Key_Down)){
+        Observer_angle_x++;
+    }
+    if (Input::keyPressed(Qt::Key_Left)){
+        Observer_angle_y--;
+    }
+    if (Input::keyPressed(Qt::Key_Right)){
+        Observer_angle_y++;
+    }
+    if (Input::keyPressed(Qt::Key_PageDown)){
+        Observer_distance/=1.2;
+    }
+    if (Input::keyPressed(Qt::Key_PageUp)){
+        Observer_distance*=1.2;
+    }
+    if (Input::keyPressed(Qt::Key_1)){
+        mode_view = 0;
+    }
+    if (Input::keyPressed(Qt::Key_2)){
+        mode_view = 1;
+    }
+    if (Input::keyPressed(Qt::Key_3)){
+        mode_view = 2;
     }
 
-  }
-
-  // Update instance information
-  //m_transform.rotate(1.0f, QVector3D(0.4f, 0.3f, 0.3f));
-
-  // Schedule a redraw
-  QOpenGLWindow::update();
+    info.setTextVertex(cubo.getNumVertices()+"");
+    // Schedule a redraw
+    QOpenGLWindow::update();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-  if (event->isAutoRepeat())
-  {
-    event->ignore();
-  }
-  else
-  {
-    Input::registerKeyPress(event->key());
-  }
+    if (event->isAutoRepeat())
+    {
+        event->ignore();
+    }
+    else
+    {
+        Input::registerKeyPress(event->key());
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
-  if (event->isAutoRepeat())
-  {
-    event->ignore();
-  }
-  else
-  {
-    Input::registerKeyRelease(event->key());
-  }
+    if (event->isAutoRepeat())
+    {
+        event->ignore();
+    }
+    else
+    {
+        Input::registerKeyRelease(event->key());
+    }
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-  std::cout<< "pulsado ratón"<<event->button()<<std::endl;
+    std::cout<< "pulsado ratón"<<event->button()<<std::endl;
 
-  Input::registerMousePress(event->button());
+    Input::registerMousePress(event->button());
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-  Input::registerMouseRelease(event->button());
+    Input::registerMouseRelease(event->button());
 }
 
 

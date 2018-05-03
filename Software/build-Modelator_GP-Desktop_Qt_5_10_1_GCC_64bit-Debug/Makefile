@@ -15,7 +15,7 @@ CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../Modelator_GP -I. -I/usr/local/Qt/5.10.1/gcc_64/include -I/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL -I/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets -I/usr/local/Qt/5.10.1/gcc_64/include/QtGui -I/usr/local/Qt/5.10.1/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I/usr/local/Qt/5.10.1/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../Modelator_GP -I. -I/usr/local/Qt/5.10.1/gcc_64/include -I/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL -I/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets -I/usr/local/Qt/5.10.1/gcc_64/include/QtGui -I/usr/local/Qt/5.10.1/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/local/Qt/5.10.1/gcc_64/mkspecs/linux-g++
 QMAKE         = /usr/local/Qt/5.10.1/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -56,7 +56,9 @@ SOURCES       = ../Modelator_GP/main.cpp \
 		../Modelator_GP/malla.cpp \
 		../Modelator_GP/cubo.cpp \
 		../Modelator_GP/figura3d.cpp \
-		../Modelator_GP/input.cpp moc_mainwindow.cpp
+		../Modelator_GP/input.cpp \
+		../Modelator_GP/infodialog.cpp moc_mainwindow.cpp \
+		moc_infodialog.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		ejes.o \
@@ -64,7 +66,9 @@ OBJECTS       = main.o \
 		cubo.o \
 		figura3d.o \
 		input.o \
-		moc_mainwindow.o
+		infodialog.o \
+		moc_mainwindow.o \
+		moc_infodialog.o
 DIST          = /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/usr/local/Qt/5.10.1/gcc_64/mkspecs/common/unix.conf \
 		/usr/local/Qt/5.10.1/gcc_64/mkspecs/common/linux.conf \
@@ -253,13 +257,15 @@ DIST          = /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../Modelator_GP/malla.h \
 		../Modelator_GP/cubo.h \
 		../Modelator_GP/figura3d.h \
-		../Modelator_GP/input.h ../Modelator_GP/main.cpp \
+		../Modelator_GP/input.h \
+		../Modelator_GP/infodialog.h ../Modelator_GP/main.cpp \
 		../Modelator_GP/mainwindow.cpp \
 		../Modelator_GP/ejes.cpp \
 		../Modelator_GP/malla.cpp \
 		../Modelator_GP/cubo.cpp \
 		../Modelator_GP/figura3d.cpp \
-		../Modelator_GP/input.cpp
+		../Modelator_GP/input.cpp \
+		../Modelator_GP/infodialog.cpp
 QMAKE_TARGET  = Modelator_GP
 DESTDIR       = 
 TARGET        = Modelator_GP
@@ -268,7 +274,7 @@ TARGET        = Modelator_GP
 first: all
 ####### Build rules
 
-$(TARGET):  $(OBJECTS)  
+$(TARGET): ui_infodialog.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../Modelator_GP/Modelator_GP.pro /usr/local/Qt/5.10.1/gcc_64/mkspecs/linux-g++/qmake.conf /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
@@ -663,8 +669,9 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Modelator_GP/mainwindow.h ../Modelator_GP/ejes.h ../Modelator_GP/malla.h ../Modelator_GP/cubo.h ../Modelator_GP/figura3d.h ../Modelator_GP/input.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Modelator_GP/main.cpp ../Modelator_GP/mainwindow.cpp ../Modelator_GP/ejes.cpp ../Modelator_GP/malla.cpp ../Modelator_GP/cubo.cpp ../Modelator_GP/figura3d.cpp ../Modelator_GP/input.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Modelator_GP/mainwindow.h ../Modelator_GP/ejes.h ../Modelator_GP/malla.h ../Modelator_GP/cubo.h ../Modelator_GP/figura3d.h ../Modelator_GP/input.h ../Modelator_GP/infodialog.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Modelator_GP/main.cpp ../Modelator_GP/mainwindow.cpp ../Modelator_GP/ejes.cpp ../Modelator_GP/malla.cpp ../Modelator_GP/cubo.cpp ../Modelator_GP/figura3d.cpp ../Modelator_GP/input.cpp ../Modelator_GP/infodialog.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Modelator_GP/infodialog.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -696,9 +703,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_infodialog.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_infodialog.cpp
 moc_mainwindow.cpp: /usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QMainWindow \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qmainwindow.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -1178,19 +1185,133 @@ moc_mainwindow.cpp: /usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QMainWindow \
 		/usr/local/Qt/5.10.1/gcc_64/bin/moc
 	/usr/local/Qt/5.10.1/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/local/Qt/5.10.1/gcc_64/mkspecs/linux-g++ -I/home/jose/TFG_Modelator_Geometry_Processing/Software/Modelator_GP -I/usr/local/Qt/5.10.1/gcc_64/include -I/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL -I/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets -I/usr/local/Qt/5.10.1/gcc_64/include/QtGui -I/usr/local/Qt/5.10.1/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Modelator_GP/mainwindow.h -o moc_mainwindow.cpp
 
+moc_infodialog.cpp: /usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QDialog \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qdialog.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlogging.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qflags.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmutex.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnumeric.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qwidget.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnamespace.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstring.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qchar.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearray.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrefcount.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpair.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsize.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpalette.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qcolor.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qrgb.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qrgba64.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qbrush.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvector.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpolygon.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qregion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qline.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtransform.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpainterpath.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimage.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpixelformat.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpixmap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhash.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qfont.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qfontmetrics.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qfontinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qcursor.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qkeysequence.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qevent.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qset.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qurl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qurlquery.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qfile.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qfiledevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector2d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtouchdevice.h \
+		../Modelator_GP/infodialog.h \
+		moc_predefs.h \
+		/usr/local/Qt/5.10.1/gcc_64/bin/moc
+	/usr/local/Qt/5.10.1/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/local/Qt/5.10.1/gcc_64/mkspecs/linux-g++ -I/home/jose/TFG_Modelator_Geometry_Processing/Software/Modelator_GP -I/usr/local/Qt/5.10.1/gcc_64/include -I/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL -I/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets -I/usr/local/Qt/5.10.1/gcc_64/include/QtGui -I/usr/local/Qt/5.10.1/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Modelator_GP/infodialog.h -o moc_infodialog.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all:
+compiler_uic_make_all: ui_infodialog.h
 compiler_uic_clean:
+	-$(DEL_FILE) ui_infodialog.h
+ui_infodialog.h: ../Modelator_GP/infodialog.ui \
+		/usr/local/Qt/5.10.1/gcc_64/bin/uic
+	/usr/local/Qt/5.10.1/gcc_64/bin/uic ../Modelator_GP/infodialog.ui -o ui_infodialog.h
+
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
@@ -1669,6 +1790,8 @@ main.o: ../Modelator_GP/main.cpp ../Modelator_GP/mainwindow.h \
 		../Modelator_GP/input.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/Qt \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QPoint \
+		../Modelator_GP/infodialog.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QDialog \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QApplication
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Modelator_GP/main.cpp
 
@@ -2200,8 +2323,119 @@ input.o: ../Modelator_GP/input.cpp ../Modelator_GP/input.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qwindowdefs_win.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o input.o ../Modelator_GP/input.cpp
 
+infodialog.o: ../Modelator_GP/infodialog.cpp ../Modelator_GP/infodialog.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QDialog \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qdialog.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlogging.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qflags.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmutex.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnumeric.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qwidget.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnamespace.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstring.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qchar.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearray.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrefcount.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpair.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsize.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpalette.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qcolor.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qrgb.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qrgba64.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qbrush.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvector.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpolygon.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qregion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qline.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtransform.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpainterpath.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimage.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpixelformat.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpixmap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhash.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qfont.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qfontmetrics.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qfontinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qcursor.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qkeysequence.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qevent.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qset.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qurl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qurlquery.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qfile.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qfiledevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector2d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtouchdevice.h \
+		ui_infodialog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o infodialog.o ../Modelator_GP/infodialog.cpp
+
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_infodialog.o: moc_infodialog.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_infodialog.o moc_infodialog.cpp
 
 ####### Install
 
