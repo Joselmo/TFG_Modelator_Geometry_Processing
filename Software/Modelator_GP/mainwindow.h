@@ -27,6 +27,7 @@ public:
     ~MainWindow();
 
     Cubo cubo;
+    Figura3D object;
 
 public slots:
     //void UpdateAnimation();

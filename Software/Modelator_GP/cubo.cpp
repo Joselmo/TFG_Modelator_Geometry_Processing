@@ -50,8 +50,8 @@ void Cubo::createGeometry(){
  vertice[0]=   30; vertice[1]= 30; vertice[2]= 30;
  vertices.push_back(vertice);
 
-  vector<Tupla3n> triangulos;
-  Tupla3n triangulo;
+  vector<glm::ivec3> triangulos;
+  glm::ivec3 triangulo;
 
   // Vertice del triangulo
   //            #                  #                #

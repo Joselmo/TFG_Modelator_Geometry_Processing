@@ -21,7 +21,7 @@ private:
   Malla mesh;   // Malla de puntos
   Malla mesh_even;
   Malla mesh_odd;
-  vector<Tupla3r> color_vector;
+  vector<glm::vec3> color_vector;
   GLenum mode[3]; // Modo de visualización
 
   /*
@@ -73,17 +73,17 @@ public:
   int getNumVertices();
   int getNumFaces();
 
+  /**
+  * Métodos de acceso a la malla
+  */
+  void setMesh(Malla malla);
+
 protected:
   /**
   * Crea la figura 3d de forma virtual, con lo que el hijo es quien se encarga de realizarla
   vector<float> vertex, vector<unsigned int> triangle
   */
   virtual void createGeometry(){};
-
-  /**
-  * Métodos de acceso a la malla
-  */
-  void setMesh(Malla malla);
 
   Malla getMesh();
 

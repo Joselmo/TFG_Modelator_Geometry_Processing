@@ -17,8 +17,8 @@ Figura3D::Figura3D(){
 void Figura3D::setMesh(Malla malla){
     mesh = malla;
     color_vector.resize(mesh.getVertexesV().size());
-    mesh_even = Malla(mesh.getVertexesV(),mesh.getTrianglesEven());
-    mesh_odd = Malla(mesh.getVertexesV(),mesh.getTrianglesOdd());
+    //mesh_even = Malla(mesh.getVertexesV(),mesh.getTrianglesEven());
+    //mesh_odd = Malla(mesh.getVertexesV(),mesh.getTrianglesOdd());
 
 }
 /******************************************************************************/
@@ -69,7 +69,7 @@ void Figura3D::scale(GLfloat n){
 
 
 void Figura3D::setColorAll(float r,float g,float b,int inicio,int inc){
-    Tupla3r rgb;
+    glm::vec3 rgb;
     //color_vector.clear();
     rgb[0]= r;
     rgb[1]= g;

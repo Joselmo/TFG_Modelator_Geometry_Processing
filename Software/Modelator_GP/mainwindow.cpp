@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "plyreader.h"
 
 MainWindow::MainWindow(QWidget *parent)
 {
@@ -30,12 +31,18 @@ MainWindow::MainWindow(QWidget *parent)
     Observer_angle_x+=30;
     Observer_angle_y-=10;
     mode_view = 0;
-    mesh_scale = 1.0;
+    mesh_scale = 5.0;
 
 
     //InfoDialog info;
     //info.setWindowTitle("Información");
-    //info.exec();
+   //info.exec();
+    PLYReader pread;
+    Malla malla1;
+    pread.readPLY(malla1);
+    object.setMesh(malla1);
+   // object.createGeometry();
+    object.setColorAll(1,0.65,0,0,1);
 
     std::cout<< "iniciar clase"<<std::endl;
 }
@@ -75,13 +82,12 @@ void MainWindow::paintGL()
 {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
-
     change_observer();
     // Draw axis
     ejes.draw();
     // Draw Objects
-
-    cubo.draw(GL_FRONT,mode_view,mesh_scale);
+    object.draw(GL_FRONT,mode_view,mesh_scale);
+    //cubo.draw(GL_FRONT,mode_view,mesh_scale);
 
 
 
@@ -113,14 +119,25 @@ void MainWindow::update()
     if (Input::keyPressed(Qt::Key_PageUp)){
         Observer_distance*=1.2;
     }
-    if (Input::keyPressed(Qt::Key_1)){
+    if (Input::keyReleased(Qt::Key_1)){
         mode_view = 0;
+        std::cout<<"Modo visualización: relleno"<<std::endl;
     }
-    if (Input::keyPressed(Qt::Key_2)){
+    if (Input::keyReleased(Qt::Key_2)){
         mode_view = 1;
+        std::cout<<"Modo visualización: puntos"<<std::endl;
     }
-    if (Input::keyPressed(Qt::Key_3)){
+    if (Input::keyReleased(Qt::Key_3)){
         mode_view = 2;
+        std::cout<<"Modo visualización: alambre"<<std::endl;
+    }
+    if (Input::keyReleased(Qt::Key_Plus)){
+        mesh_scale++;
+        std::cout<<"Escalado x"<<mesh_scale<<std::endl;
+    }
+    if (Input::keyReleased(Qt::Key_Minus)){
+        mesh_scale--;
+        std::cout<<"Escalado x"<<mesh_scale<<std::endl;
     }
 
     // Schedule a redraw

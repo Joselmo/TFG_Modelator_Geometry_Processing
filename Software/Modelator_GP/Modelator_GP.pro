@@ -6,6 +6,9 @@
 
 QT       += core gui opengl
 LIBS += -lglut -glu32
+LIBS += \
+    /usr/local/lib/libOpenMeshCore.so  \
+    /usr/local/lib/libOpenMeshTools.so
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -31,7 +34,8 @@ SOURCES += \
         malla.cpp \
         cubo.cpp \
         figura3d.cpp \
-        input.cpp
+        input.cpp \
+    plyreader.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,6 +43,7 @@ HEADERS += \
         malla.h \
         cubo.h \
         figura3d.h \
-        input.h
+        input.h \
+    plyreader.h
 
 FORMS +=

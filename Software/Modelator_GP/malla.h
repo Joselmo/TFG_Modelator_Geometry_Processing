@@ -10,6 +10,7 @@
 #include <GL/gl.h>
 #include <QVector3D>
 #include <glm/glm.hpp>
+#include <iostream>
 
 using namespace std;
 
@@ -18,31 +19,6 @@ using namespace std;
 *
 */
 
-/** TUPLA DE REALES
-*   Tupla de Coordenadas(x,y,z) de reales.
-*/
-struct Tupla3r{
-private:
-  GLfloat coords[3];  // X=0  Y=1   Z=2
-
-public:
-  inline GLfloat& operator[](int eje){
-      return coords[eje];
-  }
-};
-
-/** TUPLA DE NATURALES
-*   Indica los vertices que forma un triangulo con de naturales.
-*/
-struct Tupla3n{
-private:
-  GLuint coords[3];
-
-public:
-  inline GLuint& operator[](int eje){
-      return coords[eje];
-  }
-};
 
 /**
 * Estructura que contiene la malla basica en 3 dimensiones.
@@ -53,12 +29,12 @@ class Malla{
  private:
 
   vector<glm::vec3> vertexes;
-  vector<Tupla3n> triangles;
+  vector<glm::ivec3> triangles;
 
 
  public:
    Malla();
-   Malla(vector<glm::vec3> vertex_n,vector<Tupla3n> triangle_n);
+   Malla(vector<glm::vec3> vertex_n,vector<glm::ivec3> triangle_n);
 
    Malla& operator=(const Malla& malla_nueva);
 
@@ -85,27 +61,27 @@ class Malla{
 /******************************************************************************
 **********               MANEJO DE TRIANGULOS                   ***************
 *******************************************************************************/
-   void setTriangles(vector<Tupla3n> triangle_n);
+   void setTriangles(vector<glm::ivec3> triangle_n);
 
    /**
    * Devuelve un puntero a la primera posición del vector de triangulos
    */
-   Tupla3n *getTriangles();
+   glm::ivec3 *getTriangles();
 
    /**
    *  Devuelve una copia del vector de Triangulos
    */
-   vector<Tupla3n> getTrianglesV();
+   vector<glm::ivec3> getTrianglesV();
 
    /**
    * Devuelve los triangulos pares de la malla
    */
-   vector<Tupla3n> getTrianglesEven();
+   //vector<glm::ivec3> getTrianglesEven();
 
    /**
    *  Devuelve los triangulos impares de la malla
    */
-   vector<Tupla3n> getTrianglesOdd();
+   //vector<glm::ivec3> getTrianglesOdd();
 
    /**
    *  Devuelve el número de Triangulos de la malla
