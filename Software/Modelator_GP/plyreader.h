@@ -1,15 +1,17 @@
 #ifndef PLYREADER_H
 #define PLYREADER_H
 
-#endif // PLYREADER_H
+
 
 #include <iostream>
 #include <iterator>
+#include <string>
 // -------------------- OpenMesh
 #include <OpenMesh/Core/IO/MeshIO.hh>
 #include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
 #include <OpenMesh/Tools/Utils/getopt.h>
 #include <malla.h>
+#include <QVector3D>
 // ----------------------------------------------------------------------------
 using namespace OpenMesh;
 // ----------------------------------------------------------------------------
@@ -31,5 +33,7 @@ class PLYReader{
 
 public:
     PLYReader();
-    void readPLY(Malla &malla);
+    void readPLY(Malla &malla, string file);
 };
+
+#endif // PLYREADER_H

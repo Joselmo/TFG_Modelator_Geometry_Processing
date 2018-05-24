@@ -11,6 +11,8 @@
 #include <QVector3D>
 #include <glm/glm.hpp>
 #include <iostream>
+#include <QVector2D>
+#include <QVector3D>
 
 using namespace std;
 
@@ -28,30 +30,30 @@ class Malla{
 
  private:
 
-  vector<glm::vec3> vertexes;
+  vector<QVector3D> vertexes;
   vector<glm::ivec3> triangles;
 
 
  public:
    Malla();
-   Malla(vector<glm::vec3> vertex_n,vector<glm::ivec3> triangle_n);
+   Malla(vector<QVector3D> vertex_n,vector<glm::ivec3> triangle_n);
 
    Malla& operator=(const Malla& malla_nueva);
 
 /******************************************************************************
 **********               MANEJO DE VERTICES                     ***************
 *******************************************************************************/
-   void setVertexes(vector<glm::vec3> vertex_n);
+   void setVertexes(vector<QVector3D> vertex_n);
 
    /**
    * Devuelve un puntero a la primera posición del vector de vertices
    */
-   glm::vec3 *getVertexes();
+   QVector3D *getVertexes();
 
    /**
    * Devuelve una copia del vector de vertices.
    */
-   vector<glm::vec3> getVertexesV();
+   vector<QVector3D> getVertexesV();
 
    /**
    *  Devuelve el número de Vertices de la malla

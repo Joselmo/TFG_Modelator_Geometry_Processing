@@ -4,10 +4,36 @@
 /**
 *   Constructores
 */
-Figura3D::Figura3D(){
+
+Figura3D::Figura3D():indexBuf(QOpenGLBuffer::IndexBuffer){
     mode[0]=GL_FILL;
     mode[1]=GL_POINT;
     mode[2]=GL_LINE; // 0 = Relleno   1 = Puntos   2 = Lineas
+
+    //Generate 2 VBOs
+    arrayBuf.create();
+    indexBuf.create();
+
+    // transfers geometry to VBOs
+    initGeometry();
+
+}
+
+Figura3D::~Figura3D(){
+    arrayBuf.destroy();
+    indexBuf.destroy();
+}
+
+
+void Figura3D::initGeometry()
+{
+    // Transfer vertex data to VBO 0
+    arrayBuf.bind();
+    arrayBuf.allocate(mesh.getVertexes(),sizeof(mesh.getVertexesV()));
+
+    // Transfer index data to VBO 1
+    indexBuf.bind();
+    indexBuf.allocate(mesh.getTriangles(), mesh.getNumTriangles() * sizeof(QVector3D));
 }
 
 
@@ -16,9 +42,7 @@ Figura3D::Figura3D(){
 *******************************************************************************/
 void Figura3D::setMesh(Malla malla){
     mesh = malla;
-    color_vector.resize(mesh.getVertexesV().size());
-    //mesh_even = Malla(mesh.getVertexesV(),mesh.getTrianglesEven());
-    //mesh_odd = Malla(mesh.getVertexesV(),mesh.getTrianglesOdd());
+    //color_vector.resize(mesh.getVertexes().size());
 
 }
 /******************************************************************************/
@@ -29,30 +53,35 @@ Malla Figura3D::getMesh(){
 /******************************************************************************
 *********             DIBUJADO DE LA FIGURA 3D                   **************
 *******************************************************************************/
+void Figura3D::drawShapeGeometry(QOpenGLShaderProgram *m_program, int mode_view)
+{
 
-void Figura3D::drawElements(GLenum face,int mode_view,Malla mesh_draw){
-    // especificar que tiene un vector de colores
-    glEnableClientState(GL_COLOR_ARRAY);
-    // especificar el vector de colores
-    glColorPointer(3, GL_FLOAT, 0, &(color_vector.at(0)));
-    // especificar que tiene un vector de vertices
-    glEnableClientState(GL_VERTEX_ARRAY);
-    // especificar puntero a tabla de coords. de vértices
-    glVertexPointer(3,GL_FLOAT, 0, mesh_draw.getVertexes());
-    // Dibuja la Topologia
-    glPolygonMode(face,mode[mode_view]);
-    // dibuja usando vértices indexados
-    glDrawElements( GL_TRIANGLES, 3*mesh_draw.getNumTriangles(), GL_UNSIGNED_INT, mesh_draw.getTriangles());
+    // Tell OpenGL which VBOs to use
+    arrayBuf.bind();
+    indexBuf.bind();
 
+    // Tell OpenGL programmable pipeline how to locate vertex position data
+    int vertexLocation = m_program->attributeLocation("position");
+    m_program->enableAttributeArray(vertexLocation);
+    m_program->setAttributeBuffer(vertexLocation,
+                                  GL_FLOAT,
+                                  0,
+                                  3,
+                                  sizeof(QVector3D));
+
+    // Tell OpenGL programmable pipeline how to locate vertex color data
+/*    int colorLocation = m_program->attributeLocation("color");
+    m_program->enableAttributeArray(colorLocation);
+    m_program->setAttributeBuffer(colorLocation,
+                                  GL_FLOAT,
+                                  Vertex::colorOffset(),
+                                  Vertex::ColorTupleSize,
+                                  Vertex::stride());
+*/
+    // Draw geometry using indices from VBO 1
+    glDrawElements(GL_TRIANGLES, 3*mesh.getNumTriangles(), GL_UNSIGNED_SHORT, 0);
 }
 
-/******************************************************************************/
-
-void Figura3D::draw(GLenum face,int mode_view,GLfloat n){
-    glScalef(n,n,n);
-
-    drawElements(face,mode_view,mesh);
-}
 
 /******************************************************************************
 *********          TRANSFORMACION DE LA FIGURA 3D                **************
@@ -68,15 +97,15 @@ void Figura3D::scale(GLfloat n){
 }
 
 
-void Figura3D::setColorAll(float r,float g,float b,int inicio,int inc){
-    glm::vec3 rgb;
+void Figura3D::setColorAll(float r,float g,float b){
+   /* QVector3D rgb;
     //color_vector.clear();
     rgb[0]= r;
     rgb[1]= g;
     rgb[2]= b;
-    for(int i=inicio; i < color_vector.size(); i+=inc){
+    for(int i=0; i < color_vector.size(); i++){
         color_vector[i] = rgb;
-    }
+    }*/
 }
 
 int Figura3D::getNumVertices()

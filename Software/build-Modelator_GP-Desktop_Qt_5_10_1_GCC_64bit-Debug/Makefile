@@ -57,7 +57,11 @@ SOURCES       = ../Modelator_GP/main.cpp \
 		../Modelator_GP/cubo.cpp \
 		../Modelator_GP/figura3d.cpp \
 		../Modelator_GP/input.cpp \
-		../Modelator_GP/plyreader.cpp moc_mainwindow.cpp
+		../Modelator_GP/plyreader.cpp \
+		../Modelator_GP/halfedge.cpp \
+		../Modelator_GP/sphere.cpp \
+		../Modelator_GP/transform3d.cpp \
+		../Modelator_GP/camera3d.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		ejes.o \
@@ -66,8 +70,14 @@ OBJECTS       = main.o \
 		figura3d.o \
 		input.o \
 		plyreader.o \
+		halfedge.o \
+		sphere.o \
+		transform3d.o \
+		camera3d.o \
 		moc_mainwindow.o
-DIST          = /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
+DIST          = ../Modelator_GP/Shaders/simple.frag \
+		../Modelator_GP/Shaders/simple.vert \
+		/usr/local/Qt/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/usr/local/Qt/5.10.1/gcc_64/mkspecs/common/unix.conf \
 		/usr/local/Qt/5.10.1/gcc_64/mkspecs/common/linux.conf \
 		/usr/local/Qt/5.10.1/gcc_64/mkspecs/common/sanitize.conf \
@@ -256,14 +266,22 @@ DIST          = /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../Modelator_GP/cubo.h \
 		../Modelator_GP/figura3d.h \
 		../Modelator_GP/input.h \
-		../Modelator_GP/plyreader.h ../Modelator_GP/main.cpp \
+		../Modelator_GP/plyreader.h \
+		../Modelator_GP/halfedge.h \
+		../Modelator_GP/sphere.h \
+		../Modelator_GP/transform3d.h \
+		../Modelator_GP/camera3d.h ../Modelator_GP/main.cpp \
 		../Modelator_GP/mainwindow.cpp \
 		../Modelator_GP/ejes.cpp \
 		../Modelator_GP/malla.cpp \
 		../Modelator_GP/cubo.cpp \
 		../Modelator_GP/figura3d.cpp \
 		../Modelator_GP/input.cpp \
-		../Modelator_GP/plyreader.cpp
+		../Modelator_GP/plyreader.cpp \
+		../Modelator_GP/halfedge.cpp \
+		../Modelator_GP/sphere.cpp \
+		../Modelator_GP/transform3d.cpp \
+		../Modelator_GP/camera3d.cpp
 QMAKE_TARGET  = Modelator_GP
 DESTDIR       = 
 TARGET        = Modelator_GP
@@ -667,8 +685,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Modelator_GP/mainwindow.h ../Modelator_GP/ejes.h ../Modelator_GP/malla.h ../Modelator_GP/cubo.h ../Modelator_GP/figura3d.h ../Modelator_GP/input.h ../Modelator_GP/plyreader.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Modelator_GP/main.cpp ../Modelator_GP/mainwindow.cpp ../Modelator_GP/ejes.cpp ../Modelator_GP/malla.cpp ../Modelator_GP/cubo.cpp ../Modelator_GP/figura3d.cpp ../Modelator_GP/input.cpp ../Modelator_GP/plyreader.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Modelator_GP/mainwindow.h ../Modelator_GP/ejes.h ../Modelator_GP/malla.h ../Modelator_GP/cubo.h ../Modelator_GP/figura3d.h ../Modelator_GP/input.h ../Modelator_GP/plyreader.h ../Modelator_GP/halfedge.h ../Modelator_GP/sphere.h ../Modelator_GP/transform3d.h ../Modelator_GP/camera3d.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Modelator_GP/main.cpp ../Modelator_GP/mainwindow.cpp ../Modelator_GP/ejes.cpp ../Modelator_GP/malla.cpp ../Modelator_GP/cubo.cpp ../Modelator_GP/figura3d.cpp ../Modelator_GP/input.cpp ../Modelator_GP/plyreader.cpp ../Modelator_GP/halfedge.cpp ../Modelator_GP/sphere.cpp ../Modelator_GP/transform3d.cpp ../Modelator_GP/camera3d.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -834,6 +852,17 @@ moc_mainwindow.cpp: /usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QMainWindow \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QImage \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLFunctions \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLBuffer \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglbuffer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLVertexArrayObject \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglvertexarrayobject.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLShaderProgram \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglshaderprogram.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/QtOpenGL \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/QtOpenGLDepends \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QtCore \
@@ -970,7 +999,6 @@ moc_mainwindow.cpp: /usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QMainWindow \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qclipboard.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qdesktopservices.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qdrag.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericplugin.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericpluginfactory.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qguiapplication.h \
@@ -980,26 +1008,19 @@ moc_mainwindow.cpp: /usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QMainWindow \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimageiohandler.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimagereader.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimagewriter.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmovie.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qoffscreensurface.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglbuffer.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengldebug.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglextrafunctions.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglframebufferobject.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglpaintdevice.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QSharedDataPointer \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglshaderprogram.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengltexture.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengltextureblitter.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMatrix3x3 \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMatrix4x4 \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengltimerquery.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglvertexarrayobject.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpagedpaintdevice.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpagelayout.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpagesize.h \
@@ -1169,14 +1190,21 @@ moc_mainwindow.cpp: /usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QMainWindow \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/qglpixelbuffer.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/qglshaderprogram.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/qtopenglversion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMouseEvent \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QKeyEvent \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QQuaternion \
 		../Modelator_GP/ejes.h \
 		../Modelator_GP/cubo.h \
 		../Modelator_GP/figura3d.h \
 		../Modelator_GP/malla.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QKeyEvent \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector2D \
 		../Modelator_GP/input.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/Qt \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QPoint \
+		../Modelator_GP/sphere.h \
+		../Modelator_GP/plyreader.h \
+		../Modelator_GP/camera3d.h \
+		../Modelator_GP/transform3d.h \
 		../Modelator_GP/mainwindow.h \
 		moc_predefs.h \
 		/usr/local/Qt/5.10.1/gcc_64/bin/moc
@@ -1330,6 +1358,17 @@ main.o: ../Modelator_GP/main.cpp ../Modelator_GP/mainwindow.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QImage \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLFunctions \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLBuffer \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglbuffer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLVertexArrayObject \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglvertexarrayobject.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLShaderProgram \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglshaderprogram.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/QtOpenGL \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/QtOpenGLDepends \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QtCore \
@@ -1466,7 +1505,6 @@ main.o: ../Modelator_GP/main.cpp ../Modelator_GP/mainwindow.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qclipboard.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qdesktopservices.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qdrag.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericplugin.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericpluginfactory.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qguiapplication.h \
@@ -1476,26 +1514,19 @@ main.o: ../Modelator_GP/main.cpp ../Modelator_GP/mainwindow.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimageiohandler.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimagereader.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimagewriter.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmovie.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qoffscreensurface.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglbuffer.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengldebug.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglextrafunctions.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglframebufferobject.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglpaintdevice.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QSharedDataPointer \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglshaderprogram.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengltexture.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengltextureblitter.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMatrix3x3 \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMatrix4x4 \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengltimerquery.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglvertexarrayobject.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpagedpaintdevice.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpagelayout.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpagesize.h \
@@ -1665,14 +1696,21 @@ main.o: ../Modelator_GP/main.cpp ../Modelator_GP/mainwindow.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/qglpixelbuffer.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/qglshaderprogram.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/qtopenglversion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMouseEvent \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QKeyEvent \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QQuaternion \
 		../Modelator_GP/ejes.h \
 		../Modelator_GP/cubo.h \
 		../Modelator_GP/figura3d.h \
 		../Modelator_GP/malla.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QKeyEvent \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector2D \
 		../Modelator_GP/input.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/Qt \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QPoint \
+		../Modelator_GP/sphere.h \
+		../Modelator_GP/plyreader.h \
+		../Modelator_GP/camera3d.h \
+		../Modelator_GP/transform3d.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtWidgets/QApplication
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Modelator_GP/main.cpp
 
@@ -1808,6 +1846,17 @@ mainwindow.o: ../Modelator_GP/mainwindow.cpp ../Modelator_GP/mainwindow.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QImage \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLFunctions \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLBuffer \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglbuffer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLVertexArrayObject \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglvertexarrayobject.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLShaderProgram \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglshaderprogram.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/QtOpenGL \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/QtOpenGLDepends \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QtCore \
@@ -1944,7 +1993,6 @@ mainwindow.o: ../Modelator_GP/mainwindow.cpp ../Modelator_GP/mainwindow.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qclipboard.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qdesktopservices.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qdrag.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericplugin.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericpluginfactory.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qguiapplication.h \
@@ -1954,26 +2002,19 @@ mainwindow.o: ../Modelator_GP/mainwindow.cpp ../Modelator_GP/mainwindow.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimageiohandler.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimagereader.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qimagewriter.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmovie.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qoffscreensurface.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglbuffer.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengldebug.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglextrafunctions.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglframebufferobject.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglpaintdevice.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QSharedDataPointer \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglshaderprogram.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengltexture.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengltextureblitter.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMatrix3x3 \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMatrix4x4 \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengltimerquery.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglvertexarrayobject.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpagedpaintdevice.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpagelayout.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qpagesize.h \
@@ -2143,15 +2184,21 @@ mainwindow.o: ../Modelator_GP/mainwindow.cpp ../Modelator_GP/mainwindow.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/qglpixelbuffer.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/qglshaderprogram.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtOpenGL/qtopenglversion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMouseEvent \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QKeyEvent \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QQuaternion \
 		../Modelator_GP/ejes.h \
 		../Modelator_GP/cubo.h \
 		../Modelator_GP/figura3d.h \
 		../Modelator_GP/malla.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QKeyEvent \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector2D \
 		../Modelator_GP/input.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/Qt \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QPoint \
-		../Modelator_GP/plyreader.h
+		../Modelator_GP/sphere.h \
+		../Modelator_GP/plyreader.h \
+		../Modelator_GP/camera3d.h \
+		../Modelator_GP/transform3d.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Modelator_GP/mainwindow.cpp
 
 ejes.o: ../Modelator_GP/ejes.cpp ../Modelator_GP/ejes.h
@@ -2193,14 +2240,15 @@ malla.o: ../Modelator_GP/malla.cpp ../Modelator_GP/malla.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector2D \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector2d.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o malla.o ../Modelator_GP/malla.cpp
 
 cubo.o: ../Modelator_GP/cubo.cpp ../Modelator_GP/cubo.h \
 		../Modelator_GP/figura3d.h \
-		../Modelator_GP/malla.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector3D \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLFunctions \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglfunctions.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobal.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
@@ -2224,23 +2272,80 @@ cubo.o: ../Modelator_GP/cubo.cpp ../Modelator_GP/cubo.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnumeric.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qt_windows.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengles2ext.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglext.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglcontext.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnamespace.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QObject \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstring.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qchar.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearray.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrefcount.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpair.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmetatype.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QScopedPointer \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QSurfaceFormat \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qsurfaceformat.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglversionfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhash.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvector.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qset.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLShaderProgram \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglshaderprogram.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector2d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsize.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLBuffer \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglbuffer.h \
+		../Modelator_GP/malla.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector3D \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector2D
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cubo.o ../Modelator_GP/cubo.cpp
 
 figura3d.o: ../Modelator_GP/figura3d.cpp ../Modelator_GP/figura3d.h \
-		../Modelator_GP/malla.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector3D \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLFunctions \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglfunctions.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobal.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
@@ -2264,17 +2369,75 @@ figura3d.o: ../Modelator_GP/figura3d.cpp ../Modelator_GP/figura3d.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnumeric.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qt_windows.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengles2ext.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglext.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglcontext.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnamespace.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QObject \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstring.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qchar.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearray.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrefcount.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpair.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmetatype.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QScopedPointer \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QSurfaceFormat \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qsurfaceformat.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglversionfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhash.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvector.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qset.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLShaderProgram \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglshaderprogram.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector2d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsize.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLBuffer \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglbuffer.h \
+		../Modelator_GP/malla.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector3D \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector2D
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o figura3d.o ../Modelator_GP/figura3d.cpp
 
 input.o: ../Modelator_GP/input.cpp ../Modelator_GP/input.h \
@@ -2350,8 +2513,274 @@ plyreader.o: ../Modelator_GP/plyreader.cpp ../Modelator_GP/plyreader.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector2D \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector2d.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o plyreader.o ../Modelator_GP/plyreader.cpp
+
+halfedge.o: ../Modelator_GP/halfedge.cpp ../Modelator_GP/halfedge.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o halfedge.o ../Modelator_GP/halfedge.cpp
+
+sphere.o: ../Modelator_GP/sphere.cpp ../Modelator_GP/sphere.h \
+		../Modelator_GP/figura3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLFunctions \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlogging.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qflags.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmutex.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnumeric.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qt_windows.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopengles2ext.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglext.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglcontext.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnamespace.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QObject \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstring.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qchar.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearray.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrefcount.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpair.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QScopedPointer \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QSurfaceFormat \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qsurfaceformat.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglversionfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhash.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvector.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qset.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLShaderProgram \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglshaderprogram.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector2d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsize.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QOpenGLBuffer \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qopenglbuffer.h \
+		../Modelator_GP/malla.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector3D \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector2D \
+		../Modelator_GP/plyreader.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sphere.o ../Modelator_GP/sphere.cpp
+
+transform3d.o: ../Modelator_GP/transform3d.cpp ../Modelator_GP/transform3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector3D \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlogging.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qflags.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmutex.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnumeric.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnamespace.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearray.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrefcount.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QQuaternion \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhash.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qchar.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstring.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpair.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvector.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qset.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMatrix4x4 \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsize.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QDebug
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transform3d.o ../Modelator_GP/transform3d.cpp
+
+camera3d.o: ../Modelator_GP/camera3d.cpp ../Modelator_GP/camera3d.h \
+		../Modelator_GP/transform3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector3D \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobal.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlogging.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qflags.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmutex.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnumeric.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnamespace.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearray.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrefcount.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QQuaternion \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qquaternion.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qgenericmatrix.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhash.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qchar.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstring.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpair.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmap.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvector.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qset.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector4d.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QMatrix4x4 \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qmatrix4x4.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsize.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o camera3d.o ../Modelator_GP/camera3d.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

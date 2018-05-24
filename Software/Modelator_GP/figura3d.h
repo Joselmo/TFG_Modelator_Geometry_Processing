@@ -5,8 +5,10 @@ using namespace std;
 
 #define N_EJES 3  // Nº de ejes
 
-#include <GL/glut.h>
-#include <GL/gl.h>
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+
 #include "malla.h"
 
 /** CLASE FIGURA 3D
@@ -15,20 +17,16 @@ using namespace std;
 *
 */
 
-class Figura3D {
+class Figura3D : protected QOpenGLFunctions{
 
 private:
   Malla mesh;   // Malla de puntos
-  Malla mesh_even;
-  Malla mesh_odd;
-  vector<glm::vec3> color_vector;
   GLenum mode[3]; // Modo de visualización
 
-  /*
-  * Dibuja la figura utilizando glDrawElements
-  */
-  void drawElements(GLenum face,int mode_view,Malla mesh_draw);
+  QOpenGLBuffer arrayBuf;
+  QOpenGLBuffer indexBuf;
 
+  void initGeometry();
 
 
 public:
@@ -36,6 +34,8 @@ public:
   * Constructor con parametros
   */
     Figura3D();
+
+    ~Figura3D();
 
 
   /**
@@ -51,6 +51,12 @@ public:
   *
   */
     void draw(GLenum face,int mode_view,GLfloat n);
+
+    /*
+    * Dibuja la figura utilizando glDrawElements
+    */
+    void drawShapeGeometry(QOpenGLShaderProgram *m_program, int mode_view);
+
 
   /**
   * Translación
@@ -68,7 +74,7 @@ public:
   void scale(GLfloat n);
 
 
-  void setColorAll(float r, float g, float b, int inicio, int inc);
+  void setColorAll(float r, float g, float b);
 
   int getNumVertices();
   int getNumFaces();

@@ -1,18 +1,26 @@
 #ifndef CUBO_H
 #define CUBO_H
-#include "figura3d.h"
-#include <glm/glm.hpp>
-#include <GL/gl.h>
-#include <GL/glut.h>
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+#include <QVector2D>
+#include <QVector3D>
+
 
 using namespace std;
 
-class Cubo : public Figura3D {
-
-
+class Cubo : protected QOpenGLFunctions
+{
 public:
     Cubo();
-  void createGeometry();
+    virtual ~Cubo();
 
+    void drawCubeGeometry(QOpenGLShaderProgram *program);
+
+private:
+    void initCubeGeometry();
+
+    QOpenGLBuffer arrayBuf;
+    QOpenGLBuffer indexBuf;
 };
 #endif // CUBO_H

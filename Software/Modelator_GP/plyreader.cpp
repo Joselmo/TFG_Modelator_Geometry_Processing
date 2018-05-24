@@ -5,12 +5,12 @@ PLYReader::PLYReader()
 
 }
 
-void PLYReader::readPLY(Malla &malla){
+void PLYReader::readPLY(Malla &malla, string file){
 
     MyMesh  mesh;
     IO::Options ropt;
     // -------------------- read mesh
-    if ( ! IO::read_mesh(mesh,"../PLY/beethoven.ply"))
+    if ( ! IO::read_mesh(mesh,"../PLY/"+file))
     {
         std::cerr << "Error loading mesh from file " << std::endl;
         //return 1;
@@ -23,8 +23,8 @@ void PLYReader::readPLY(Malla &malla){
     std::cout << "# Faces   : " << mesh.n_faces() << std::endl;
 
     // iterate over all vertices
-    glm::vec3 point;
-    vector<glm::vec3> local_vertices;
+    QVector3D point;
+    vector<QVector3D> local_vertices;
     local_vertices.reserve(mesh.n_vertices());
     for (MyMesh::VertexIter v_it=mesh.vertices_begin(); v_it!=mesh.vertices_end(); ++v_it){
         //std::cout << "Vertex #" << *v_it << ": " << mesh.point( *v_it )[0]<<std::endl;

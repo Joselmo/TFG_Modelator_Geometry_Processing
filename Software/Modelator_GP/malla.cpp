@@ -6,7 +6,7 @@ Malla::Malla(){}
 /** Constructor parametrizado
 * Crea una malla dados un vector de vertices y uno de triangulos
 */
-Malla::Malla(vector<glm::vec3> vertex_n, vector<glm::ivec3> triangle_n){
+Malla::Malla(vector<QVector3D> vertex_n, vector<glm::ivec3> triangle_n){
   setVertexes(vertex_n);
   setTriangles(triangle_n);
 }
@@ -43,22 +43,22 @@ Malla& Malla::operator=(const Malla& malla_nueva){
 /******************************************************************************
 **********               MANEJO DE VERTICES                     ***************
 *******************************************************************************/
-void Malla::setVertexes(vector<glm::vec3> vertex_n){
+void Malla::setVertexes(vector<QVector3D> vertex_n){
   vertexes.clear();
   vertexes=vertex_n;
   cout<<" Nº vertices="<<vertexes.size();
   for(int i=0; i < vertexes.size(); i++){
-      cout<<"V["<<i<<"] = ["<<vertexes.at(i)[0]<<",";
-      cout<<vertexes.at(i)[1]<<",";
-      cout<<vertexes.at(i)[2]<<"]"<<endl;
+      //cout<<"V["<<i<<"] = ["<<vertexes.at(i)[0]<<",";
+      //cout<<vertexes.at(i)[1]<<",";
+      //cout<<vertexes.at(i)[2]<<"]"<<endl;
   }
 }
 
-glm::vec3 * Malla::getVertexes(){
+QVector3D * Malla::getVertexes(){
   return &(vertexes.at(0));
 }
 
-vector<glm::vec3> Malla::getVertexesV(){
+vector<QVector3D> Malla::getVertexesV(){
   return vertexes;
 }
 
@@ -74,10 +74,10 @@ void Malla::setTriangles(vector<glm::ivec3> triangle_n){
   triangles.clear();
   triangles = triangle_n;
   cout<<"Nº triangulos="<<triangle_n.size()<<endl;
-  for(int i=0; i < triangle_n.size(); i++){
-      cout<<"F["<<i<<"] = ["<<triangle_n.at(i)[0]<<",";
-      cout<<triangle_n.at(i)[1]<<",";
-      cout<<triangle_n.at(i)[2]<<"]"<<endl;
+  for(uint i=0; i < triangle_n.size(); i++){
+      //cout<<"F["<<i<<"] = ["<<triangle_n.at(i)[0]<<",";
+      //cout<<triangle_n.at(i)[1]<<",";
+      //cout<<triangle_n.at(i)[2]<<"]"<<endl;
   }
 }
 

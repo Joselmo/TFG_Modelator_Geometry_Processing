@@ -35,7 +35,11 @@ SOURCES += \
         cubo.cpp \
         figura3d.cpp \
         input.cpp \
-    plyreader.cpp
+    plyreader.cpp \
+    halfedge.cpp \
+    sphere.cpp \
+    transform3d.cpp \
+    camera3d.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,6 +48,14 @@ HEADERS += \
         cubo.h \
         figura3d.h \
         input.h \
-    plyreader.h
+    plyreader.h \
+    halfedge.h \
+    sphere.h \
+    transform3d.h \
+    camera3d.h
 
 FORMS +=
+
+DISTFILES += \
+    Shaders/simple.frag \
+    Shaders/simple.vert
