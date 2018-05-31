@@ -3,13 +3,7 @@
 /**
 *   Constructores
 */
-Cubo::Cubo() : indexBuf(QOpenGLBuffer::IndexBuffer)
-{
-    initializeOpenGLFunctions();
-
-    // Generate 2 VBOs
-    arrayBuf.create();
-    indexBuf.create();
+Cubo::Cubo(){
 
     // Initializes cube geometry and transfers it to VBOs
     initCubeGeometry();
@@ -17,78 +11,103 @@ Cubo::Cubo() : indexBuf(QOpenGLBuffer::IndexBuffer)
 
 Cubo::~Cubo()
 {
-    arrayBuf.destroy();
-    indexBuf.destroy();
+
 }
+
+QVector<Vertex> Cubo::getSg_vertexes() const
+{
+    return sg_vertexes;
+}
+
+void Cubo::setSg_vertexes(const QVector<Vertex> &value)
+{
+    sg_vertexes = value;
+}
+
+QVector<Vertex> Cubo::getVertices() const
+{
+    return vertices;
+}
+
+void Cubo::setVertices(const QVector<Vertex> &value)
+{
+    vertices = value;
+}
+
+QVector<int> Cubo::getIndices() const
+{
+    return indices;
+}
+
+void Cubo::setIndices(const QVector<int> &value)
+{
+    indices = value;
+}
+
+Vertex* Cubo::getPointSg_vertexes()
+{
+    return sg_vertexes1;
+}
+
+int Cubo::getSizeOfGeometry()
+{
+    return (indices.size() * sizeof(Vertex));
+}
+
+
 
 void Cubo::initCubeGeometry()
 {
-    // For cube we would need only 8 vertices but we have to
-    // duplicate vertex for each face because texture coordinate
-    // is different.
-    QVector3D vertices[] = {
+    // Front Verticies
+    Vertex VERTEX_FTR( QVector3D( 0.5f,  0.5f,  0.5f), QVector3D( 0.0f, 0.0f, 0.0f ) );
+    Vertex VERTEX_FTL( QVector3D(-0.5f,  0.5f,  0.5f), QVector3D( 0.0f, 0.0f, 0.0f ) );
+    Vertex VERTEX_FBL( QVector3D(-0.5f, -0.5f,  0.5f), QVector3D( 0.0f, 0.0f, 0.0f ) );
+    Vertex VERTEX_FBR( QVector3D( 0.5f, -0.5f,  0.5f), QVector3D( 0.0f, 0.0f, 0.0f ) );
 
-        {QVector3D(-1.0f, -1.0f,  -1.0f)},  // v0
-        {QVector3D(-1.0f, -1.0f,   1.0f)},  // v1
-        {QVector3D(-1.0f,  1.0f,  -1.0f)},  // v2
-        {QVector3D(-1.0f,  1.0f,   1.0f)},  // v3
+    // Back Verticies
+    Vertex VERTEX_BTR( QVector3D( 0.5f,  0.5f, -0.5f), QVector3D( 0.0f, 0.0f, 0.0f ) );
+    Vertex VERTEX_BTL( QVector3D(-0.5f,  0.5f, -0.5f), QVector3D( 0.0f, 0.0f, 0.0f ) );
+    Vertex VERTEX_BBL( QVector3D(-0.5f, -0.5f, -0.5f), QVector3D( 0.0f, 0.0f, 0.0f ) );
+    Vertex VERTEX_BBR( QVector3D( 0.5f, -0.5f, -0.5f), QVector3D( 0.0f, 0.0f, 0.0f ) );
+    vertices.push_back(VERTEX_FTR); // 0
+    vertices.push_back(VERTEX_FTL); // 1
+    vertices.push_back(VERTEX_FBL); // 2
+    vertices.push_back(VERTEX_FBR); // 3
+    vertices.push_back(VERTEX_BTR); // 4
+    vertices.push_back(VERTEX_BTL); // 5
+    vertices.push_back(VERTEX_BBL); // 6
+    vertices.push_back(VERTEX_BBR); // 7
 
-        // Vertex data for face 1
-        {QVector3D( 1.0f, -1.0f, -1.0f)}, // v4
-        {QVector3D( 1.0f, -1.0f,  1.0f)}, // v5
-        {QVector3D( 1.0f,  1.0f, -1.0f)},  // v6
-        {QVector3D( 1.0f,  1.0f,  1.0f)}, // v7
-    };
+    // Face 1 (Front
+    indices.push_back(0);indices.push_back(1);indices.push_back(2);
+    indices.push_back(2);indices.push_back(3);indices.push_back(0);
+    // Face 2 (Back)
+    indices.push_back(7);indices.push_back(5);indices.push_back(4);
+    indices.push_back(5);indices.push_back(7);indices.push_back(6);
+    // Face 3 (Top)
+    indices.push_back(0);indices.push_back(4);indices.push_back(5);
+    indices.push_back(5);indices.push_back(1);indices.push_back(0);
+    // Face 4 (Bottom)
+    indices.push_back(3);indices.push_back(2);indices.push_back(6);
+    indices.push_back(6);indices.push_back(7);indices.push_back(3);
+    // Face 5 (Left)
+    indices.push_back(2);indices.push_back(1);indices.push_back(5);
+    indices.push_back(2);indices.push_back(5);indices.push_back(6);
+    // Face 6 (Right)
+    indices.push_back(0);indices.push_back(3);indices.push_back(7);
+    indices.push_back(7);indices.push_back(4);indices.push_back(0);
 
-    // Indices for drawing cube faces using triangle strips.
-    // Triangle strips can be connected by duplicating indices
-    // between the strips. If connecting strips have opposite
-    // vertex order then last index of the first strip and first
-    // index of the second strip needs to be duplicated. If
-    // connecting strips have same vertex order then only last
-    // index of the first strip needs to be duplicated.
-    GLushort indices[] = {
-         1, 5, 3, // frontal abajo
-         5, 7, 3, // frontal arriba
-         5, 4, 7, // lateral derecho abajo
-         4, 6, 7, // lateral derecho arriba
-         6, 4, 0,  // trasera abajo
-         2, 6, 0, // trasera arriba
-         0, 1, 2, // lateral izquierdo abajo
-         1, 3, 2,// lateral izquierdo arriba
-         3, 7, 2,// tapa abajo
-         2, 7, 6,// tapa arriba
-         0, 4, 1,// base abajo
-         4, 5, 1// base arriba
-    };
-
-//! [1]
-    // Transfer vertex data to VBO 0
-    arrayBuf.bind();
-    arrayBuf.allocate(vertices, 8 * sizeof(QVector3D));
-
-    // Transfer index data to VBO 1
-    indexBuf.bind();
-    indexBuf.allocate(indices, 36 * sizeof(GLushort));
-//! [1]
+    generateGeometry();
 }
 
-//! [2]
-void Cubo::drawCubeGeometry(QOpenGLShaderProgram *program)
+void Cubo::generateGeometry()
 {
-    // Tell OpenGL which VBOs to use
-    arrayBuf.bind();
-    indexBuf.bind();
+    sg_vertexes1 = new Vertex[indices.size()];
+    for(int i=0; i < indices.size();i++){
+        sg_vertexes1[i] = vertices.at(indices.at(i));
 
-    // Offset for position
-    quintptr offset = 0;
-
-    // Tell OpenGL programmable pipeline how to locate vertex position data
-    int vertexLocation = program->attributeLocation("a_position");
-    program->enableAttributeArray(vertexLocation);
-    program->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
-
-    // Draw cube geometry using indices from VBO 1
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
+    }
+    for(int& i:indices){
+        sg_vertexes.push_back(vertices.at(i));
+    }
 }
-//! [2]

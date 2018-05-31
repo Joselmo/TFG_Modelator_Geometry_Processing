@@ -29,33 +29,31 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
         ejes.cpp \
         malla.cpp \
         cubo.cpp \
-        figura3d.cpp \
         input.cpp \
     plyreader.cpp \
     halfedge.cpp \
     sphere.cpp \
     transform3d.cpp \
-    camera3d.cpp
+    camera3d.cpp \
+    window.cpp
 
 HEADERS += \
-        mainwindow.h \
         ejes.h \
         malla.h \
         cubo.h \
-        figura3d.h \
         input.h \
     plyreader.h \
     halfedge.h \
     sphere.h \
     transform3d.h \
-    camera3d.h
+    camera3d.h \
+    vertex.h \
+    window.h
 
 FORMS +=
 
-DISTFILES += \
-    Shaders/simple.frag \
-    Shaders/simple.vert
+RESOURCES += \
+    resources.qrc

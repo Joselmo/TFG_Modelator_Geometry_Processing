@@ -1,9 +1,5 @@
-#ifndef INPUT_H
-#define INPUT_H
-
-/****
-*   Clase de http://www.trentreed.net/blog/qt5-opengl-part-3b-camera-control/
-*/
+#ifndef QINPUT_H
+#define QINPUT_H
 
 #include <Qt>
 #include <QPoint>
@@ -44,7 +40,7 @@ private:
   static void registerMousePress(Qt::MouseButton button);
   static void registerMouseRelease(Qt::MouseButton button);
   static void reset();
-  friend class MainWindow;
+  friend class Window;
 };
 
 inline bool Input::keyTriggered(Qt::Key key)
@@ -77,5 +73,4 @@ inline bool Input::buttonReleased(Qt::MouseButton button)
   return buttonState(button) == InputReleased;
 }
 
-
-#endif // INPUT_H
+#endif // QINPUT_H
