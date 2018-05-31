@@ -33,7 +33,6 @@ SOURCES += \
         malla.cpp \
         cubo.cpp \
         input.cpp \
-    plyreader.cpp \
     halfedge.cpp \
     sphere.cpp \
     transform3d.cpp \
@@ -45,7 +44,6 @@ HEADERS += \
         malla.h \
         cubo.h \
         input.h \
-    plyreader.h \
     halfedge.h \
     sphere.h \
     transform3d.h \

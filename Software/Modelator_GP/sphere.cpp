@@ -1,10 +1,9 @@
 #include "sphere.h"
+#include "malla.h"
 
 Sphere::Sphere(){
 
-    PLYReader pread;
     Malla malla1;
-    pread.readPLY(malla1,"esfera.ply");
     //figura3d.setMesh(malla1);
     //figura3d.setColorAll(1,0.0,0.0);
 }

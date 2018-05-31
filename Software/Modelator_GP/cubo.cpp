@@ -14,7 +14,7 @@ Cubo::~Cubo()
 
 }
 
-QVector<Vertex> Cubo::getSg_vertexes() const
+QVector<Vertex> Cubo::getSg_vertexes()
 {
     return sg_vertexes;
 }
@@ -24,7 +24,7 @@ void Cubo::setSg_vertexes(const QVector<Vertex> &value)
     sg_vertexes = value;
 }
 
-QVector<Vertex> Cubo::getVertices() const
+QVector<Vertex> Cubo::getVertices()
 {
     return vertices;
 }
@@ -34,7 +34,7 @@ void Cubo::setVertices(const QVector<Vertex> &value)
     vertices = value;
 }
 
-QVector<int> Cubo::getIndices() const
+QVector<int> Cubo::getIndices()
 {
     return indices;
 }

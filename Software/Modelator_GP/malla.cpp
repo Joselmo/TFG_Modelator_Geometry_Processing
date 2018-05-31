@@ -6,9 +6,10 @@ Malla::Malla(){}
 /** Constructor parametrizado
 * Crea una malla dados un vector de vertices y uno de triangulos
 */
-Malla::Malla(vector<QVector3D> vertex_n, vector<glm::ivec3> triangle_n){
-  setVertexes(vertex_n);
-  setTriangles(triangle_n);
+Malla::Malla(QVector<Vertex> vertex_n, QVector<int> indices_n){
+  vertices = vertex_n;
+  indices  = indices_n;
+  generateGeometry();
 }
 
 
@@ -17,99 +18,114 @@ Malla::Malla(vector<QVector3D> vertex_n, vector<glm::ivec3> triangle_n){
 * Copia los vectores de triangulos y vertices
 */
 Malla& Malla::operator=(const Malla& malla_nueva){
-    cout << "copiando malla" << endl;
+    //std::cout << "copiando malla" << std::endl;
       if(this != &malla_nueva){
-        setVertexes(malla_nueva.vertexes);
-        setTriangles(malla_nueva.triangles);
-
-        //color_vectex.clear();
-        //color_vectex_odd.clear();
-        //color_vectex.resize(vertexes.size());
-        //color_vectex_odd.resize(vertexes.size());
-
-        //generateSurfaceNormal();
-        //generateVertexNormal();
-
-        //texture_mapping.clear();
-        //texture_mapping = malla_nueva.texture_mapping;
-
-        //center_vertex = malla_nueva.center_vertex;
-        //boundingVertex = malla_nueva.boundingVertex;
-        //boundingTriangles = malla_nueva.boundingTriangles;
+          vertices.clear();
+          indices.clear();
+          vertices = malla_nueva.vertices;
+          indices  = malla_nueva.indices;
+          generateGeometry();
       }
       return *this;
 }
 
-/******************************************************************************
-**********               MANEJO DE VERTICES                     ***************
-*******************************************************************************/
-void Malla::setVertexes(vector<QVector3D> vertex_n){
-  vertexes.clear();
-  vertexes=vertex_n;
-  cout<<" Nº vertices="<<vertexes.size();
-  for(int i=0; i < vertexes.size(); i++){
-      //cout<<"V["<<i<<"] = ["<<vertexes.at(i)[0]<<",";
-      //cout<<vertexes.at(i)[1]<<",";
-      //cout<<vertexes.at(i)[2]<<"]"<<endl;
-  }
+
+QVector<Vertex> Malla::getSg_vertexes() const
+{
+    return sg_vertices;
 }
 
-QVector3D * Malla::getVertexes(){
-  return &(vertexes.at(0));
+void Malla::setSg_vertexes(const QVector<Vertex> &value)
+{
+    sg_vertices = value;
 }
 
-vector<QVector3D> Malla::getVertexesV(){
-  return vertexes;
+QVector<Vertex> Malla::getVertices() const
+{
+    return vertices;
 }
 
-int Malla::getNumVertexes(){
-  return vertexes.size();
+void Malla::setVertices(const QVector<Vertex> &value)
+{
+    vertices = value;
 }
 
-/******************************************************************************
-**********               MANEJO DE TRIANGULOS                   ***************
-*******************************************************************************/
-
-void Malla::setTriangles(vector<glm::ivec3> triangle_n){
-  triangles.clear();
-  triangles = triangle_n;
-  cout<<"Nº triangulos="<<triangle_n.size()<<endl;
-  for(uint i=0; i < triangle_n.size(); i++){
-      //cout<<"F["<<i<<"] = ["<<triangle_n.at(i)[0]<<",";
-      //cout<<triangle_n.at(i)[1]<<",";
-      //cout<<triangle_n.at(i)[2]<<"]"<<endl;
-  }
+QVector<int> Malla::getIndices() const
+{
+    return indices;
 }
 
-glm::ivec3 *Malla::getTriangles(){
-  return &(triangles.at(0));
+void Malla::setIndices(const QVector<int> &value)
+{
+    indices = value;
 }
 
-vector<glm::ivec3> Malla::getTrianglesV(){
-   return triangles;
-}
-/*
-vector<glm::ivec3> Malla::getTrianglesEven(){
-  vector<glm::ivec3> trianglesEven;
-
-  for(int i=0; i<triangles.size();i+=2){
-    trianglesEven.push_back(triangles.at(i));
-  }
-
-  return trianglesEven;
+Vertex* Malla::getPointSg_vertexes()
+{
+    return &(sg_vertices[0]);
 }
 
-vector<glm::ivec3> Malla::getTrianglesOdd(){
-  vector<glm::ivec3> trianglesOdd;
-
-  for(int i=1; i<triangles.size();i+=2){
-    trianglesOdd.push_back(triangles.at(i));
-  }
-
-  return trianglesOdd;
+int Malla::getSizeOfGeometry()
+{
+    return (indices.size() * sizeof(Vertex));
 }
-*/
 
-int Malla::getNumTriangles(){
-   return triangles.size();
+
+
+void Malla::initGeometry(std::string filename)
+{
+    MyMesh  mesh;
+    IO::Options ropt;
+    // -------------------- read mesh
+    if ( ! IO::read_mesh(mesh,"../PLY/"+filename))
+    {
+        std::cerr << "Error loading mesh from file " << std::endl;
+        //return 1;
+    }
+    // -------------------- show options
+
+    // -------------------- mesh stats
+    std::cout << "# Vertices: " << mesh.n_vertices() << std::endl;
+    std::cout << "# Edges   : " << mesh.n_faces() << std::endl;
+    std::cout << "# Faces   : " << mesh.n_faces() << std::endl;
+
+    // iterate over all vertices
+    Vertex point;
+    point.setColor(QVector3D(1.0f,1.0f,1.0f));
+
+    vertices.reserve(mesh.n_vertices());
+    for (MyMesh::VertexIter v_it=mesh.vertices_begin(); v_it!=mesh.vertices_end(); ++v_it){
+        //std::cout << "Vertex #" << *v_it << ": " << mesh.point( *v_it )[0]<<std::endl;
+        point.setPosition(QVector3D(mesh.point( *v_it )[0],
+                                    mesh.point( *v_it )[1],
+                                    mesh.point( *v_it )[2]));
+        vertices.push_back(point);
+    }
+
+    // iterate over all faces
+    indices.reserve(mesh.n_faces());
+    MyMesh::ConstFaceIter f_it,f_end(mesh.faces_end());
+    MyMesh::ConstFaceVertexIter fv_it;
+
+    // Itero sobre el handle de caras
+    for (f_it = mesh.faces_sbegin(); f_it!=f_end; ++f_it){
+        //std::cout<<"Faces:";
+        //dentro de cada cara itero sobre sus referencias
+        for (fv_it = mesh.fv_iter(*f_it);fv_it.is_valid();++fv_it){
+            //std::cout<<fv_it->idx()<<"\t";
+            indices.push_back(fv_it->idx());
+
+        }
+
+    }
+
+    generateGeometry();
+}
+
+void Malla::generateGeometry()
+{
+    sg_vertices.clear();
+    for(int& i:indices){
+        sg_vertices.push_back(vertices.at(i));
+    }
 }

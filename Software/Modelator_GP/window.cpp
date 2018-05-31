@@ -59,6 +59,8 @@ Window::Window()
 {
   m_transform.translate(0.0f, 0.0f, -5.0f);
   cubo.initCubeGeometry();
+  bethoven.initGeometry("beethoven.ply");
+  solidmode = false;
 
 }
 
@@ -94,7 +96,7 @@ void Window::initializeGL()
         vbo->create();
         vbo->bind();
         vbo->setUsagePattern(QOpenGLBuffer::StaticDraw);
-        vbo->allocate(cubo.getPointSg_vertexes(), cubo.getSizeOfGeometry());
+        vbo->allocate(bethoven.getPointSg_vertexes(), bethoven.getSizeOfGeometry());
 
     // Create Vertex Array Object
     m_object.create();
@@ -132,10 +134,13 @@ void Window::paintGL()
     m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
     m_object.bind();
     m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
-    for(int i = 0; i <  cubo.getIndices().size(); i += 3)
-      glDrawArrays(GL_LINE_LOOP, i, 3);
+    if(solidmode){
+        glDrawArrays(GL_TRIANGLES, 0, bethoven.getIndices().size());
+    }else{
+        for(int i = 0; i <  bethoven.getIndices().size(); i += 3)
+          glDrawArrays(GL_LINE_LOOP, i, 3);
+    }
 
-    //glDrawArrays(GL_TRIANGLES, 0, cubo.getIndices().size());
     m_object.release();
 
   }

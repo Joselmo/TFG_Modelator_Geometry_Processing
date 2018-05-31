@@ -9,6 +9,7 @@
 #include "transform3d.h"
 #include "camera3d.h"
 #include "cubo.h"
+#include "malla.h"
 
 class QOpenGLShaderProgram;
 
@@ -51,6 +52,10 @@ private:
   Transform3D m_transform;
 
   Cubo cubo;
+  Malla bethoven;
+
+  //Control Attributes
+  bool solidmode;
 
   // Private Helpers
   void printVersionInformation();

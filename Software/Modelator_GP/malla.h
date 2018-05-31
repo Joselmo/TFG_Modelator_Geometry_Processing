@@ -1,25 +1,31 @@
 #ifndef MALLA_H
 #define MALLA_H
 
-
-#ifndef _MALLA_H
-#define _MALLA_H
-
-#include <vector>
-#include <GL/glut.h>
-#include <GL/gl.h>
-#include <QVector3D>
-#include <glm/glm.hpp>
-#include <iostream>
 #include <QVector2D>
 #include <QVector3D>
+#include "vertex.h"
+#include <QVector>
 
-using namespace std;
-
-/**   Representa una malla de puntos en el espacio 3D, utilizando los ejes
-*     cartesianos X Y Z
-*
-*/
+#include <iostream>
+#include <iterator>
+#include <string>
+// -------------------- OpenMesh
+#include <OpenMesh/Core/IO/MeshIO.hh>
+#include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
+#include <OpenMesh/Tools/Utils/getopt.h>
+// ----------------------------------------------------------------------------
+using namespace OpenMesh;
+// ----------------------------------------------------------------------------
+typedef TriMesh_ArrayKernelT<>  MyMesh;
+// ----------------------------------------------------------------------------
+#define CHKROPT( Option ) \
+  std::cout << "  provides " << #Option \
+            << (ropt.check(IO::Options:: Option)?": yes\n":": no\n")
+#define CHKWOPT( Option ) \
+  std::cout << "  write " << #Option \
+            << (wopt.check(IO::Options:: Option)?": yes\n":": no\n")
+#define MESHOPT( msg, tf ) \
+  std::cout << "  " << msg << ": " << ((tf)?"yes\n":"no\n")
 
 
 /**
@@ -28,70 +34,36 @@ using namespace std;
 */
 class Malla{
 
- private:
+private:
 
-  vector<QVector3D> vertexes;
-  vector<glm::ivec3> triangles;
+    QVector<Vertex> vertices;
+    QVector<Vertex> sg_vertices;
+    QVector<int> indices;
 
 
- public:
-   Malla();
-   Malla(vector<QVector3D> vertex_n,vector<glm::ivec3> triangle_n);
+public:
+    Malla();
+    Malla(QVector<Vertex> vertex_n, QVector<int> indices_n);
 
-   Malla& operator=(const Malla& malla_nueva);
+    Malla& operator=(const Malla& malla_nueva);
 
-/******************************************************************************
-**********               MANEJO DE VERTICES                     ***************
-*******************************************************************************/
-   void setVertexes(vector<QVector3D> vertex_n);
+    QVector<Vertex> getSg_vertexes() const;
+    void setSg_vertexes(const QVector<Vertex> &value);
 
-   /**
-   * Devuelve un puntero a la primera posición del vector de vertices
-   */
-   QVector3D *getVertexes();
+    QVector<Vertex> getVertices() const;
+    void setVertices(const QVector<Vertex> &value);
 
-   /**
-   * Devuelve una copia del vector de vertices.
-   */
-   vector<QVector3D> getVertexesV();
+    QVector<int> getIndices() const;
+    void setIndices(const QVector<int> &value);
 
-   /**
-   *  Devuelve el número de Vertices de la malla
-   */
-   int getNumVertexes();
+    Vertex *getPointSg_vertexes();
 
-/******************************************************************************
-**********               MANEJO DE TRIANGULOS                   ***************
-*******************************************************************************/
-   void setTriangles(vector<glm::ivec3> triangle_n);
+    int getSizeOfGeometry();
 
-   /**
-   * Devuelve un puntero a la primera posición del vector de triangulos
-   */
-   glm::ivec3 *getTriangles();
-
-   /**
-   *  Devuelve una copia del vector de Triangulos
-   */
-   vector<glm::ivec3> getTrianglesV();
-
-   /**
-   * Devuelve los triangulos pares de la malla
-   */
-   //vector<glm::ivec3> getTrianglesEven();
-
-   /**
-   *  Devuelve los triangulos impares de la malla
-   */
-   //vector<glm::ivec3> getTrianglesOdd();
-
-   /**
-   *  Devuelve el número de Triangulos de la malla
-   */
-   int getNumTriangles();
+    void initGeometry(std::string filename);
+    void generateGeometry();
 
 
 };
-#endif
 
 #endif // MALLA_H

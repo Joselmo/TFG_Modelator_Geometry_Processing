@@ -1,9 +1,7 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-
-#include "plyreader.h"
-
+#include <GL/gl.h>
 class Sphere
 {
 public:

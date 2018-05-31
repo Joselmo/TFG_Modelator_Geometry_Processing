@@ -1,8 +1,5 @@
 #ifndef CUBO_H
 #define CUBO_H
-#include <QOpenGLFunctions>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLBuffer>
 #include <QVector2D>
 #include <QVector3D>
 #include "vertex.h"
@@ -17,13 +14,13 @@ public:
     Cubo();
     virtual ~Cubo();
 
-    QVector<Vertex> getSg_vertexes() const;
+    QVector<Vertex> getSg_vertexes();
     void setSg_vertexes(const QVector<Vertex> &value);
 
-    QVector<Vertex> getVertices() const;
+    QVector<Vertex> getVertices();
     void setVertices(const QVector<Vertex> &value);
 
-    QVector<int> getIndices() const;
+    QVector<int> getIndices();
     void setIndices(const QVector<int> &value);
 
     Vertex *getPointSg_vertexes();
