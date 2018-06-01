@@ -1,53 +1,66 @@
 #ifndef HALFEDGE_H
 #define HALFEDGE_H
 
-#include <glm/glm.hpp>
+#include "vertex.h"
+#include <QVector3D>
 
 
 class HalfEdge{
 public:
     HalfEdge();
 
-    /**
-     * @brief getNext HalfEdge
-     * @return reference of next half-edge inside of face
-     */
-    HalfEdge * getNext();
-
-    /**
-     * @brief getPrevious HalfEdge.
-     * @return reference of a previous half-edge inside of face
-     */
-    HalfEdge * getPrevious();
-
-    /**
-     * @brief getOpposite HalfEdge
-     * @return reference of a oposite half-edge.
-     */
-    HalfEdge *getOposite();
-
-    /**
-     * @brief getVertex
-     * @return
-     */
-    glm::vec3 *getVertex() const;
-    void setVertex(glm::vec3 *value);
 
     /**
      * @brief getFace
      * @return
      */
-    glm::ivec3 *getFace() const;
-    void setFace(glm::ivec3 *value);
+    int *getFace();
+    void setFace(int *value);
+
+    /**
+     * @brief getVertex_in
+     * @return
+     */
+    Vertex *getVertex_in();
+    void setVertex_in(Vertex *value);
+
+    /**
+     * @brief getVertex_out
+     * @return
+     */
+    Vertex *getVertex_out();
+    void setVertex_out(Vertex *value);
+
+    /**
+     * @brief getNext_halfedge
+     * @return
+     */
+    int getNext_halfedge();
+    void setNext_halfedge(int value);
+
+    /**
+     * @brief getOposite
+     * @return
+     */
+    int getOposite();
+    void setOposite(int value);
+
+    /**
+     * @brief getPrevious
+     * @return
+     */
+    int getPrevious();
+    void setPrevious(int value);
 
 private:
 
     //References
-    glm::vec3 *vertex;  // Vertex Incident
-    glm::ivec3 *face;   // Face
-    HalfEdge *next_halfedge;    // Next HalfEdge inside of face
-    HalfEdge *oposite;  // Oposite halfedge
-    HalfEdge *previous; // Previous halfedge inside of face
+    Vertex *vertex_in;  // Vertex Incident
+    Vertex *vertex_out; // Vertex Source
+    int *face;   // Face
+    int next_halfedge;    // Next HalfEdge inside of face
+    int oposite;  // Oposite halfedge
+    int previous; // Previous halfedge inside of face
 
 
 };

@@ -4,34 +4,64 @@ HalfEdge::HalfEdge(){
 
 }
 
-HalfEdge *HalfEdge::getNext(){
-    return next_halfedge;
-}
-
-HalfEdge *HalfEdge::getPrevious(){
-    return previous;
-}
-
-HalfEdge *HalfEdge::getOposite(){
-    return oposite;
-}
-
-glm::vec3 *HalfEdge::getVertex() const
-{
-    return vertex;
-}
-
-void HalfEdge::setVertex(glm::vec3 *value)
-{
-    vertex = value;
-}
-
-glm::ivec3 *HalfEdge::getFace() const
+int *HalfEdge::getFace()
 {
     return face;
 }
 
-void HalfEdge::setFace(glm::ivec3 *value)
+void HalfEdge::setFace(int *value)
 {
     face = value;
 }
+
+Vertex *HalfEdge::getVertex_in()
+{
+    return vertex_in;
+}
+
+void HalfEdge::setVertex_in(Vertex *value)
+{
+    vertex_in = value;
+}
+
+Vertex *HalfEdge::getVertex_out()
+{
+    return vertex_out;
+}
+
+void HalfEdge::setVertex_out(Vertex *value)
+{
+    vertex_out = value;
+}
+
+int HalfEdge::getNext_halfedge()
+{
+    return next_halfedge;
+}
+
+void HalfEdge::setNext_halfedge(int value)
+{
+    next_halfedge = value;
+}
+
+int HalfEdge::getOposite()
+{
+    return oposite;
+}
+
+void HalfEdge::setOposite(int value)
+{
+    oposite = value;
+}
+
+int HalfEdge::getPrevious()
+{
+    return previous;
+}
+
+void HalfEdge::setPrevious(int value)
+{
+    previous = value;
+}
+
+

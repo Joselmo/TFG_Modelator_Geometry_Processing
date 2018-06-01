@@ -40,7 +40,10 @@ private:
   QOpenGLVertexArrayObject m_object;
   QOpenGLShaderProgram *m_program;
   QOpenGLBuffer *vbo =new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-  QOpenGLBuffer *ebo =new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+
+  QOpenGLVertexArrayObject m_object_cube;
+  QOpenGLBuffer *vbo_cube = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+
 
 
   // Shader Information
@@ -51,15 +54,11 @@ private:
   Camera3D m_camera;
   Transform3D m_transform;
 
-  Cubo cubo;
-  Malla bethoven;
+  Malla cubo;
+  //Malla bethoven;
 
   //Control Attributes
   bool solidmode;
-
-  // Private Helpers
-  void printVersionInformation();
-
 
 
 

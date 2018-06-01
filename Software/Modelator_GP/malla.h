@@ -5,6 +5,7 @@
 #include <QVector3D>
 #include "vertex.h"
 #include <QVector>
+#include "halfedge.h"
 
 #include <iostream>
 #include <iterator>
@@ -13,6 +14,7 @@
 #include <OpenMesh/Core/IO/MeshIO.hh>
 #include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
 #include <OpenMesh/Tools/Utils/getopt.h>
+#include <OpenMesh/Core/Mesh/PolyConnectivity.hh>
 // ----------------------------------------------------------------------------
 using namespace OpenMesh;
 // ----------------------------------------------------------------------------
@@ -39,6 +41,7 @@ private:
     QVector<Vertex> vertices;
     QVector<Vertex> sg_vertices;
     QVector<int> indices;
+    QVector<HalfEdge> half_edges;
 
 
 public:

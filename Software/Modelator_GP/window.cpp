@@ -58,8 +58,8 @@ static const Vertex sg_vertexes[] = {
 Window::Window()
 {
   m_transform.translate(0.0f, 0.0f, -5.0f);
-  cubo.initCubeGeometry();
-  bethoven.initGeometry("beethoven.ply");
+
+  cubo.initGeometry("cube.ply");
   solidmode = false;
 
 }
@@ -71,11 +71,11 @@ void Window::initializeGL()
   initializeOpenGLFunctions();
   //connect(context(), SIGNAL(aboutToBeDestroyed()), this, SLOT(teardownGL()), Qt::DirectConnection);
   connect(this, SIGNAL(frameSwapped()), this, SLOT(update()));
-  printVersionInformation();
+
 
   // Set global information
   glEnable(GL_CULL_FACE);
-  //glEnable(GL_DEPTH_TEST);
+  glEnable(GL_DEPTH_TEST);
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
   // Application-specific initialization
@@ -95,8 +95,8 @@ void Window::initializeGL()
         // Create Buffer (Do not release until VAO is created)
         vbo->create();
         vbo->bind();
-        vbo->setUsagePattern(QOpenGLBuffer::StaticDraw);
-        vbo->allocate(bethoven.getPointSg_vertexes(), bethoven.getSizeOfGeometry());
+        //vbo->setUsagePattern(QOpenGLBuffer::StaticDraw);
+        vbo->allocate(cubo.getPointSg_vertexes(), cubo.getSizeOfGeometry());
 
     // Create Vertex Array Object
     m_object.create();
@@ -124,7 +124,7 @@ void Window::resizeGL(int width, int height)
 void Window::paintGL()
 {
   // Clear
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Render using our shader
   m_program->bind();
@@ -134,10 +134,11 @@ void Window::paintGL()
     m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
     m_object.bind();
     m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
+   // glPolygonMode(GL_FRONT,GL_LINE);
     if(solidmode){
-        glDrawArrays(GL_TRIANGLES, 0, bethoven.getIndices().size());
+        glDrawArrays(GL_TRIANGLES, 0, cubo.getIndices().size());
     }else{
-        for(int i = 0; i <  bethoven.getIndices().size(); i += 3)
+        for(int i = 0; i <  cubo.getIndices().size(); i += 3)
           glDrawArrays(GL_LINE_LOOP, i, 3);
     }
 
@@ -160,6 +161,10 @@ void Window::update()
   // Update input
   Input::update();
 
+  if(Input::keyReleased(Qt::Key_F1)){
+      std::cout << "Pulsada F1"<<std::endl;
+      solidmode != solidmode;
+  }
   // Camera Transformation
   if (Input::buttonPressed(Qt::RightButton))
   {
@@ -240,30 +245,3 @@ void Window::mouseReleaseEvent(QMouseEvent *event)
   Input::registerMouseRelease(event->button());
 }
 
-/*******************************************************************************
- * Private Helpers
- ******************************************************************************/
-
-void Window::printVersionInformation()
-{
-  QString glType;
-  QString glVersion;
-  QString glProfile;
-
-  // Get Version Information
-  glType = (context()->isOpenGLES()) ? "OpenGL ES" : "OpenGL";
-  glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-
-  // Get Profile Information
-#define CASE(c) case QSurfaceFormat::c: glProfile = #c; break
-  switch (format().profile())
-  {
-    CASE(NoProfile);
-    CASE(CoreProfile);
-    CASE(CompatibilityProfile);
-  }
-#undef CASE
-
-  // qPrintable() will print our QString w/o quotes around it.
-  qDebug() << qPrintable(glType) << qPrintable(glVersion) << "(" << qPrintable(glProfile) << ")";
-}

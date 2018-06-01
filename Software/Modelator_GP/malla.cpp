@@ -7,9 +7,9 @@ Malla::Malla(){}
 * Crea una malla dados un vector de vertices y uno de triangulos
 */
 Malla::Malla(QVector<Vertex> vertex_n, QVector<int> indices_n){
-  vertices = vertex_n;
-  indices  = indices_n;
-  generateGeometry();
+    vertices = vertex_n;
+    indices  = indices_n;
+    generateGeometry();
 }
 
 
@@ -19,14 +19,14 @@ Malla::Malla(QVector<Vertex> vertex_n, QVector<int> indices_n){
 */
 Malla& Malla::operator=(const Malla& malla_nueva){
     //std::cout << "copiando malla" << std::endl;
-      if(this != &malla_nueva){
-          vertices.clear();
-          indices.clear();
-          vertices = malla_nueva.vertices;
-          indices  = malla_nueva.indices;
-          generateGeometry();
-      }
-      return *this;
+    if(this != &malla_nueva){
+        vertices.clear();
+        indices.clear();
+        vertices = malla_nueva.vertices;
+        indices  = malla_nueva.indices;
+        generateGeometry();
+    }
+    return *this;
 }
 
 
@@ -88,6 +88,7 @@ void Malla::initGeometry(std::string filename)
     std::cout << "# Vertices: " << mesh.n_vertices() << std::endl;
     std::cout << "# Edges   : " << mesh.n_faces() << std::endl;
     std::cout << "# Faces   : " << mesh.n_faces() << std::endl;
+    std::cout << "# HalfEdges   : " << mesh.n_halfedges() << std::endl;
 
     // iterate over all vertices
     Vertex point;
@@ -97,8 +98,8 @@ void Malla::initGeometry(std::string filename)
     for (MyMesh::VertexIter v_it=mesh.vertices_begin(); v_it!=mesh.vertices_end(); ++v_it){
         //std::cout << "Vertex #" << *v_it << ": " << mesh.point( *v_it )[0]<<std::endl;
         point.setPosition(QVector3D(mesh.point( *v_it )[0],
-                                    mesh.point( *v_it )[1],
-                                    mesh.point( *v_it )[2]));
+                          mesh.point( *v_it )[1],
+                mesh.point( *v_it )[2]));
         vertices.push_back(point);
     }
 
@@ -118,6 +119,29 @@ void Malla::initGeometry(std::string filename)
         }
 
     }
+
+
+    half_edges.reserve(mesh.n_halfedges());
+    HalfEdge he;
+    for (MyMesh::HalfedgeIter h_it=mesh.halfedges_begin(); h_it!=mesh.halfedges_end(); ++h_it){
+/*
+        std::cout<< (*h_it);
+        std::cout<<"-to_vertex_hadle=" << mesh.to_vertex_handle(*h_it).idx() << "\t";
+        std::cout<<"from_vertex_handle=" << mesh.from_vertex_handle(*h_it).idx() << "\t";
+        std::cout<<"face_handle=" << mesh.face_handle(*h_it).idx() << "\t";
+        std::cout<<"next_halfedge_handle=" << mesh.next_halfedge_handle(*h_it).idx() << "\t";
+        std::cout<<"prev_halfedge_handle=" << mesh.prev_halfedge_handle(*h_it).idx() << "\t";
+        std::cout<<"opposite_halfedge_handle=" << mesh.opposite_halfedge_handle(*h_it).idx() <<std::endl;
+*/
+        he.setVertex_in(&vertices[mesh.to_vertex_handle(*h_it).idx()]);
+        he.setVertex_out(&vertices[mesh.from_vertex_handle(*h_it).idx()]);
+        he.setFace(&indices[mesh.to_vertex_handle(*h_it).idx()]);
+        he.setNext_halfedge(mesh.next_halfedge_handle(*h_it).idx());
+        he.setPrevious(mesh.prev_halfedge_handle(*h_it).idx());
+        he.setOposite(mesh.opposite_halfedge_handle(*h_it).idx());
+        half_edges.push_back(he);
+    }
+
 
     generateGeometry();
 }
