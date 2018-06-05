@@ -1,9 +1,10 @@
 #ifndef CAMERA3D_H
 #define CAMERA3D_H
 
-/** Autor: http://www.trentreed.net/blog/qt5-opengl-part-3b-camera-control/
-  *
-  **/
+/**
+ * @brief Clase para el control de transformaciones
+ * @author http://www.trentreed.net/blog/qt5-opengl-part-3b-camera-control/
+ */
 
 #include "transform3d.h"
 

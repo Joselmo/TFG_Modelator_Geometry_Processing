@@ -10,29 +10,24 @@
 #include "camera3d.h"
 #include "cubo.h"
 #include "malla.h"
+#include "input.h"
+#include "vertex.h"
+#include <QString>
+#include <QOpenGLShaderProgram>
+#include <QKeyEvent>
+
 
 class QOpenGLShaderProgram;
 
+/**
+ * @brief The Window class, clase princpial que gestiona la escena
+ * donde se renderizan los objetos.
+ * basada en el código de:  http://www.trentreed.net/blog/qt5-opengl-part-3b-camera-control/
+ */
 class Window : public QOpenGLWindow,
                protected QOpenGLFunctions
 {
   Q_OBJECT
-
-// OpenGL Events
-public:
-  Window();
-  void initializeGL();
-  void resizeGL(int width, int height);
-  void paintGL();
-protected slots:
-  void teardownGL();
-  void update();
-
-protected:
-  void keyPressEvent(QKeyEvent *event);
-  void keyReleaseEvent(QKeyEvent *event);
-  void mousePressEvent(QMouseEvent *event);
-  void mouseReleaseEvent(QMouseEvent *event);
 
 private:
   // OpenGL State Information
@@ -55,10 +50,29 @@ private:
   Transform3D m_transform;
 
   Malla cubo;
+  Malla esfera;
   //Malla bethoven;
 
   //Control Attributes
   bool solidmode;
+
+
+
+// OpenGL Events
+public:
+  Window();
+  void initializeGL();
+  void resizeGL(int width, int height);
+  void paintGL();
+protected slots:
+  void teardownGL();
+  void update();
+
+protected:
+  void keyPressEvent(QKeyEvent *event);
+  void keyReleaseEvent(QKeyEvent *event);
+  void mousePressEvent(QMouseEvent *event);
+  void mouseReleaseEvent(QMouseEvent *event);
 
 
 

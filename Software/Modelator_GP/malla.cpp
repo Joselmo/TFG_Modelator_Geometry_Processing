@@ -148,8 +148,12 @@ void Malla::initGeometry(std::string filename)
 
 void Malla::generateGeometry()
 {
-    sg_vertices.clear();
-    for(int& i:indices){
-        sg_vertices.push_back(vertices.at(i));
+    if(indices.isEmpty() || vertices.isEmpty()){
+        printf("ERROR: no se puede genera la geometria sin los vertices o indices");
+    }else{
+        sg_vertices.clear();
+        for(int& i:indices){
+            sg_vertices.push_back(vertices.at(i));
+        }
     }
 }

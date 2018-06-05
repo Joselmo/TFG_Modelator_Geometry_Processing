@@ -3,6 +3,11 @@
 
 #include <QVector3D>
 
+/**
+ * @brief The Vertex class
+ * @author http://www.trentreed.net/blog/qt5-opengl-part-3b-camera-control/
+ */
+
 class Vertex
 {
 public:

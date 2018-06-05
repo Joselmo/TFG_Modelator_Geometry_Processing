@@ -7,7 +7,10 @@
 
 
 using namespace std;
-
+/**
+ * @brief The Cubo class, representa un cubo
+ * @author Jose Luis Martínez Ortiz
+ */
 class Cubo{
 
 public:

@@ -1,8 +1,15 @@
 #ifndef QINPUT_H
 #define QINPUT_H
 
+
 #include <Qt>
 #include <QPoint>
+
+
+/**
+ * @brief The Input class, que controla las entradas del teclado y ratón
+ * @author http://www.trentreed.net/blog/qt5-opengl-part-3b-camera-control/
+ */
 
 class Input
 {
