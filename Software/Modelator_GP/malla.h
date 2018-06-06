@@ -68,6 +68,8 @@ public:
      * @return devuelve el QVector<Vertex> del listado de vértices.
      */
     QVector<Vertex> getVertices() const;
+
+
     /**
      * @brief setVertices
      * @param value array de vértices de la malla

@@ -10,7 +10,7 @@ Window::Window()
   m_transform.translate(0.0f, 0.0f, -5.0f);
 
   cubo.initGeometry("cube.ply");
-  esfera.initGeometry("esfera.ply");
+  esfera.initGeometry("sphere.ply");
   solidmode = false;
 
 }
@@ -54,8 +54,9 @@ void Window::initializeGL()
         vbo->bind();
         //vbo->setUsagePattern(QOpenGLBuffer::StaticDraw);
         vbo->allocate(cubo.getPointSg_vertexes(), cubo.getSizeOfGeometry());
+        //vbo->allocate(esfera.getPointSg_vertexes(),esfera.getSizeOfGeometry());
 
-    // Create Vertex Array Object
+   // Create Vertex Array Object
     m_object.create();
     m_object.bind();
     int vertexLocation = m_program->attributeLocation("position");
@@ -92,7 +93,7 @@ void Window::paintGL()
     m_object.bind();
     m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
    // glPolygonMode(GL_FRONT,GL_LINE);
-    if(solidmode){
+   if(solidmode){
         glDrawArrays(GL_TRIANGLES, 0, cubo.getIndices().size());
     }else{
         for(int i = 0; i <  cubo.getIndices().size(); i += 3)

@@ -37,7 +37,9 @@ SOURCES += \
     sphere.cpp \
     transform3d.cpp \
     camera3d.cpp \
-    window.cpp
+    window.cpp \
+    connectivity.cpp \
+    vertex.cpp
 
 HEADERS += \
         ejes.h \
@@ -49,7 +51,8 @@ HEADERS += \
     transform3d.h \
     camera3d.h \
     vertex.h \
-    window.h
+    window.h \
+    connectivity.h
 
 FORMS +=
 
