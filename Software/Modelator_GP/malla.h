@@ -20,15 +20,6 @@ using namespace OpenMesh;
 // ----------------------------------------------------------------------------
 typedef TriMesh_ArrayKernelT<>  MyMesh;
 // ----------------------------------------------------------------------------
-#define CHKROPT( Option ) \
-  std::cout << "  provides " << #Option \
-            << (ropt.check(IO::Options:: Option)?": yes\n":": no\n")
-#define CHKWOPT( Option ) \
-  std::cout << "  write " << #Option \
-            << (wopt.check(IO::Options:: Option)?": yes\n":": no\n")
-#define MESHOPT( msg, tf ) \
-  std::cout << "  " << msg << ": " << ((tf)?"yes\n":"no\n")
-
 
 /**
 * @brief Estructura que contiene la malla basica en 3 dimensiones.
@@ -48,9 +39,9 @@ private:
 
 public:
     Malla();
-    Malla(QVector<Vertex> vertex_n, QVector<int> indices_n);
+    Malla(QVector<Vertex> _vertex, QVector<int> _index);
 
-    Malla& operator=(const Malla& malla_nueva);
+    Malla& operator=(const Malla& _malla);
 
     /**
      * @brief getSg_vertexes
@@ -61,7 +52,7 @@ public:
      * @brief setSg_vertexes
      * @param value array de vértices ordenados para dibujar.
      */
-    void setSg_vertexes(const QVector<Vertex> &value);
+    void setSg_vertexes(const QVector<Vertex> &_value);
 
     /**
      * @brief getVertices
@@ -74,7 +65,7 @@ public:
      * @brief setVertices
      * @param value array de vértices de la malla
      */
-    void setVertices(const QVector<Vertex> &value);
+    void setVertices(const QVector<Vertex> &_value);
 
     /**
      * @brief getIndices
@@ -86,7 +77,7 @@ public:
      * @brief setIndices
      * @param value array de indices de la malla
      */
-    void setIndices(const QVector<int> &value);
+    void setIndices(const QVector<int> &_value);
 
     /**
      * @brief getPointSg_vertexes
@@ -104,7 +95,7 @@ public:
      * @brief initGeometry lee una malla ply e inicializa la malla
      * @param filename fichero PLY donde está la malla
      */
-    void initGeometry(std::string filename);
+    void initGeometry(std::string _filename);
 
     /**
      * @brief generateGeometry genera el array de vértices ordenados
@@ -112,7 +103,11 @@ public:
      */
     void generateGeometry();
 
-
+    /**
+     * @brief getHalf_edges devuelve un puntero al vector de semi-aristas
+     * @return
+     */
+    QVector<HalfEdge>* getHalf_edges();
 };
 
 #endif // MALLA_H

@@ -1,7 +1,7 @@
 #ifndef HALFEDGE_H
 #define HALFEDGE_H
 
-#include "vertex.h"
+#include <vertex.h>
 #include <QVector3D>
 
 /**
@@ -11,6 +11,8 @@
  * Clase para al gestión de una semi-arista alada
  * asociada al array de semi-aristas aladas de una malla
  */
+class Vertex;
+
 class HalfEdge{
 private:
 

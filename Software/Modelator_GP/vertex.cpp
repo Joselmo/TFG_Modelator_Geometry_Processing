@@ -2,63 +2,64 @@
 
 
 /*******************************************************************************
- * Constructor
+ *  ructor
  ******************************************************************************/
- inline Vertex::Vertex() {}
- inline Vertex::Vertex(const QVector3D &_position)
+Vertex::Vertex() {}
+Vertex::Vertex(const  QVector3D &_position)
     : m_position(_position) {}
- inline Vertex::Vertex(const QVector3D &_position, const QVector3D &_color)
+Vertex::Vertex(const  QVector3D &_position,const   QVector3D &_color)
     : m_position(_position), m_color(_color) {}
 
 
 /*******************************************************************************
  * Accessors / Mutators
  ******************************************************************************/
- inline const QVector3D& Vertex::position() const {
+const  QVector3D& Vertex::position()  const {
     return m_position;
 }
 
- inline const QVector3D& Vertex::color() const {
+const  QVector3D& Vertex::color()  const {
     return m_color;
 }
 
-void inline Vertex::setPosition(const QVector3D& _position) {
+void   Vertex::setPosition(const  QVector3D& _position) {
     m_position = _position;
 }
 
-void inline Vertex::setColor(const QVector3D& _color) {
+void   Vertex::setColor(const QVector3D &_color) {
     m_color = _color;
 }
 
-void inline Vertex::addHalfEdgeIn(const int _half_edge_index) {
-    half_edges_in.push_back(_half_edge_index);
+void Vertex::addHalfEdgeIn(int _half_edge)
+{
+    half_edges_in.push_back(_half_edge);
 }
 
-void inline Vertex::setHalfEdgeIn(const QVector<int> _half_edges) {
+void   Vertex::setHalfEdgeIn(QVector<int> _half_edges) {
     half_edges_in = _half_edges;
 }
 
-int inline Vertex::getHalfEdgeIn(const int _index) {
+int   Vertex::getHalfEdgeIn(  int _index) {
     return half_edges_in.at(_index);
 }
 
-QVector<int> inline Vertex::getAllHalfEdgesIn() {
+QVector<int>   Vertex::getAllHalfEdgesIn() {
     return half_edges_in;
 }
 
-void inline Vertex::addHalfEdgeOut(const int _half_edge_index) {
-    half_edges_out.push_back(_half_edge_index);
+void   Vertex::addHalfEdgeOut(  int _half_edge) {
+    half_edges_out.push_back(_half_edge);
 }
 
-void inline Vertex::setHalfEdgeOut(const QVector<int> _half_edges) {
+void   Vertex::setHalfEdgeOut(QVector<int> _half_edges) {
     half_edges_out = _half_edges;
 }
 
-int inline Vertex::getHalfEdgeOut(const int _index) {
+int Vertex::getHalfEdgeOut(  int _index) {
     return half_edges_out.at(_index);
 }
 
-QVector<int> inline Vertex::getAllHalfEdgesOut() {
+QVector<int> Vertex::getAllHalfEdgesOut() {
     return half_edges_out;
 }
 
@@ -66,14 +67,14 @@ QVector<int> inline Vertex::getAllHalfEdgesOut() {
 /*******************************************************************************
  * OpenGL Helpers
  ******************************************************************************/
- inline int Vertex::positionOffset() {
+int Vertex::positionOffset() {
     return offsetof(Vertex, m_position);
 }
 
- inline int Vertex::colorOffset() {
+int Vertex::colorOffset() {
     return offsetof(Vertex, m_color);
 }
 
- inline int Vertex::stride() {
+int Vertex::stride() {
     return sizeof(Vertex);
 }

@@ -1,14 +1,18 @@
 
 #include "malla.h"
 
+QVector<HalfEdge> *Malla::getHalf_edges() {
+    return &half_edges;
+}
+
 Malla::Malla(){}
 
 /** Constructor parametrizado
 * Crea una malla dados un vector de vertices y uno de triangulos
 */
-Malla::Malla(QVector<Vertex> vertex_n, QVector<int> indices_n){
-    vertices = vertex_n;
-    indices  = indices_n;
+Malla::Malla(QVector<Vertex> _vertex, QVector<int> _index){
+    vertices = _vertex;
+    indices  = _index;
     generateGeometry();
 }
 
@@ -17,13 +21,13 @@ Malla::Malla(QVector<Vertex> vertex_n, QVector<int> indices_n){
 * Sobrecarga del operador asignación
 * Copia los vectores de triangulos y vertices
 */
-Malla& Malla::operator=(const Malla& malla_nueva){
+Malla& Malla::operator=(const Malla& _malla){
     //std::cout << "copiando malla" << std::endl;
-    if(this != &malla_nueva){
+    if(this != &_malla){
         vertices.clear();
         indices.clear();
-        vertices = malla_nueva.vertices;
-        indices  = malla_nueva.indices;
+        vertices = _malla.vertices;
+        indices  = _malla.indices;
         generateGeometry();
     }
     return *this;
@@ -35,9 +39,9 @@ QVector<Vertex> Malla::getSg_vertexes() const
     return sg_vertices;
 }
 
-void Malla::setSg_vertexes(const QVector<Vertex> &value)
+void Malla::setSg_vertexes(const QVector<Vertex> &_value)
 {
-    sg_vertices = value;
+    sg_vertices = _value;
 }
 
 QVector<Vertex> Malla::getVertices() const
@@ -45,9 +49,9 @@ QVector<Vertex> Malla::getVertices() const
     return vertices;
 }
 
-void Malla::setVertices(const QVector<Vertex> &value)
+void Malla::setVertices(const QVector<Vertex> &_value)
 {
-    vertices = value;
+    vertices = _value;
 }
 
 QVector<int> Malla::getIndices() const
@@ -55,9 +59,9 @@ QVector<int> Malla::getIndices() const
     return indices;
 }
 
-void Malla::setIndices(const QVector<int> &value)
+void Malla::setIndices(const QVector<int> &_value)
 {
-    indices = value;
+    indices = _value;
 }
 
 Vertex* Malla::getPointSg_vertexes()
@@ -72,12 +76,12 @@ int Malla::getSizeOfGeometry()
 
 
 
-void Malla::initGeometry(std::string filename)
+void Malla::initGeometry(std::string _filename)
 {
     MyMesh  mesh;
     IO::Options ropt;
     // -------------------- read mesh
-    if ( ! IO::read_mesh(mesh,"../PLY/"+filename))
+    if ( ! IO::read_mesh(mesh,"../PLY/"+_filename))
     {
         std::cerr << "Error loading mesh from file " << std::endl;
         //return 1;
@@ -140,6 +144,10 @@ void Malla::initGeometry(std::string filename)
         he.setPrevious(mesh.prev_halfedge_handle(*h_it).idx());
         he.setOposite(mesh.opposite_halfedge_handle(*h_it).idx());
         half_edges.push_back(he);
+
+        //Conexiones desde el vértice
+        vertices[mesh.to_vertex_handle(*h_it).idx()].addHalfEdgeIn((*h_it).idx());
+        vertices[mesh.from_vertex_handle(*h_it).idx()].addHalfEdgeOut((*h_it).idx());
     }
 
 
