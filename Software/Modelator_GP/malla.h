@@ -6,6 +6,7 @@
 #include "vertex.h"
 #include <QVector>
 #include "halfedge.h"
+#include "connectivity.h"
 
 #include <iostream>
 #include <iterator>
@@ -27,19 +28,20 @@ typedef TriMesh_ArrayKernelT<>  MyMesh;
 * de semi-aristas aladas.
 * @author Jose Luis Martínez Ortiz
 */
+class Connectivity;
 class Malla{
 
 private:
-
+    friend Connectivity;
     QVector<Vertex> vertices;       // Array de vértices
     QVector<Vertex> sg_vertices;    // Array de vértices ordenados por indices
-    QVector<int> indices;           // Array de los indices de las caras, van de 3 en 3
+    QVector<QVector<int>> indices;// Array de los indices de las caras, van de 3 en 3
     QVector<HalfEdge> half_edges;   // Array de semi-aristas
 
 
 public:
     Malla();
-    Malla(QVector<Vertex> _vertex, QVector<int> _index);
+    Malla(QVector<Vertex> _vertex, QVector<QVector<int>> _index);
 
     Malla& operator=(const Malla& _malla);
 
@@ -71,13 +73,13 @@ public:
      * @brief getIndices
      * @return devuelve el Qvector<int> de indices de la malla.
      */
-    QVector<int> getIndices() const;
+    QVector<QVector<int> > getIndices() const;
 
     /**
      * @brief setIndices
      * @param value array de indices de la malla
      */
-    void setIndices(const QVector<int> &_value);
+    void setIndices(const QVector<QVector<int> > &_value);
 
     /**
      * @brief getPointSg_vertexes

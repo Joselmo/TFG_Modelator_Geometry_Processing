@@ -10,7 +10,7 @@ Window::Window()
   m_transform.translate(0.0f, 0.0f, -5.0f);
 
   cubo.initGeometry("cube.ply");
-  esfera.initGeometry("sphere.ply");
+ // esfera.initGeometry("sphere.ply");
   solidmode = false;
 
 }

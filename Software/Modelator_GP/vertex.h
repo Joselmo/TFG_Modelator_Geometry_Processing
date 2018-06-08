@@ -21,6 +21,7 @@ private:
   QVector3D m_color;
   QVector<int> half_edges_in;
   QVector<int> half_edges_out;
+  int id;
 
 public:
   // Constructors
@@ -33,15 +34,22 @@ public:
    const QVector3D& color() const;
   void setPosition(const QVector3D & _position);
   void setColor(const QVector3D& _color);
+
   void addHalfEdgeIn(int _half_edge);
   void setHalfEdgeIn(QVector<int> _half_edges);
   int getHalfEdgeIn(int _index);
   QVector<int> getAllHalfEdgesIn();
+  void removeHalfEdgeIn(int _index);
+
   void addHalfEdgeOut(int _half_edge);
   void setHalfEdgeOut(QVector<int> _half_edges);
   int getHalfEdgeOut(int _index);
   QVector<int> getAllHalfEdgesOut();
+  void removeHalfEdgeOut(int _index);
 
+
+  int getId() const;
+  void setId(int value);
 
 
   // OpenGL Helpers

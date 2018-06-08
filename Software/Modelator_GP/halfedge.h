@@ -17,9 +17,10 @@ class HalfEdge{
 private:
 
     //References
+    int id;             // Index in the array
     Vertex *vertex_in;  // Vertex Incident
     Vertex *vertex_out; // Vertex Source
-    int *face;          // Face incident
+    int face;          // Face incident
     int next_halfedge;  // Next HalfEdge inside of face
     int oposite;        // Oposite halfedge
     int previous;       // Previous halfedge inside of face
@@ -33,13 +34,13 @@ public:
      * @brief getFace
      * @return devuelve la posición de la cara incidente
      */
-    int *getFace();
+    int getFace();
 
     /**
      * @brief setFace
      * @param value referencia a la posición de la cara incidente
      */
-    void setFace(int *value);
+    void setFace(int value);
 
     /**
      * @brief getVertex_in
@@ -102,6 +103,8 @@ public:
     void setPrevious(int value);
 
 
+    int getId() const;
+    void setId(int value);
 };
 
 #endif // HALFEDGE_H

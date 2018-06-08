@@ -4,6 +4,16 @@
 /*******************************************************************************
  *  ructor
  ******************************************************************************/
+int Vertex::getId() const
+{
+    return id;
+}
+
+void Vertex::setId(int value)
+{
+    id = value;
+}
+
 Vertex::Vertex() {}
 Vertex::Vertex(const  QVector3D &_position)
     : m_position(_position) {}
@@ -30,8 +40,7 @@ void   Vertex::setColor(const QVector3D &_color) {
     m_color = _color;
 }
 
-void Vertex::addHalfEdgeIn(int _half_edge)
-{
+void Vertex::addHalfEdgeIn(int _half_edge){
     half_edges_in.push_back(_half_edge);
 }
 
@@ -43,8 +52,12 @@ int   Vertex::getHalfEdgeIn(  int _index) {
     return half_edges_in.at(_index);
 }
 
-QVector<int>   Vertex::getAllHalfEdgesIn() {
+QVector<int>  Vertex::getAllHalfEdgesIn() {
     return half_edges_in;
+}
+
+void Vertex::removeHalfEdgeIn(int _index){
+    half_edges_in.removeAll(_index);
 }
 
 void   Vertex::addHalfEdgeOut(  int _half_edge) {
@@ -61,6 +74,10 @@ int Vertex::getHalfEdgeOut(  int _index) {
 
 QVector<int> Vertex::getAllHalfEdgesOut() {
     return half_edges_out;
+}
+
+void Vertex::removeHalfEdgeOut(int _index){
+    half_edges_out.removeAll(_index);
 }
 
 

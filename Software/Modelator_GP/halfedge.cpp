@@ -1,15 +1,25 @@
 #include "halfedge.h"
 
+int HalfEdge::getId() const
+{
+    return id;
+}
+
+void HalfEdge::setId(int value)
+{
+    id = value;
+}
+
 HalfEdge::HalfEdge(){
 
 }
 
-int *HalfEdge::getFace()
+int HalfEdge::getFace()
 {
     return face;
 }
 
-void HalfEdge::setFace(int *value)
+void HalfEdge::setFace(int value)
 {
     face = value;
 }
