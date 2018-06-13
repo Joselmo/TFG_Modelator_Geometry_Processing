@@ -10,7 +10,7 @@ Malla::Malla(){}
 /** Constructor parametrizado
 * Crea una malla dados un vector de vertices y uno de triangulos
 */
-Malla::Malla(QVector<Vertex> _vertex, QVector<QVector<int>> _index){
+Malla::Malla(QVector<Vertex> _vertex, QVector<Face> _index){
     vertices = _vertex;
     indices  = _index;
     generateGeometry();
@@ -54,12 +54,12 @@ void Malla::setVertices(const QVector<Vertex> &_value)
     vertices = _value;
 }
 
-QVector<QVector<int>> Malla::getIndices() const
+QVector<Face> Malla::getIndices() const
 {
     return indices;
 }
 
-void Malla::setIndices(const QVector<QVector<int>> &_value)
+void Malla::setIndices(const QVector<Face> &_value)
 {
     indices = _value;
 }
@@ -71,7 +71,7 @@ Vertex* Malla::getPointSg_vertexes()
 
 int Malla::getSizeOfGeometry()
 {
-    return (indices.size() * sizeof(Vertex));
+    return (indices.size() * 3 * sizeof(Vertex));
 }
 
 
@@ -109,36 +109,39 @@ void Malla::initGeometry(std::string _filename)
 
     // iterate over all faces
     indices.reserve(mesh.n_faces());
-    QVector<int> tupla;
-    tupla.resize(3);
+    Face face;
     MyMesh::ConstFaceIter f_it,f_end(mesh.faces_end());
     MyMesh::ConstFaceVertexIter fv_it;
 
     // Itero sobre el handle de caras
+    std::cout<<"cargando caras =";
     for (f_it = mesh.faces_sbegin(); f_it!=f_end; ++f_it){
         //std::cout<<"Faces:";
         //dentro de cada cara itero sobre sus referencias
-        tupla.clear();
+        face.clear();
         for (fv_it = mesh.fv_iter(*f_it);fv_it.is_valid();++fv_it){
             //std::cout<<fv_it->idx()<<"\t";
-            tupla.push_back(fv_it->idx());
+            face.addVertex(vertices[fv_it->idx()]);
 
         }
-        indices.push_back(tupla);
+        std::cout<<(*f_it).idx()<<", ";
+        face.setId((*f_it).idx());
+        indices.push_back(face);
     }
-
+    std::cout<<std::endl;
 
     half_edges.reserve(mesh.n_halfedges());
     HalfEdge he;
+    std::cout<<"cargando semiaristas =";
     for (MyMesh::HalfedgeIter h_it=mesh.halfedges_begin(); h_it!=mesh.halfedges_end(); ++h_it){
 
         std::cout<< (*h_it)<<" ";
 //        std::cout<<"-to_vertex_hadle=" << mesh.to_vertex_handle(*h_it).idx() << "\t";
 //        std::cout<<"from_vertex_handle=" << mesh.from_vertex_handle(*h_it).idx() << "\t";
-        std::cout<<"face_handle=" << mesh.face_handle(*h_it).idx() << "\t";
-        std::cout<<indices[mesh.face_handle(*h_it).idx()].at(0)<<",";
-        std::cout<<indices[mesh.face_handle(*h_it).idx()].at(1)<<",";
-        std::cout<<indices[mesh.face_handle(*h_it).idx()].at(2)<<std::endl;
+//        std::cout<<"face_handle=" << mesh.face_handle(*h_it).idx() << "\t";
+//        std::cout<<indices[mesh.face_handle(*h_it).idx()].at(0)<<",";
+//        std::cout<<indices[mesh.face_handle(*h_it).idx()].at(1)<<",";
+//        std::cout<<indices[mesh.face_handle(*h_it).idx()].at(2)<<std::endl;
 //        std::cout<<"next_halfedge_handle=" << mesh.next_halfedge_handle(*h_it).idx() << "\t";
 //        std::cout<<"prev_halfedge_handle=" << mesh.prev_halfedge_handle(*h_it).idx() << "\t";
 //        std::cout<<"opposite_halfedge_handle=" << mesh.opposite_halfedge_handle(*h_it).idx() <<std::endl;
@@ -146,7 +149,7 @@ void Malla::initGeometry(std::string _filename)
         he.setId((*h_it).idx());
         he.setVertex_in(&vertices[mesh.to_vertex_handle(*h_it).idx()]);
         he.setVertex_out(&vertices[mesh.from_vertex_handle(*h_it).idx()]);
-        he.setFace(mesh.face_handle(*h_it).idx());
+        he.setFace(&indices[mesh.face_handle(*h_it).idx()]);
         he.setNext_halfedge(mesh.next_halfedge_handle(*h_it).idx());
         he.setPrevious(mesh.prev_halfedge_handle(*h_it).idx());
         he.setOposite(mesh.opposite_halfedge_handle(*h_it).idx());
@@ -156,18 +159,18 @@ void Malla::initGeometry(std::string _filename)
         vertices[mesh.to_vertex_handle(*h_it).idx()].addHalfEdgeIn((*h_it).idx());
         vertices[mesh.from_vertex_handle(*h_it).idx()].addHalfEdgeOut((*h_it).idx());
     }
-
+    std::cout<<std::endl;
     Connectivity con;
     // Collapse V2 en V1
 
 
-    for(Vertex i:vertices){
-        printf("V:%f \n",i.position().x());
-    }
+//    for(Vertex i:vertices){
+//        printf("V:%f \n",i.position().x());
+//    }
     con.collapse(half_edges[7],&half_edges, *this);
-    for(Vertex i:vertices){
-        printf("2V:%f \n",i.position().x());
-    }
+//    for(Vertex i:vertices){
+//        printf("2V:%f \n",i.position().x());
+//    }
 
     generateGeometry();
 }
@@ -179,9 +182,12 @@ void Malla::generateGeometry()
         printf("ERROR: no se puede genera la geometria sin los vertices o indices");
     }else{
         sg_vertices.clear();
-        for(QVector<int> j: indices)
-            for(int& i:j){
-                sg_vertices.push_back(vertices.at(i));
+        for(Face j: indices){
+            for(Vertex i:j.getVertices()){
+                //std::cout<<i.getId()<<",";
+                sg_vertices.push_back(i);
             }
+           // std::cout<<std::endl;
+        }
     }
 }

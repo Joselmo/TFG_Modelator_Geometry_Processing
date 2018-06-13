@@ -14,12 +14,12 @@ HalfEdge::HalfEdge(){
 
 }
 
-int HalfEdge::getFace()
+Face *HalfEdge::getFace()
 {
     return face;
 }
 
-void HalfEdge::setFace(int value)
+void HalfEdge::setFace(Face *value)
 {
     face = value;
 }

@@ -29,7 +29,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        ejes.cpp \
         malla.cpp \
         cubo.cpp \
         input.cpp \
@@ -39,10 +38,10 @@ SOURCES += \
     camera3d.cpp \
     window.cpp \
     connectivity.cpp \
-    vertex.cpp
+    vertex.cpp \
+    face.cpp
 
 HEADERS += \
-        ejes.h \
         malla.h \
         cubo.h \
         input.h \
@@ -52,7 +51,8 @@ HEADERS += \
     camera3d.h \
     vertex.h \
     window.h \
-    connectivity.h
+    connectivity.h \
+    face.h
 
 FORMS +=
 

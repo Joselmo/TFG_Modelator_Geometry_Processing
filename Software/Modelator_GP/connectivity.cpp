@@ -14,8 +14,8 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla &_mesh){
     HalfEdge  on = _he->at(o.getNext_halfedge());
     HalfEdge  op = _he->at(o.getPrevious());
 
-    int      fh = h.getFace();
-    int      fo = o.getFace();
+    Face     *fh = h.getFace();
+    Face     *fo = o.getFace();
 
     Vertex  *vh = h.getVertex_in();
     Vertex  *vo = h.getVertex_out();
@@ -27,8 +27,24 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla &_mesh){
     }
 
     //Eliminamos las caras adyacentes a h
-    _mesh.indices.remove(fh);
-    _mesh.indices.remove(fo);
+    std::cout<<"elimitar cara="<<fh->getId()<<std::endl;
+    std::cout<<"elimitar cara="<<fo->getId()<<std::endl;
+
+    int i = 0;
+    for(Face f:_mesh.indices){
+        if(f.getId() == fh->getId() || f.getId() == fo->getId()){
+            _mesh.indices.removeAt(i);
+        }else{
+            i++;
+        }
+    }
+
+    for(Face f:_mesh.indices){
+        std::cout<<f.getId()<<" ";
+    }
+    std::cout<<" nºfaces="<<_mesh.indices.size()<<std::endl;
+//    _mesh.indices.removeAt(fh->getId());
+//    _mesh.indices.removeAt(fo->getId());
 
     // Elimino la semi-arista de las entradas de vh
     vh->removeHalfEdgeIn(h.getId());
@@ -52,27 +68,40 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla &_mesh){
     int pos;
     int stride;
     for(int hovo:vo->getAllHalfEdgesOut()){
-        pos= (*_he)[hovo].getFace();
-        stride = _mesh.indices.at(pos).indexOf(vo->getId());
-        //Cambiamos los indice de la cara
-        std::cout<<"pos="<<pos<<" Indice"<<stride<<std::endl;
-        if(stride>=0)
-            _mesh.indices[pos].replace(_mesh.indices.at(pos).indexOf(vo->getId()),vh->getId());
+//        pos= (*_he)[hovo].getFace();
+//        stride = _mesh.indices.at(pos).indexOf(vo->getId());
+//        //Cambiamos los indice de la cara
+//        std::cout<<"pos="<<pos<<" Indice"<<stride<<std::endl;
+//        if(stride>=0)
+//            _mesh.indices[pos].replace(_mesh.indices.at(pos).indexOf(vo->getId()),vh->getId());
 
 
         vh->addHalfEdgeOut((*_he)[hovo].getId());
     }
 
 
-    //Eliminar elementos de vh,vo y h* que ya no sirvan
-
 
 
     //TODO: Eliminar Vertice y los indices
     // Eliminamos el vértice collapsado
-    //_mesh.vertices.remove(vo->getId());
+    std::cout<<"colapso vértice "<<vo->getId()<<" en "<<vh->getId()<<std::endl;
+    _mesh.vertices.remove(vo->getId());
 
 
+    //Eliminar elementos de vh,vo y h* que ya no sirvan
+//    for(Face faces: _mesh.indices){
+//        std::cout<<"cara"<< _mesh.indices.indexOf(faces)<<" - ";
+//        for(int &i:faces){
+//            if(i==vo->getId()){
+//                i=vh->getId();
+//                std::cout<<"("<<i<<")";
+//            }else if(i > vo->getId()) {
+//                i--;
+//            }
+//            std::cout<<","<<i;
+//        }
+//        std::cout<<std::endl;
+//    }
 
     _he->remove(h.getId());
     _he->remove(o.getId());

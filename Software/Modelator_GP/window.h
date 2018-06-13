@@ -51,11 +51,15 @@ private:
 
   Malla cubo;
   Malla esfera;
+  Malla objects[2];
   //Malla bethoven;
 
   //Control Attributes
   bool solidmode;
+  int objectactive;
 
+
+  void loadObject();
 
 
 // OpenGL Events

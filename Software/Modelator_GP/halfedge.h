@@ -3,6 +3,7 @@
 
 #include <vertex.h>
 #include <QVector3D>
+#include <face.h>
 
 /**
  * @brief The HalfEdge class
@@ -12,7 +13,7 @@
  * asociada al array de semi-aristas aladas de una malla
  */
 class Vertex;
-
+class Face;
 class HalfEdge{
 private:
 
@@ -20,7 +21,7 @@ private:
     int id;             // Index in the array
     Vertex *vertex_in;  // Vertex Incident
     Vertex *vertex_out; // Vertex Source
-    int face;          // Face incident
+    Face *face;         // Face incident
     int next_halfedge;  // Next HalfEdge inside of face
     int oposite;        // Oposite halfedge
     int previous;       // Previous halfedge inside of face
@@ -34,13 +35,13 @@ public:
      * @brief getFace
      * @return devuelve la posición de la cara incidente
      */
-    int getFace();
+    Face* getFace();
 
     /**
      * @brief setFace
      * @param value referencia a la posición de la cara incidente
      */
-    void setFace(int value);
+    void setFace(Face *value);
 
     /**
      * @brief getVertex_in
