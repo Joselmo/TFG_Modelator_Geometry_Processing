@@ -33,7 +33,6 @@ SOURCES += \
         cubo.cpp \
         input.cpp \
     halfedge.cpp \
-    sphere.cpp \
     transform3d.cpp \
     camera3d.cpp \
     window.cpp \
@@ -46,7 +45,6 @@ HEADERS += \
         cubo.h \
         input.h \
     halfedge.h \
-    sphere.h \
     transform3d.h \
     camera3d.h \
     vertex.h \

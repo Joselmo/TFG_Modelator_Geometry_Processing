@@ -20,7 +20,7 @@ public:
      *
      * @param _h semi-arista que representa el colapso
      */
-    void collapse(HalfEdge _h, QVector<HalfEdge> *_he, Malla &_mesh);
+    void collapse(HalfEdge _h, QVector<HalfEdge> *_he, Malla *_mesh);
 
     void collapse_loop(HalfEdge _h, QVector<HalfEdge> *_he);
 

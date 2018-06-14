@@ -55,7 +55,6 @@ SOURCES       = ../Modelator_GP/main.cpp \
 		../Modelator_GP/cubo.cpp \
 		../Modelator_GP/input.cpp \
 		../Modelator_GP/halfedge.cpp \
-		../Modelator_GP/sphere.cpp \
 		../Modelator_GP/transform3d.cpp \
 		../Modelator_GP/camera3d.cpp \
 		../Modelator_GP/window.cpp \
@@ -68,7 +67,6 @@ OBJECTS       = main.o \
 		cubo.o \
 		input.o \
 		halfedge.o \
-		sphere.o \
 		transform3d.o \
 		camera3d.o \
 		window.o \
@@ -264,7 +262,6 @@ DIST          = /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../Modelator_GP/cubo.h \
 		../Modelator_GP/input.h \
 		../Modelator_GP/halfedge.h \
-		../Modelator_GP/sphere.h \
 		../Modelator_GP/transform3d.h \
 		../Modelator_GP/camera3d.h \
 		../Modelator_GP/vertex.h \
@@ -275,7 +272,6 @@ DIST          = /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../Modelator_GP/cubo.cpp \
 		../Modelator_GP/input.cpp \
 		../Modelator_GP/halfedge.cpp \
-		../Modelator_GP/sphere.cpp \
 		../Modelator_GP/transform3d.cpp \
 		../Modelator_GP/camera3d.cpp \
 		../Modelator_GP/window.cpp \
@@ -688,8 +684,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../Modelator_GP/resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/local/Qt/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Modelator_GP/malla.h ../Modelator_GP/cubo.h ../Modelator_GP/input.h ../Modelator_GP/halfedge.h ../Modelator_GP/sphere.h ../Modelator_GP/transform3d.h ../Modelator_GP/camera3d.h ../Modelator_GP/vertex.h ../Modelator_GP/window.h ../Modelator_GP/connectivity.h ../Modelator_GP/face.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Modelator_GP/main.cpp ../Modelator_GP/malla.cpp ../Modelator_GP/cubo.cpp ../Modelator_GP/input.cpp ../Modelator_GP/halfedge.cpp ../Modelator_GP/sphere.cpp ../Modelator_GP/transform3d.cpp ../Modelator_GP/camera3d.cpp ../Modelator_GP/window.cpp ../Modelator_GP/connectivity.cpp ../Modelator_GP/vertex.cpp ../Modelator_GP/face.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Modelator_GP/malla.h ../Modelator_GP/cubo.h ../Modelator_GP/input.h ../Modelator_GP/halfedge.h ../Modelator_GP/transform3d.h ../Modelator_GP/camera3d.h ../Modelator_GP/vertex.h ../Modelator_GP/window.h ../Modelator_GP/connectivity.h ../Modelator_GP/face.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Modelator_GP/main.cpp ../Modelator_GP/malla.cpp ../Modelator_GP/cubo.cpp ../Modelator_GP/input.cpp ../Modelator_GP/halfedge.cpp ../Modelator_GP/transform3d.cpp ../Modelator_GP/camera3d.cpp ../Modelator_GP/window.cpp ../Modelator_GP/connectivity.cpp ../Modelator_GP/vertex.cpp ../Modelator_GP/face.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1269,68 +1265,6 @@ halfedge.o: ../Modelator_GP/halfedge.cpp ../Modelator_GP/halfedge.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
 		../Modelator_GP/face.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o halfedge.o ../Modelator_GP/halfedge.cpp
-
-sphere.o: ../Modelator_GP/sphere.cpp ../Modelator_GP/sphere.h \
-		../Modelator_GP/malla.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector2D \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector2d.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobal.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qconfig.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlogging.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qflags.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmutex.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnumeric.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpoint.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qnamespace.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qmetatype.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearray.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qrefcount.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qarraydata.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector3D \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/qvector3d.h \
-		../Modelator_GP/vertex.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/QVector \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qvector.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qiterator.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qlist.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstring.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qchar.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringview.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qpair.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringlist.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qregexp.h \
-		/usr/local/Qt/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
-		../Modelator_GP/halfedge.h \
-		../Modelator_GP/face.h \
-		../Modelator_GP/connectivity.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sphere.o ../Modelator_GP/sphere.cpp
 
 transform3d.o: ../Modelator_GP/transform3d.cpp ../Modelator_GP/transform3d.h \
 		/usr/local/Qt/5.10.1/gcc_64/include/QtGui/QVector3D \

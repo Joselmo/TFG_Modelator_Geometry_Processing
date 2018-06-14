@@ -44,32 +44,32 @@ void HalfEdge::setVertex_out(Vertex *value)
     vertex_out = value;
 }
 
-int HalfEdge::getNext_halfedge()
+HalfEdge *HalfEdge::getNext_halfedge()
 {
     return next_halfedge;
 }
 
-void HalfEdge::setNext_halfedge(int value)
+void HalfEdge::setNext_halfedge(HalfEdge *value)
 {
     next_halfedge = value;
 }
 
-int HalfEdge::getOposite()
+HalfEdge *HalfEdge::getOposite()
 {
     return oposite;
 }
 
-void HalfEdge::setOposite(int value)
+void HalfEdge::setOposite(HalfEdge *value)
 {
     oposite = value;
 }
 
-int HalfEdge::getPrevious()
+HalfEdge *HalfEdge::getPrevious()
 {
     return previous;
 }
 
-void HalfEdge::setPrevious(int value)
+void HalfEdge::setPrevious(HalfEdge *value)
 {
     previous = value;
 }

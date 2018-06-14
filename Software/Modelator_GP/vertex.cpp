@@ -40,44 +40,61 @@ void   Vertex::setColor(const QVector3D &_color) {
     m_color = _color;
 }
 
-void Vertex::addHalfEdgeIn(int _half_edge){
+void Vertex::addHalfEdgeIn(HalfEdge &_half_edge){
     half_edges_in.push_back(_half_edge);
 }
 
-void   Vertex::setHalfEdgeIn(QVector<int> _half_edges) {
+void   Vertex::setHalfEdgeIn(QVector<HalfEdge> &_half_edges) {
     half_edges_in = _half_edges;
 }
 
-int   Vertex::getHalfEdgeIn(  int _index) {
+HalfEdge Vertex::getHalfEdgeIn(int _index) {
     return half_edges_in.at(_index);
 }
 
-QVector<int>  Vertex::getAllHalfEdgesIn() {
+QVector<HalfEdge>  Vertex::getAllHalfEdgesIn() {
     return half_edges_in;
 }
 
 void Vertex::removeHalfEdgeIn(int _index){
-    half_edges_in.removeAll(_index);
+    half_edges_in.removeAt(_index);
 }
 
-void   Vertex::addHalfEdgeOut(  int _half_edge) {
+void Vertex::removeHalfEdgeIn(HalfEdge &_half_edge){
+
+    QVector<HalfEdge>::iterator it;
+    for(it = half_edges_in.begin(); it == half_edges_in.end();++it){
+        if(it->getId()==_half_edge.getId())
+            half_edges_in.erase(it);
+    }
+}
+
+void   Vertex::addHalfEdgeOut(HalfEdge &_half_edge) {
     half_edges_out.push_back(_half_edge);
 }
 
-void   Vertex::setHalfEdgeOut(QVector<int> _half_edges) {
+void   Vertex::setHalfEdgeOut(QVector<HalfEdge> &_half_edges) {
     half_edges_out = _half_edges;
 }
 
-int Vertex::getHalfEdgeOut(  int _index) {
+HalfEdge Vertex::getHalfEdgeOut( int _index) {
     return half_edges_out.at(_index);
 }
 
-QVector<int> Vertex::getAllHalfEdgesOut() {
+QVector<HalfEdge> Vertex::getAllHalfEdgesOut() {
     return half_edges_out;
 }
 
 void Vertex::removeHalfEdgeOut(int _index){
-    half_edges_out.removeAll(_index);
+    half_edges_out.removeAt(_index);
+}
+
+void Vertex::removeHalfEdgeOut(HalfEdge &_half_edge){
+    QVector<HalfEdge>::iterator it;
+    for(it = half_edges_out.begin(); it == half_edges_out.end();++it){
+        if(it->getId()==_half_edge.getId())
+            half_edges_out.erase(it);
+    }
 }
 
 

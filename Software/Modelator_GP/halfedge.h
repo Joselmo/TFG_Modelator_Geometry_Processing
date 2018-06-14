@@ -22,9 +22,9 @@ private:
     Vertex *vertex_in;  // Vertex Incident
     Vertex *vertex_out; // Vertex Source
     Face *face;         // Face incident
-    int next_halfedge;  // Next HalfEdge inside of face
-    int oposite;        // Oposite halfedge
-    int previous;       // Previous halfedge inside of face
+    HalfEdge *next_halfedge;  // Next HalfEdge inside of face
+    HalfEdge *oposite;        // Oposite halfedge
+    HalfEdge *previous;       // Previous halfedge inside of face
 
 
 public:
@@ -71,37 +71,37 @@ public:
      * @brief getNext_halfedge
      * @return la posición del array de la siguiente semi-arista
      */
-    int getNext_halfedge();
+    HalfEdge *getNext_halfedge();
 
     /**
      * @brief setNext_halfedge
      * @param value posición del array de semi-aristas aladas de la siguiente semi-arista.
      */
-    void setNext_halfedge(int value);
+    void setNext_halfedge(HalfEdge *value);
 
     /**
      * @brief getOposite
      * @return la posición del array de la semi-arista opuesta.
      */
-    int getOposite();
+    HalfEdge *getOposite();
 
     /**
      * @brief setOposite
      * @param value posición del array de semi-aristas aladas de la semi-arista opuesta.
      */
-    void setOposite(int value);
+    void setOposite(HalfEdge *value);
 
     /**
      * @brief getPrevious
      * @return la posición del array de semi-aristas aladas de la anterior semi-arista
      */
-    int getPrevious();
+    HalfEdge* getPrevious();
 
     /**
      * @brief setPrevious
      * @param value posición del array de semi-aristas aladas de la semi-arista anterior.
      */
-    void setPrevious(int value);
+    void setPrevious(HalfEdge *value);
 
 
     int getId() const;
