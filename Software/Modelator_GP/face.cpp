@@ -44,11 +44,12 @@ void Face::addVertex(int _index, Vertex &_value)
 
 void Face::remplaceVertex(Vertex &_vertexOld, Vertex &_vertexNew)
 {
-    for(Vertex v:vertices){
-        if(v.getId() == _vertexOld.getId()){
-            v = _vertexNew;
+    for(int i = 0; i< vertices.size(); i++){
+        if(vertices[i].getId() ==_vertexOld.getId()){
+            vertices[i] = _vertexNew;
         }
     }
+
 }
 
 void Face::clear()

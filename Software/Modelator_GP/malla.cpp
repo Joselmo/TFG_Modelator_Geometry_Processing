@@ -159,28 +159,30 @@ void Malla::initGeometry(std::string _filename)
         vertices[mesh.to_vertex_handle(*h_it).idx()].addHalfEdgeIn(he);
         vertices[mesh.from_vertex_handle(*h_it).idx()].addHalfEdgeOut(he);
     }
+    std::cout<<std::endl;
+    for(HalfEdge h:half_edges){
+        std::cout<<h.getId()<<",";
+    }
+    std::cout<<std::endl;
 
     //Añado las referencias a siguiente, anterior y opuesta
     for (MyMesh::HalfedgeIter h_it=mesh.halfedges_begin(); h_it!=mesh.halfedges_end(); ++h_it){
 
 
+        half_edges[(*h_it).idx()].setNext_halfedge(&half_edges[mesh.next_halfedge_handle(*h_it).idx()]);
+        half_edges[(*h_it).idx()].setPrevious(&half_edges[mesh.prev_halfedge_handle(*h_it).idx()]);
+        half_edges[(*h_it).idx()].setOposite(&half_edges[mesh.opposite_halfedge_handle(*h_it).idx()]);
 
-        he = half_edges[(*h_it).idx()];
-        he.setNext_halfedge(&half_edges[mesh.next_halfedge_handle(*h_it).idx()]);
-        he.setPrevious(&half_edges[mesh.prev_halfedge_handle(*h_it).idx()]);
-        he.setOposite(&half_edges[mesh.opposite_halfedge_handle(*h_it).idx()]);
-        half_edges.insert((*h_it).idx(),he);
-
-        std::cout<< he.getId()<<" ";
-        std::cout<<"-to_vertex_hadle=" << he.getVertex_in()->getId() << "\t";
-        std::cout<<"from_vertex_handle=" << he.getVertex_out()->getId() << "\t";
-        std::cout<<"face_handle=" << he.getFace()->getId() << "\t";
-        std::cout<<he.getFace()->getVertices().at(0).getId()<<",";
-        std::cout<<he.getFace()->getVertices().at(1).getId()<<",";
-        std::cout<<he.getFace()->getVertices().at(2).getId()<<std::endl;
-        std::cout<<"next_halfedge_handle=" << he.getNext_halfedge()->getId() << "\t";
-        std::cout<<"prev_halfedge_handle=" << he.getPrevious()->getId() << "\t";
-        std::cout<<"opposite_halfedge_handle=" << he.getOposite()->getId() <<std::endl;
+        std::cout<<(*h_it).idx()<<"="<<half_edges[(*h_it).idx()].getId()<<" ";
+        std::cout<<"-to_vertex_hadle=" << half_edges[(*h_it).idx()].getVertex_in()->getId() << "\t";
+        std::cout<<"from_vertex_handle=" << half_edges[(*h_it).idx()].getVertex_out()->getId() << "\t";
+        std::cout<<"face_handle=" << half_edges[(*h_it).idx()].getFace()->getId() << "\t";
+        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(0).getId()<<",";
+        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(1).getId()<<",";
+        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(2).getId()<<"\t";
+        std::cout<<"next_halfedge_handle=" << half_edges[(*h_it).idx()].getNext_halfedge()->getId() << "\t";
+        std::cout<<"prev_halfedge_handle=" << half_edges[(*h_it).idx()].getPrevious()->getId() << "\t";
+        std::cout<<"opposite_halfedge_handle=" << half_edges[(*h_it).idx()].getOposite()->getId() <<std::endl;
 
     }
 
@@ -189,12 +191,14 @@ void Malla::initGeometry(std::string _filename)
     // Collapse V2 en V1
 
 
-//    for(Vertex i:vertices){
-//        printf("V:%f \n",i.position().x());
-//    }
+
     con.collapse(half_edges[7],&half_edges, this);
-//    for(Vertex i:vertices){
-//        printf("2V:%f \n",i.position().x());
+//    for(Face f:indices){
+//        printf("Cara:%d [",f.getId());
+//        for(Vertex v: f.getVertices()){
+//            printf("%d,",v.getId());
+//        }
+//        printf("]\n");
 //    }
 
     generateGeometry();
@@ -209,10 +213,10 @@ void Malla::generateGeometry()
         sg_vertices.clear();
         for(Face j: indices){
             for(Vertex i:j.getVertices()){
-                //std::cout<<i.getId()<<",";
+                std::cout<<i.getId()<<",";
                 sg_vertices.push_back(i);
             }
-           // std::cout<<std::endl;
+            std::cout<<std::endl;
         }
     }
 }

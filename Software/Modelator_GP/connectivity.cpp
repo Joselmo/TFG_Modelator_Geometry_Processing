@@ -24,13 +24,15 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
     std::cout<<"elimitar cara="<<fh->getId()<<std::endl;
     std::cout<<"elimitar cara="<<fo->getId()<<std::endl;
 
-    int i = 0;
-    for(Face f:_mesh->indices){
-        if(f.getId() == fh->getId() || f.getId() == fo->getId()){
-            _mesh->indices.removeAt(i);
-        }else{
-            i++;
-        }
+
+    QVector<Face>::iterator it_f;
+    for(it_f = _mesh->indices.begin(); it_f == _mesh->indices.end();++it_f){
+        if(it_f->getId() == fh->getId())
+            _mesh->indices.erase(it_f);
+    }
+    for(it_f = _mesh->indices.begin(); it_f == _mesh->indices.end();++it_f){
+        if(it_f->getId() == o->getId())
+            _mesh->indices.erase(it_f);
     }
 
     for(Face f:_mesh->indices){
@@ -56,18 +58,21 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
     //Elimino las semi-aristas implicadas
     QVector<HalfEdge>::iterator it;
     for(it = _he->begin(); it == _he->end();++it){
-        if(it->getId()==h.getId() || it->getId() == o->getId())
+        if(it->getId() == h.getId())
             _he->erase(it);
     }
-//    _he->removeAll(h);
-//    _he->removeAll((*o));
+    for(it = _he->begin(); it == _he->end();++it){
+        if(it->getId() == o->getId())
+            _he->erase(it);
+    }
 
     // Recorro todas las semi-aristas que inciden en el vértice vo(origen)
     // ahora inciden sobre vh(destino)
     for(HalfEdge hivo:vo->getAllHalfEdgesIn()){
         //Nivel Indices y vértices
-
-
+        hivo.getFace()->remplaceVertex((*vo),(*vh));
+        std::cout<<"check face="<<hivo.getFace()->getId()<<"\t";
+        std::cout<<hivo.getId()<<std::endl;
         //Nivel Semi-aristas
         hivo.setVertex_in(vh);
     }
@@ -76,6 +81,8 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
     // ahora salen de vh(destino)
     // Ajusto los indices, ahora donde era vo es vh
     for(HalfEdge hovo:vo->getAllHalfEdgesOut()){
+        //Nivel Indices y vértices
+        hovo.getFace()->remplaceVertex((*vo),(*vh));
 
         // Nivel semi-aristas
         hovo.setVertex_out(vh);
@@ -86,22 +93,11 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
     // Eliminamos el vértice collapsado
     std::cout<<"colapso vértice "<<vo->getId()<<" en "<<vh->getId()<<std::endl;
     _mesh->vertices.remove(vo->getId());
-
-
-    //Eliminar elementos de vh,vo y h* que ya no sirvan
-//    for(Face faces: _mesh.indices){
-//        std::cout<<"cara"<< _mesh.indices.indexOf(faces)<<" - ";
-//        for(int &i:faces){
-//            if(i==vo->getId()){
-//                i=vh->getId();
-//                std::cout<<"("<<i<<")";
-//            }else if(i > vo->getId()) {
-//                i--;
-//            }
-//            std::cout<<","<<i;
-//        }
-//        std::cout<<std::endl;
-//    }
+    QVector<Vertex>::iterator it_v;
+    for(it_v = _mesh->vertices.begin(); it_v == _mesh->vertices.end();++it_v){
+        if(it_v->getId() == vo->getId())
+            _mesh->vertices.erase(it_v);
+    }
 
     //eliminar ciclos creados
     // Si la siguiente de la siguiente es la misma, es un ciclo
