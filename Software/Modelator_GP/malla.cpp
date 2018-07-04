@@ -126,6 +126,12 @@ void Malla::initGeometry(std::string _filename)
         }
         std::cout<<(*f_it).idx()<<", ";
         face.setId((*f_it).idx());
+        MyMesh::Normal normal = mesh.calc_face_normal((*f_it));
+
+        face.generateSurfaceNormal();
+        std::cout<<" normal:"<<face.getNormal()[0]<<",";
+        std::cout<<face.getNormal()[1]<<",";
+        std::cout<<face.getNormal()[2]<<std::endl;
         indices.push_back(face);
     }
     std::cout<<std::endl;

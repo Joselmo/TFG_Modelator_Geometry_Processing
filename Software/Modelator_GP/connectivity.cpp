@@ -138,8 +138,6 @@ void Connectivity::collapse_loop(HalfEdge _h, QVector<HalfEdge> *_he){
         v1->removeHalfEdgeIn((*o0));
 
 
-//        _he->removeAll(h0);
-//        _he->removeAll((*o0));
         QVector<HalfEdge>::iterator it;
         for(it = _he->begin(); it == _he->end();++it){
             if(it->getId()==h0.getId() || it->getId() == o0->getId())

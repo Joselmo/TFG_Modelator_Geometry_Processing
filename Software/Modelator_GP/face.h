@@ -3,6 +3,13 @@
 
 #include <QVector>
 #include <vertex.h>
+// -------------------- OpenMesh
+#include <OpenMesh/Core/IO/MeshIO.hh>
+#include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
+#include <OpenMesh/Tools/Utils/getopt.h>
+#include <OpenMesh/Core/Mesh/PolyConnectivity.hh>
+
+typedef OpenMesh::TriMesh_ArrayKernelT<>  MyMesh;
 
 class Vertex;
 
@@ -12,6 +19,8 @@ private:
     QVector<Vertex> vertices;
     static const int MAX_POSITION = 3;
     int id;
+    QVector3D normal;
+
 
 
 public:
@@ -24,10 +33,14 @@ public:
     void addVertex(Vertex &_value);
     void addVertex(int _index,Vertex &_value);
     void remplaceVertex(Vertex &_vertexOld, Vertex &_vertexNew);
+    void generateSurfaceNormal();
     void clear();
 
     int getId() const;
     void setId(int value);
+    QVector3D getNormal() const;
+    void setNormal(const QVector3D &value);
+    void setNormal(float posx, float posy, float posz);
 };
 
 #endif // FACE_H
