@@ -1,6 +1,20 @@
 #include "connectivity.h"
 
+
+
 Connectivity::Connectivity(){
+
+}
+
+
+void Connectivity::angleVector(QVector3D &_u, QVector3D &_v, float &_result){
+
+    float top = _u[0]*_v[0]+_u[1]*_v[1]+_u[2]*_v[2];
+
+    float root_u = qSqrt(_u[0]*_u[0] + _u[1]*_u[1] + _u[2]*_u[2]);
+    float root_v = qSqrt(_v[0]*_v[0] + _v[1]*_v[1] + _v[2]*_v[2]);
+
+    _result = qAcos(top / (root_u * root_v));
 
 }
 
@@ -23,6 +37,20 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
     //Eliminamos las caras adyacentes a h
     std::cout<<"elimitar cara="<<fh->getId()<<std::endl;
     std::cout<<"elimitar cara="<<fo->getId()<<std::endl;
+
+    //TESTTT
+    QVector3D a = fh->getNormal();
+    QVector3D b = fo->getNormal();
+    float r;
+    angleVector(a,b,r);
+    std::cout<<"Angulo entre a("<<a[0]<<","
+            <<a[1]<<","
+            <<a[2]<<") y b("<<b[0]<<","<<
+            b[1]<<","<<
+            b[2]<<") es = "<<r<<std::endl;
+
+
+    //TEST FIN
 
 
     QVector<Face>::iterator it_f;

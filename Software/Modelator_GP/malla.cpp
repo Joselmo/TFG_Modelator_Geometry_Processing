@@ -101,8 +101,8 @@ void Malla::initGeometry(std::string _filename)
     for (MyMesh::VertexIter v_it=mesh.vertices_begin(); v_it!=mesh.vertices_end(); ++v_it){
         //std::cout << "Vertex #" << *v_it << ": " << mesh.point( *v_it )[0]<<std::endl;
         point.setPosition(QVector3D(mesh.point( *v_it )[0],
-                          mesh.point( *v_it )[1],
-                mesh.point( *v_it )[2]));
+                                    mesh.point( *v_it )[1],
+                                    mesh.point( *v_it )[2]));
         point.setId(  vertices.length() );
         vertices.push_back(point);
     }
@@ -129,6 +129,7 @@ void Malla::initGeometry(std::string _filename)
         MyMesh::Normal normal = mesh.calc_face_normal((*f_it));
 
         face.generateSurfaceNormal();
+        std::cout<<" n="<<normal<<"\t ";
         std::cout<<" normal:"<<face.getNormal()[0]<<",";
         std::cout<<face.getNormal()[1]<<",";
         std::cout<<face.getNormal()[2]<<std::endl;
@@ -166,10 +167,10 @@ void Malla::initGeometry(std::string _filename)
         vertices[mesh.from_vertex_handle(*h_it).idx()].addHalfEdgeOut(he);
     }
     std::cout<<std::endl;
-    for(HalfEdge h:half_edges){
-        std::cout<<h.getId()<<",";
-    }
-    std::cout<<std::endl;
+//    for(HalfEdge h:half_edges){
+//        std::cout<<h.getId()<<",";
+//    }
+//    std::cout<<std::endl;
 
     //Añado las referencias a siguiente, anterior y opuesta
     for (MyMesh::HalfedgeIter h_it=mesh.halfedges_begin(); h_it!=mesh.halfedges_end(); ++h_it){
@@ -179,16 +180,16 @@ void Malla::initGeometry(std::string _filename)
         half_edges[(*h_it).idx()].setPrevious(&half_edges[mesh.prev_halfedge_handle(*h_it).idx()]);
         half_edges[(*h_it).idx()].setOposite(&half_edges[mesh.opposite_halfedge_handle(*h_it).idx()]);
 
-        std::cout<<(*h_it).idx()<<"="<<half_edges[(*h_it).idx()].getId()<<" ";
-        std::cout<<"-to_vertex_hadle=" << half_edges[(*h_it).idx()].getVertex_in()->getId() << "\t";
-        std::cout<<"from_vertex_handle=" << half_edges[(*h_it).idx()].getVertex_out()->getId() << "\t";
-        std::cout<<"face_handle=" << half_edges[(*h_it).idx()].getFace()->getId() << "\t";
-        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(0).getId()<<",";
-        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(1).getId()<<",";
-        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(2).getId()<<"\t";
-        std::cout<<"next_halfedge_handle=" << half_edges[(*h_it).idx()].getNext_halfedge()->getId() << "\t";
-        std::cout<<"prev_halfedge_handle=" << half_edges[(*h_it).idx()].getPrevious()->getId() << "\t";
-        std::cout<<"opposite_halfedge_handle=" << half_edges[(*h_it).idx()].getOposite()->getId() <<std::endl;
+//        std::cout<<(*h_it).idx()<<"="<<half_edges[(*h_it).idx()].getId()<<" ";
+//        std::cout<<"-to_vertex_hadle=" << half_edges[(*h_it).idx()].getVertex_in()->getId() << "\t";
+//        std::cout<<"from_vertex_handle=" << half_edges[(*h_it).idx()].getVertex_out()->getId() << "\t";
+//        std::cout<<"face_handle=" << half_edges[(*h_it).idx()].getFace()->getId() << "\t";
+//        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(0).getId()<<",";
+//        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(1).getId()<<",";
+//        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(2).getId()<<"\t";
+//        std::cout<<"next_halfedge_handle=" << half_edges[(*h_it).idx()].getNext_halfedge()->getId() << "\t";
+//        std::cout<<"prev_halfedge_handle=" << half_edges[(*h_it).idx()].getPrevious()->getId() << "\t";
+//        std::cout<<"opposite_halfedge_handle=" << half_edges[(*h_it).idx()].getOposite()->getId() <<std::endl;
 
     }
 

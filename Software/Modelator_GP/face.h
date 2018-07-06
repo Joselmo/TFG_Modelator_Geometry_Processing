@@ -3,13 +3,7 @@
 
 #include <QVector>
 #include <vertex.h>
-// -------------------- OpenMesh
-#include <OpenMesh/Core/IO/MeshIO.hh>
-#include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
-#include <OpenMesh/Tools/Utils/getopt.h>
-#include <OpenMesh/Core/Mesh/PolyConnectivity.hh>
 
-typedef OpenMesh::TriMesh_ArrayKernelT<>  MyMesh;
 
 class Vertex;
 
