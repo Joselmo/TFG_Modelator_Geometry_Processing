@@ -16,7 +16,11 @@ void Face::setId(int value){
     id = value;
 }
 
-QVector3D Face::getNormal() const{
+//QVector3D Face::getNormal() const{
+//    return normal;
+//}
+
+QVector3D Face::getNormal(){
     return normal;
 }
 
@@ -37,7 +41,7 @@ QVector<Vertex> Face::getVertices() const
 void Face::setVertices(const QVector<Vertex> &_value)
 {
     vertices = _value;
-    generateSurfaceNormal();
+//    generateSurfaceNormal();
 }
 
 Vertex Face::getVertices(int _index){
@@ -49,14 +53,14 @@ void Face::addVertex(Vertex &_value){
 
     if(vertices.size()!= MAX_POSITION){
         vertices.push_back(_value);
-        generateSurfaceNormal();
+//        generateSurfaceNormal();
     }
 }
 
 void Face::addVertex(int _index, Vertex &_value){
     if(_index<MAX_POSITION && _index>=0){
         vertices[_index]= _value;
-        generateSurfaceNormal();
+//        generateSurfaceNormal();
     }
 }
 
@@ -67,7 +71,7 @@ void Face::remplaceVertex(Vertex &_vertexOld, Vertex &_vertexNew)
             vertices[i] = _vertexNew;
         }
     }
-    generateSurfaceNormal();
+//    generateSurfaceNormal();
 
 }
 

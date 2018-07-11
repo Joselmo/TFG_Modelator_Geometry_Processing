@@ -4,13 +4,20 @@
 #include "halfedge.h"
 #include "malla.h"
 #include "QtMath"
+#include <functional>
+#include <queue>
+#include <vector>
+
+typedef  std::priority_queue<float, std::vector<float>, std::greater<float>> priority_q;
 
 class Malla;
 class Connectivity{
 
 private:
 
-    void angleVector(QVector3D &_u, QVector3D &_v, float &_result);
+    void angleVector(const QVector3D &_u, const QVector3D &_v, float &_result);
+
+    void generateLowerErrorQueue(Malla &_mesh);
 
 public:
     Connectivity();
@@ -24,6 +31,10 @@ public:
     void collapse(HalfEdge _h, QVector<HalfEdge> *_he, Malla *_mesh);
 
     void collapse_loop(HalfEdge _h, QVector<HalfEdge> *_he);
+
+    void generateLowerErrorQueue(Malla *_mesh, priority_q &_pq);
+
+
 
 
 

@@ -32,7 +32,8 @@ public:
 
     int getId() const;
     void setId(int value);
-    QVector3D getNormal() const;
+//    QVector3D getNormal() const;
+    QVector3D getNormal();
     void setNormal(const QVector3D &value);
     void setNormal(float posx, float posy, float posz);
 };

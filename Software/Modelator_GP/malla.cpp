@@ -116,9 +116,9 @@ void Malla::initGeometry(std::string _filename)
     // Itero sobre el handle de caras
     std::cout<<"cargando caras =";
     for (f_it = mesh.faces_sbegin(); f_it!=f_end; ++f_it){
-        //std::cout<<"Faces:";
         //dentro de cada cara itero sobre sus referencias
         face.clear();
+        std::cout<<"Faces:";
         for (fv_it = mesh.fv_iter(*f_it);fv_it.is_valid();++fv_it){
             //std::cout<<fv_it->idx()<<"\t";
             face.addVertex(vertices[fv_it->idx()]);
@@ -199,7 +199,7 @@ void Malla::initGeometry(std::string _filename)
 
 
 
-    con.collapse(half_edges[7],&half_edges, this);
+//    con.collapse(half_edges[7],&half_edges, this);
 //    for(Face f:indices){
 //        printf("Cara:%d [",f.getId());
 //        for(Vertex v: f.getVertices()){
@@ -209,6 +209,22 @@ void Malla::initGeometry(std::string _filename)
 //    }
 
     generateGeometry();
+    priority_q pq;
+    con.generateLowerErrorQueue(this, pq);
+    std::cout<<"Priority QUEUE: "<<std::endl;
+    while(!pq.empty()) {
+           std::cout << pq.top() << " ";
+           pq.pop();
+       }
+       std::cout << '\n';
+
+}
+
+void Malla::generateSurfaceNormals(){
+
+    for(Face face:indices){
+        face.generateSurfaceNormal();
+    }
 }
 
 void Malla::generateGeometry()
@@ -220,10 +236,10 @@ void Malla::generateGeometry()
         sg_vertices.clear();
         for(Face j: indices){
             for(Vertex i:j.getVertices()){
-                std::cout<<i.getId()<<",";
+                //std::cout<<i.getId()<<",";
                 sg_vertices.push_back(i);
             }
-            std::cout<<std::endl;
+            //std::cout<<std::endl;
         }
     }
 }

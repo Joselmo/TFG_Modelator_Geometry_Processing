@@ -7,7 +7,7 @@ Connectivity::Connectivity(){
 }
 
 
-void Connectivity::angleVector(QVector3D &_u, QVector3D &_v, float &_result){
+void Connectivity::angleVector(QVector3D const &_u, QVector3D const &_v, float &_result){
 
     float top = _u[0]*_v[0]+_u[1]*_v[1]+_u[2]*_v[2];
 
@@ -17,6 +17,44 @@ void Connectivity::angleVector(QVector3D &_u, QVector3D &_v, float &_result){
     _result = qAcos(top / (root_u * root_v));
 
 }
+
+void Connectivity::generateLowerErrorQueue(Malla *_mesh, priority_q &_pq){
+
+    priority_q heLowerError;
+    // Genero las Normales de cara por si han cambiado
+    _mesh->generateSurfaceNormals();
+
+    float error_calculated = 0;
+    float angle = 0;
+    Face *face_source;
+    Face *face;
+    //Calculamos el error producido por cada HE si se elimina
+    // Se extrae las he y sus caras implicadas en el cálculo
+//    for(HalfEdge *he:_mesh->getHalf_edges()){
+    QVector<HalfEdge>::iterator he;
+    for(he=_mesh->getHalf_edges()->begin();
+        he != _mesh->getHalf_edges()->end(); ++he){
+        angle = 0;
+        error_calculated = 0;
+        face_source = he->getFace();
+        std::cout<<he->getId()<<"#"<<face_source->getId()<<"-";
+        for(HalfEdge heo: he->getVertex_out()->getAllHalfEdgesIn()){
+
+            face = heo.getFace();
+            if( face_source->getId() != face->getId()){
+                angleVector(face_source->getNormal(),face->getNormal(),angle);
+                error_calculated += angle;
+                std::cout<<face->getId()<<"="<<angle<<"\t";
+            }
+
+        }
+        std::cout<<"&&"<<error_calculated<<std::endl;
+        heLowerError.push(error_calculated);
+
+    }
+
+}
+
 
 void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
     // Inicializo las variables necesarias

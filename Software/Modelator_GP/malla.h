@@ -8,6 +8,9 @@
 #include "halfedge.h"
 #include "connectivity.h"
 #include "face.h"
+#include <functional>
+#include <queue>
+#include <vector>
 
 #include <iostream>
 #include <iterator>
@@ -21,6 +24,8 @@
 using namespace OpenMesh;
 // ----------------------------------------------------------------------------
 typedef TriMesh_ArrayKernelT<>  MyMesh;
+typedef  std::priority_queue<float, std::vector<float>, std::greater<float>> priority_q;
+
 // ----------------------------------------------------------------------------
 
 /**
@@ -105,6 +110,12 @@ public:
      * requiere que la malla tenga inicializados los vértices e indices
      */
     void generateGeometry();
+
+    /**
+      * @brief generateSurfaceNormals genera todas las normales de cara
+      * en cada cara.
+      */
+    void generateSurfaceNormals();
 
     /**
      * @brief getHalf_edges devuelve un puntero al vector de semi-aristas
