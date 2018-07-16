@@ -26,6 +26,10 @@ private:
     HalfEdge *oposite;        // Oposite halfedge
     HalfEdge *previous;       // Previous halfedge inside of face
 
+    float error_remove;
+
+
+
 
 public:
     HalfEdge();
@@ -106,6 +110,20 @@ public:
 
     int getId() const;
     void setId(int value);
+    float getError_remove() const;
+    void setError_remove(float value);
+
+    //Overload the < operator.
+    friend bool operator< (const HalfEdge& _he1, const HalfEdge &_he2)
+    {
+        return _he1.error_remove > _he2.error_remove;
+    }
+    //Overload the > operator.
+    friend bool operator> (const HalfEdge& _he1, const HalfEdge &_he2)
+    {
+        return _he1.error_remove < _he2.error_remove;
+    }
+
 };
 
 #endif // HALFEDGE_H

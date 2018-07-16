@@ -10,8 +10,18 @@ void HalfEdge::setId(int value)
     id = value;
 }
 
-HalfEdge::HalfEdge(){
+float HalfEdge::getError_remove() const
+{
+    return error_remove;
+}
 
+void HalfEdge::setError_remove(float value)
+{
+    error_remove = value;
+}
+
+HalfEdge::HalfEdge(){
+    
 }
 
 Face *HalfEdge::getFace()

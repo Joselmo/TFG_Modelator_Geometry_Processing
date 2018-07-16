@@ -3,7 +3,7 @@
 #include <QVector2D>
 #include <QVector3D>
 #include "vertex.h"
-#include <QVector>
+#include <vector>
 
 
 using namespace std;

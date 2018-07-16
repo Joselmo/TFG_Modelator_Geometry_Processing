@@ -16,7 +16,6 @@ private:
     QVector3D normal;
 
 
-
 public:
     Face();
 
@@ -36,6 +35,7 @@ public:
     QVector3D getNormal();
     void setNormal(const QVector3D &value);
     void setNormal(float posx, float posy, float posz);
+
 };
 
 #endif // FACE_H

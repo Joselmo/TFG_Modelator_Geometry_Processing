@@ -4,7 +4,7 @@
 #include <QVector2D>
 #include <QVector3D>
 #include "vertex.h"
-#include <QVector>
+#include <vector>
 #include "halfedge.h"
 #include "connectivity.h"
 #include "face.h"
@@ -24,7 +24,7 @@
 using namespace OpenMesh;
 // ----------------------------------------------------------------------------
 typedef TriMesh_ArrayKernelT<>  MyMesh;
-typedef  std::priority_queue<float, std::vector<float>, std::greater<float>> priority_q;
+typedef  std::priority_queue<HalfEdge, QVector<HalfEdge>, std::less<QVector<HalfEdge>::value_type> > priority_q;
 
 // ----------------------------------------------------------------------------
 
@@ -77,7 +77,7 @@ public:
 
     /**
      * @brief getIndices
-     * @return devuelve el Qvector<int> de indices de la malla.
+     * @return devuelve el QVector<int> de indices de la malla.
      */
     QVector<Face> getIndices() const;
 
@@ -121,7 +121,7 @@ public:
      * @brief getHalf_edges devuelve un puntero al vector de semi-aristas
      * @return
      */
-    QVector<HalfEdge>* getHalf_edges();
+    QVector<HalfEdge> *getHalf_edges();
 };
 
 #endif // MALLA_H

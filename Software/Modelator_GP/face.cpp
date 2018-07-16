@@ -1,8 +1,5 @@
 #include "face.h"
 
-
-
-
 Face::Face()
 {
 
@@ -125,4 +122,5 @@ void Face::clear()
 {
     vertices.clear();
 }
+
 

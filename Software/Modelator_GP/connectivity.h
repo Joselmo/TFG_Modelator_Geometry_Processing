@@ -8,7 +8,7 @@
 #include <queue>
 #include <vector>
 
-typedef  std::priority_queue<float, std::vector<float>, std::greater<float>> priority_q;
+typedef  std::priority_queue<HalfEdge, QVector<HalfEdge>, std::less<QVector<HalfEdge>::value_type> > priority_q;
 
 class Malla;
 class Connectivity{
@@ -18,6 +18,8 @@ private:
     void angleVector(const QVector3D &_u, const QVector3D &_v, float &_result);
 
     void generateLowerErrorQueue(Malla &_mesh);
+
+    void calc_One_Ring_Error(HalfEdge *_he);
 
 public:
     Connectivity();
@@ -33,6 +35,8 @@ public:
     void collapse_loop(HalfEdge _h, QVector<HalfEdge> *_he);
 
     void generateLowerErrorQueue(Malla *_mesh, priority_q &_pq);
+
+    void decimation(Malla *_mesh, float _reduction);
 
 
 

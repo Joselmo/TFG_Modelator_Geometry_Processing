@@ -18,40 +18,87 @@ void Connectivity::angleVector(QVector3D const &_u, QVector3D const &_v, float &
 
 }
 
+void Connectivity::calc_One_Ring_Error(HalfEdge *_he){
+    float error_calculated = 0;
+    float angle = 0;
+    Face *face_source = _he->getFace();
+    Face *face;
+    for(HalfEdge heo: _he->getVertex_out()->getAllHalfEdgesIn()){
+
+        face = heo.getFace();
+        if( face_source->getId() != face->getId()){
+            angleVector(face_source->getNormal(),face->getNormal(),angle);
+            error_calculated += angle;
+//            std::cout<<face->getId()<<"="<<angle<<"\t";
+        }
+
+    }
+
+    _he->setError_remove(error_calculated);
+
+}
+
 void Connectivity::generateLowerErrorQueue(Malla *_mesh, priority_q &_pq){
 
-    priority_q heLowerError;
+
     // Genero las Normales de cara por si han cambiado
     _mesh->generateSurfaceNormals();
 
     float error_calculated = 0;
-    float angle = 0;
-    Face *face_source;
-    Face *face;
     //Calculamos el error producido por cada HE si se elimina
     // Se extrae las he y sus caras implicadas en el cálculo
 //    for(HalfEdge *he:_mesh->getHalf_edges()){
     QVector<HalfEdge>::iterator he;
     for(he=_mesh->getHalf_edges()->begin();
         he != _mesh->getHalf_edges()->end(); ++he){
-        angle = 0;
         error_calculated = 0;
-        face_source = he->getFace();
-        std::cout<<he->getId()<<"#"<<face_source->getId()<<"-";
-        for(HalfEdge heo: he->getVertex_out()->getAllHalfEdgesIn()){
-
-            face = heo.getFace();
-            if( face_source->getId() != face->getId()){
-                angleVector(face_source->getNormal(),face->getNormal(),angle);
-                error_calculated += angle;
-                std::cout<<face->getId()<<"="<<angle<<"\t";
-            }
-
-        }
-        std::cout<<"&&"<<error_calculated<<std::endl;
-        heLowerError.push(error_calculated);
+//        std::cout<<he->getId()<<"#"<<face_source->getId()<<"-";
+        calc_One_Ring_Error(he);
+//        std::cout<<"&&"<<error_calculated<<std::endl;
+        _pq.push(*he);
 
     }
+
+
+}
+
+void Connectivity::decimation(Malla *_mesh, float _reduction){
+
+    int n_triangles = _mesh->getIndices().size();
+    int n_triangles_final = n_triangles * _reduction;
+    int reductions = (n_triangles - n_triangles_final) / 2;
+
+    std::cout<<"ntf="<<n_triangles_final
+            <<"nt="<<n_triangles
+            <<"_red="<<_reduction
+            <<std::endl;
+
+    std::cout<<"Nº of reductions="<<reductions<<std::endl;
+
+    priority_q pq;
+    generateLowerErrorQueue( _mesh, pq);
+
+//    std::cout<<"Priority QUEUE: "<<std::endl;
+//    while(!pq.empty()) {
+//           std::cout << pq.top().getId() << "("<< pq.top().getError_remove()<<") - " ;
+//           pq.pop();
+//       }
+//    std::cout << '\n';
+
+    HalfEdge _he;
+    for(int i=0; i < reductions; i++){
+        _he = pq.top();
+        // Simplified the lower error half edge
+        collapse(_he,_mesh->getHalf_edges(),_mesh);
+
+        // Remove from the list
+        pq.pop();
+
+        generateLowerErrorQueue( _mesh, pq);
+    }
+
+
+
 
 }
 
@@ -92,13 +139,17 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
 
 
     QVector<Face>::iterator it_f;
-    for(it_f = _mesh->indices.begin(); it_f == _mesh->indices.end();++it_f){
-        if(it_f->getId() == fh->getId())
+    for(it_f = _mesh->indices.begin(); it_f != _mesh->indices.end();++it_f){
+//        std::cout<<" "<<it_f->getId();
+        if(it_f->getId() == fh->getId()){
             _mesh->indices.erase(it_f);
+//            std::cout<<"cara="<<it_f->getId()<<" eliminada"<<std::endl;
+        }
     }
-    for(it_f = _mesh->indices.begin(); it_f == _mesh->indices.end();++it_f){
-        if(it_f->getId() == o->getId())
+    for(it_f = _mesh->indices.begin(); it_f != _mesh->indices.end();++it_f){
+        if(it_f->getId() == fo->getId())
             _mesh->indices.erase(it_f);
+//            std::cout<<"cara="<<it_f->getId()<<" eliminada"<<std::endl;
     }
 
     for(Face f:_mesh->indices){
@@ -123,11 +174,11 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
 
     //Elimino las semi-aristas implicadas
     QVector<HalfEdge>::iterator it;
-    for(it = _he->begin(); it == _he->end();++it){
+    for(it = _he->begin(); it != _he->end();++it){
         if(it->getId() == h.getId())
             _he->erase(it);
     }
-    for(it = _he->begin(); it == _he->end();++it){
+    for(it = _he->begin(); it != _he->end();++it){
         if(it->getId() == o->getId())
             _he->erase(it);
     }
@@ -137,8 +188,9 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
     for(HalfEdge hivo:vo->getAllHalfEdgesIn()){
         //Nivel Indices y vértices
         hivo.getFace()->remplaceVertex((*vo),(*vh));
-        std::cout<<"check face="<<hivo.getFace()->getId()<<"\t";
-        std::cout<<hivo.getId()<<std::endl;
+        hivo.getFace()->generateSurfaceNormal();
+//        std::cout<<"check face="<<hivo.getFace()->getId()<<"\t";
+//        std::cout<<hivo.getId()<<std::endl;
         //Nivel Semi-aristas
         hivo.setVertex_in(vh);
     }
@@ -149,7 +201,7 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
     for(HalfEdge hovo:vo->getAllHalfEdgesOut()){
         //Nivel Indices y vértices
         hovo.getFace()->remplaceVertex((*vo),(*vh));
-
+        hovo.getFace()->generateSurfaceNormal();
         // Nivel semi-aristas
         hovo.setVertex_out(vh);
 
@@ -160,7 +212,7 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
     std::cout<<"colapso vértice "<<vo->getId()<<" en "<<vh->getId()<<std::endl;
     _mesh->vertices.remove(vo->getId());
     QVector<Vertex>::iterator it_v;
-    for(it_v = _mesh->vertices.begin(); it_v == _mesh->vertices.end();++it_v){
+    for(it_v = _mesh->vertices.begin(); it_v != _mesh->vertices.end();++it_v){
         if(it_v->getId() == vo->getId())
             _mesh->vertices.erase(it_v);
     }
@@ -173,6 +225,8 @@ void Connectivity::collapse(HalfEdge _h, QVector<HalfEdge> *_he,Malla *_mesh){
     // Si la siguiente de la siguiente de la opuesta es la misma es un ciclo
     if( on->getNext_halfedge()->getNext_halfedge()->getId() == on->getId())
         collapse_loop((*on),_he);
+
+
 
 }
 
@@ -205,7 +259,7 @@ void Connectivity::collapse_loop(HalfEdge _h, QVector<HalfEdge> *_he){
 
 
         QVector<HalfEdge>::iterator it;
-        for(it = _he->begin(); it == _he->end();++it){
+        for(it = _he->begin(); it != _he->end();++it){
             if(it->getId()==h0.getId() || it->getId() == o0->getId())
                 _he->erase(it);
         }

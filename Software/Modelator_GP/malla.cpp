@@ -103,7 +103,7 @@ void Malla::initGeometry(std::string _filename)
         point.setPosition(QVector3D(mesh.point( *v_it )[0],
                                     mesh.point( *v_it )[1],
                                     mesh.point( *v_it )[2]));
-        point.setId(  vertices.length() );
+        point.setId(  vertices.size() );
         vertices.push_back(point);
     }
 
@@ -118,21 +118,21 @@ void Malla::initGeometry(std::string _filename)
     for (f_it = mesh.faces_sbegin(); f_it!=f_end; ++f_it){
         //dentro de cada cara itero sobre sus referencias
         face.clear();
-        std::cout<<"Faces:";
+
         for (fv_it = mesh.fv_iter(*f_it);fv_it.is_valid();++fv_it){
             //std::cout<<fv_it->idx()<<"\t";
             face.addVertex(vertices[fv_it->idx()]);
 
         }
-        std::cout<<(*f_it).idx()<<", ";
+        //std::cout<<(*f_it).idx()<<", ";
         face.setId((*f_it).idx());
-        MyMesh::Normal normal = mesh.calc_face_normal((*f_it));
+       // MyMesh::Normal normal = mesh.calc_face_normal((*f_it));
 
         face.generateSurfaceNormal();
-        std::cout<<" n="<<normal<<"\t ";
-        std::cout<<" normal:"<<face.getNormal()[0]<<",";
-        std::cout<<face.getNormal()[1]<<",";
-        std::cout<<face.getNormal()[2]<<std::endl;
+//        std::cout<<" n="<<normal<<"\t ";
+//        std::cout<<" normal:"<<face.getNormal()[0]<<",";
+//        std::cout<<face.getNormal()[1]<<",";
+//        std::cout<<face.getNormal()[2]<<std::endl;
         indices.push_back(face);
     }
     std::cout<<std::endl;
@@ -156,15 +156,19 @@ void Malla::initGeometry(std::string _filename)
         he.setId((*h_it).idx());
         he.setVertex_in(&vertices[mesh.to_vertex_handle(*h_it).idx()]);
         he.setVertex_out(&vertices[mesh.from_vertex_handle(*h_it).idx()]);
-        he.setFace(&indices[mesh.face_handle(*h_it).idx()]);
-//        he.setNext_halfedge(mesh.next_halfedge_handle(*h_it).idx());
-//        he.setPrevious(mesh.prev_halfedge_handle(*h_it).idx());
-//        he.setOposite(mesh.opposite_halfedge_handle(*h_it).idx());
-        half_edges.push_back(he);
+        std::cout<<"indices size="<<indices.size()<<" mesh= "<<mesh.face_handle(*h_it).idx()<<std::endl;
+        if(mesh.face_handle(*h_it).idx() != -1){
+            he.setFace(&indices[mesh.face_handle(*h_it).idx()]);
+    //        he.setNext_halfedge(mesh.next_halfedge_handle(*h_it).idx());
+    //        he.setPrevious(mesh.prev_halfedge_handle(*h_it).idx());
+    //        he.setOposite(mesh.opposite_halfedge_handle(*h_it).idx());
+            half_edges.push_back(he);
 
-        //Conexiones desde el vértice
-        vertices[mesh.to_vertex_handle(*h_it).idx()].addHalfEdgeIn(he);
-        vertices[mesh.from_vertex_handle(*h_it).idx()].addHalfEdgeOut(he);
+            //Conexiones desde el vértice
+            vertices[mesh.to_vertex_handle(*h_it).idx()].addHalfEdgeIn(he);
+            vertices[mesh.from_vertex_handle(*h_it).idx()].addHalfEdgeOut(he);
+
+        }
     }
     std::cout<<std::endl;
 //    for(HalfEdge h:half_edges){
@@ -209,14 +213,13 @@ void Malla::initGeometry(std::string _filename)
 //    }
 
     generateGeometry();
-    priority_q pq;
-    con.generateLowerErrorQueue(this, pq);
-    std::cout<<"Priority QUEUE: "<<std::endl;
-    while(!pq.empty()) {
-           std::cout << pq.top() << " ";
-           pq.pop();
-       }
-       std::cout << '\n';
+//    priority_q pq;
+//    con.generateLowerErrorQueue(this, pq);
+
+   con.decimation(this,0.5f);
+
+
+
 
 }
 
@@ -230,7 +233,7 @@ void Malla::generateSurfaceNormals(){
 void Malla::generateGeometry()
 {
 
-    if(indices.isEmpty() || vertices.isEmpty()){
+    if(indices.empty() || vertices.empty()){
         printf("ERROR: no se puede genera la geometria sin los vertices o indices");
     }else{
         sg_vertices.clear();
