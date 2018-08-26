@@ -7,7 +7,7 @@
 
 void Window::loadObject(){
     std::cout <<"Cargando="<<objectactive<<std::endl;
-    vbo->allocate(objects[objectactive].getPointSg_vertexes(), objects[objectactive].getSizeOfGeometry());
+    vbo->allocate(objects[objectactive].getPointSgVertexes(), objects[objectactive].getSizeOfGeometry());
 }
 
 Window::Window()

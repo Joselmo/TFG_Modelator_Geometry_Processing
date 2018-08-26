@@ -55,12 +55,12 @@ public:
      * @brief getSg_vertexes
      * @return devuelve el QVector<Vertex> de vértices ordenados por indices
      */
-    QVector<Vertex> getSg_vertexes() const;
+    QVector<Vertex> getSgVertexes() const;
     /**
      * @brief setSg_vertexes
      * @param value array de vértices ordenados para dibujar.
      */
-    void setSg_vertexes(const QVector<Vertex> &_value);
+    void setSgVertexes(const QVector<Vertex> &_value);
 
     /**
      * @brief getVertices
@@ -91,7 +91,7 @@ public:
      * @brief getPointSg_vertexes
      * @return devuelve un puntero a la primera posición del array de vértices ordenados
      */
-    Vertex *getPointSg_vertexes();
+    Vertex *getPointSgVertexes();
 
     /**
      * @brief getSizeOfGeometry
@@ -121,7 +121,7 @@ public:
      * @brief getHalf_edges devuelve un puntero al vector de semi-aristas
      * @return
      */
-    QVector<HalfEdge> *getHalf_edges();
+    QVector<HalfEdge> *getHalfEdges();
 };
 
 #endif // MALLA_H

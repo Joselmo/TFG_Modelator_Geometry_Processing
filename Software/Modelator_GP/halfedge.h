@@ -45,43 +45,43 @@ public:
      * @brief setFace
      * @param value referencia a la posición de la cara incidente
      */
-    void setFace(Face *value);
+    void setFace(Face *_value);
 
     /**
      * @brief getVertex_in
      * @return devuelve la posición del vértice al que apunta.
      */
-    Vertex *getVertex_in();
+    Vertex *getVertexIn();
 
     /**
      * @brief setVertex_in
      * @param value referencia a la posición del vértice al que apunta
      */
-    void setVertex_in(Vertex *value);
+    void setVertexIn(Vertex *_value);
 
     /**
      * @brief getVertex_out
      * @return devuelve la posición del vértice del que procede.
      */
-    Vertex *getVertex_out();
+    Vertex *getVertexOut();
 
     /**
      * @brief setVertex_out
      * @param value referencia a la posición del vértice del que procede
      */
-    void setVertex_out(Vertex *value);
+    void setVertexOut(Vertex *_value);
 
     /**
      * @brief getNext_halfedge
      * @return la posición del array de la siguiente semi-arista
      */
-    HalfEdge *getNext_halfedge();
+    HalfEdge *getNextHalfedge();
 
     /**
      * @brief setNext_halfedge
      * @param value posición del array de semi-aristas aladas de la siguiente semi-arista.
      */
-    void setNext_halfedge(HalfEdge *value);
+    void setNextHalfedge(HalfEdge *_value);
 
     /**
      * @brief getOposite
@@ -93,7 +93,7 @@ public:
      * @brief setOposite
      * @param value posición del array de semi-aristas aladas de la semi-arista opuesta.
      */
-    void setOposite(HalfEdge *value);
+    void setOposite(HalfEdge *_value);
 
     /**
      * @brief getPrevious
@@ -105,13 +105,13 @@ public:
      * @brief setPrevious
      * @param value posición del array de semi-aristas aladas de la semi-arista anterior.
      */
-    void setPrevious(HalfEdge *value);
+    void setPrevious(HalfEdge *_value);
 
 
     int getId() const;
-    void setId(int value);
-    float getError_remove() const;
-    void setError_remove(float value);
+    void setId(int _value);
+    float getErrorRemove() const;
+    void setErrorRemove(float _value);
 
     //Overload the < operator.
     friend bool operator< (const HalfEdge& _he1, const HalfEdge &_he2)

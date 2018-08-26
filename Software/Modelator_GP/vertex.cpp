@@ -9,9 +9,9 @@ int Vertex::getId() const
     return id;
 }
 
-void Vertex::setId(int value)
+void Vertex::setId(int _value)
 {
-    id = value;
+    id = _value;
 }
 
 Vertex::Vertex() {}

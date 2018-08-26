@@ -2,7 +2,7 @@
 #define CAMERA3D_H
 
 /**
- * @brief Clase para el control de transformaciones
+ * @brief Clase para el control de la cámara
  * @author http://www.trentreed.net/blog/qt5-opengl-part-3b-camera-control/
  */
 

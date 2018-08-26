@@ -5,19 +5,19 @@ int HalfEdge::getId() const
     return id;
 }
 
-void HalfEdge::setId(int value)
+void HalfEdge::setId(int _value)
 {
-    id = value;
+    id = _value;
 }
 
-float HalfEdge::getError_remove() const
+float HalfEdge::getErrorRemove() const
 {
     return error_remove;
 }
 
-void HalfEdge::setError_remove(float value)
+void HalfEdge::setErrorRemove(float _value)
 {
-    error_remove = value;
+    error_remove = _value;
 }
 
 HalfEdge::HalfEdge(){
@@ -29,39 +29,39 @@ Face *HalfEdge::getFace()
     return face;
 }
 
-void HalfEdge::setFace(Face *value)
+void HalfEdge::setFace(Face *_value)
 {
-    face = value;
+    face = _value;
 }
 
-Vertex *HalfEdge::getVertex_in()
+Vertex *HalfEdge::getVertexIn()
 {
     return vertex_in;
 }
 
-void HalfEdge::setVertex_in(Vertex *value)
+void HalfEdge::setVertexIn(Vertex *_value)
 {
-    vertex_in = value;
+    vertex_in = _value;
 }
 
-Vertex *HalfEdge::getVertex_out()
+Vertex *HalfEdge::getVertexOut()
 {
     return vertex_out;
 }
 
-void HalfEdge::setVertex_out(Vertex *value)
+void HalfEdge::setVertexOut(Vertex *_value)
 {
-    vertex_out = value;
+    vertex_out = _value;
 }
 
-HalfEdge *HalfEdge::getNext_halfedge()
+HalfEdge *HalfEdge::getNextHalfedge()
 {
     return next_halfedge;
 }
 
-void HalfEdge::setNext_halfedge(HalfEdge *value)
+void HalfEdge::setNextHalfedge(HalfEdge *_value)
 {
-    next_halfedge = value;
+    next_halfedge = _value;
 }
 
 HalfEdge *HalfEdge::getOposite()
@@ -69,9 +69,9 @@ HalfEdge *HalfEdge::getOposite()
     return oposite;
 }
 
-void HalfEdge::setOposite(HalfEdge *value)
+void HalfEdge::setOposite(HalfEdge *_value)
 {
-    oposite = value;
+    oposite = _value;
 }
 
 HalfEdge *HalfEdge::getPrevious()
@@ -79,9 +79,9 @@ HalfEdge *HalfEdge::getPrevious()
     return previous;
 }
 
-void HalfEdge::setPrevious(HalfEdge *value)
+void HalfEdge::setPrevious(HalfEdge *_value)
 {
-    previous = value;
+    previous = _value;
 }
 
 

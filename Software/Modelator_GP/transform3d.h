@@ -1,5 +1,9 @@
 #ifndef TRANSFORM3D_H
 #define TRANSFORM3D_H
+/**
+ * @brief Clase para el control de transformaciones
+ * @author http://www.trentreed.net/blog/qt5-opengl-part-3b-camera-control/
+ */
 
 
 #include <QVector3D>

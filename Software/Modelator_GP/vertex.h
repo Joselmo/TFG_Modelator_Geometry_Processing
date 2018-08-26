@@ -50,7 +50,7 @@ public:
   void removeHalfEdgeOut(HalfEdge &_half_edge);
 
   int getId() const;
-  void setId(int value);
+  void setId(int _value);
 
 
   // OpenGL Helpers

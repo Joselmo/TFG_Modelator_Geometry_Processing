@@ -7,6 +7,7 @@
 #include <functional>
 #include <queue>
 #include <vector>
+#include <cmath>
 
 typedef  std::priority_queue<HalfEdge, QVector<HalfEdge>, std::less<QVector<HalfEdge>::value_type> > priority_q;
 
@@ -19,7 +20,7 @@ private:
 
     void generateLowerErrorQueue(Malla &_mesh);
 
-    void calc_One_Ring_Error(HalfEdge *_he);
+    void calcOneRingError(HalfEdge *_he);
 
 public:
     Connectivity();

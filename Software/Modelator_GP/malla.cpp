@@ -1,7 +1,7 @@
 
 #include "malla.h"
 
-QVector<HalfEdge> *Malla::getHalf_edges() {
+QVector<HalfEdge> *Malla::getHalfEdges() {
     return &half_edges;
 }
 
@@ -34,12 +34,12 @@ Malla& Malla::operator=(const Malla& _malla){
 }
 
 
-QVector<Vertex> Malla::getSg_vertexes() const
+QVector<Vertex> Malla::getSgVertexes() const
 {
     return sg_vertices;
 }
 
-void Malla::setSg_vertexes(const QVector<Vertex> &_value)
+void Malla::setSgVertexes(const QVector<Vertex> &_value)
 {
     sg_vertices = _value;
 }
@@ -64,7 +64,7 @@ void Malla::setIndices(const QVector<Face> &_value)
     indices = _value;
 }
 
-Vertex* Malla::getPointSg_vertexes()
+Vertex* Malla::getPointSgVertexes()
 {
     return &(sg_vertices[0]);
 }
@@ -154,8 +154,8 @@ void Malla::initGeometry(std::string _filename)
 //        std::cout<<"opposite_halfedge_handle=" << mesh.opposite_halfedge_handle(*h_it).idx() <<std::endl;
 
         he.setId((*h_it).idx());
-        he.setVertex_in(&vertices[mesh.to_vertex_handle(*h_it).idx()]);
-        he.setVertex_out(&vertices[mesh.from_vertex_handle(*h_it).idx()]);
+        he.setVertexIn(&vertices[mesh.to_vertex_handle(*h_it).idx()]);
+        he.setVertexOut(&vertices[mesh.from_vertex_handle(*h_it).idx()]);
         std::cout<<"indices size="<<indices.size()<<" mesh= "<<mesh.face_handle(*h_it).idx()<<std::endl;
         if(mesh.face_handle(*h_it).idx() != -1){
             he.setFace(&indices[mesh.face_handle(*h_it).idx()]);
@@ -168,6 +168,8 @@ void Malla::initGeometry(std::string _filename)
             vertices[mesh.to_vertex_handle(*h_it).idx()].addHalfEdgeIn(he);
             vertices[mesh.from_vertex_handle(*h_it).idx()].addHalfEdgeOut(he);
 
+        }else{
+            std::cout<<"Cara vacía:"<<mesh.face_handle(*h_it).idx()<<std::endl;
         }
     }
     std::cout<<std::endl;
@@ -180,7 +182,7 @@ void Malla::initGeometry(std::string _filename)
     for (MyMesh::HalfedgeIter h_it=mesh.halfedges_begin(); h_it!=mesh.halfedges_end(); ++h_it){
 
 
-        half_edges[(*h_it).idx()].setNext_halfedge(&half_edges[mesh.next_halfedge_handle(*h_it).idx()]);
+        half_edges[(*h_it).idx()].setNextHalfedge(&half_edges[mesh.next_halfedge_handle(*h_it).idx()]);
         half_edges[(*h_it).idx()].setPrevious(&half_edges[mesh.prev_halfedge_handle(*h_it).idx()]);
         half_edges[(*h_it).idx()].setOposite(&half_edges[mesh.opposite_halfedge_handle(*h_it).idx()]);
 

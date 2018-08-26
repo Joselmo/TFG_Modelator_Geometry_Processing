@@ -9,8 +9,8 @@ int Face::getId() const{
     return id;
 }
 
-void Face::setId(int value){
-    id = value;
+void Face::setId(int _value){
+    id = _value;
 }
 
 //QVector3D Face::getNormal() const{
@@ -25,8 +25,8 @@ void Face::setNormal(const QVector3D &value){
     normal = value;
 }
 
-void Face::setNormal(float posx, float posy, float posz){
-    normal = QVector3D(posx,posy,posz);
+void Face::setNormal(float _posx, float _posy, float _posz){
+    normal = QVector3D(_posx,_posy,_posz);
 }
 
 
