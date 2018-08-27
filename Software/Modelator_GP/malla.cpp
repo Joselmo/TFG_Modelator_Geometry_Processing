@@ -218,7 +218,7 @@ void Malla::initGeometry(std::string _filename)
 //    priority_q pq;
 //    con.generateLowerErrorQueue(this, pq);
 
-   con.decimation(this,0.5f);
+   con.decimation(this,0.8f);
 
 
 

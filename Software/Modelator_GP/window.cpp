@@ -14,9 +14,9 @@ Window::Window()
 {
     m_transform.translate(0.0f, 0.0f, -5.0f);
 
-    cubo.initGeometry("beethoven.ply");
+    cubo.initGeometry("cube.ply");
    // esfera.initGeometry("sphere.ply");
-    solidmode = false;
+    solidmode = true;
     objectactive = 0;
     objects[objectactive]= cubo;
     //objects[objectactive+1]= esfera;
@@ -61,10 +61,11 @@ void Window::initializeGL()
     m_object.create();
     m_object.bind();
     int vertexLocation = m_program->attributeLocation("position");
+    int colorLocation = m_program->attributeLocation("color");
     m_program->enableAttributeArray(vertexLocation);
     //m_program->enableAttributeArray(1);
     m_program->setAttributeBuffer(vertexLocation, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
-    //m_program->setAttributeBuffer(1, GL_FLOAT, Vertex::colorOffset(), Vertex::ColorTupleSize, Vertex::stride());
+    m_program->setAttributeBuffer(colorLocation, GL_FLOAT, Vertex::colorOffset(), Vertex::ColorTupleSize, Vertex::stride());
 
     // Release (unbind) all
     m_object.release();

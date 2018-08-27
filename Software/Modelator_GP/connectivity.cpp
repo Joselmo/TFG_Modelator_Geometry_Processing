@@ -85,8 +85,19 @@ void Connectivity::decimation(Malla *_mesh, float _reduction){
     generateLowerErrorQueue( _mesh, pq);
 
     pq1 = pq;
+    HalfEdge _he;
+    float r = 1;
+    float g = 0;
+    float b = 0;
 
-
+    for(int i=0; i < pq.size(); i++){
+        _he = pq.top();
+        _he.getVertexIn()->setColor(QVector3D(r,g,b));
+        r -= 0.1f;
+        g +=0.1f;
+        b += 0.2f;
+    }
+/*
     std::cout<<"Priority QUEUE: "<<std::endl;
     while(!pq1.empty()) {
            std::cout << pq1.top().getId() << "("<< pq1.top().getErrorRemove()<<") - " ;
@@ -110,10 +121,11 @@ void Connectivity::decimation(Malla *_mesh, float _reduction){
 
         // Remove from the list
         pq.pop();
-        //generateLowerErrorQueue( _mesh, pq);
+        generateLowerErrorQueue( _mesh, pq);
+
     }
 
-
+*/
 
 
 }
