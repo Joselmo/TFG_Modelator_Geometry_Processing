@@ -1,7 +1,7 @@
 #version 330
 
-in highp vec4 vColor;
-out highp vec4 fColor;
+in  vec4 vColor;
+out vec4 fColor;
 
 void main()
 {

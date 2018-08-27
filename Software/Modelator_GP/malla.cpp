@@ -96,7 +96,7 @@ void Malla::initGeometry(std::string _filename)
 
     // iterate over all vertices
     Vertex point;
-    point.setColor(QVector3D(1.0f,1.0f,1.0f));
+    point.setColor(QVector3D(1.0f,0.0f,1.0f));
     vertices.reserve(mesh.n_vertices());
     for (MyMesh::VertexIter v_it=mesh.vertices_begin(); v_it!=mesh.vertices_end(); ++v_it){
         //std::cout << "Vertex #" << *v_it << ": " << mesh.point( *v_it )[0]<<std::endl;
