@@ -36,81 +36,101 @@ public:
 
 
     /**
-     * @brief getFace
-     * @return devuelve la posición de la cara incidente
+     * @brief devuelve una referencia a la cara de la
+     * que forma parte la semi-arista.
+     * @return referencia a la cara.
      */
     Face* getFace();
 
     /**
-     * @brief setFace
-     * @param value referencia a la posición de la cara incidente
+     * @brief establece la cara de la que forma parte la semi-arista.
+     * @param _value referencia a la cara de la que forma parte.
      */
     void setFace(Face *_value);
 
     /**
-     * @brief getVertex_in
-     * @return devuelve la posición del vértice al que apunta.
+     * @brief Obtiene el vértice sobre el que incide la semi-arista
+     * @return devuelve una referencia del vértice al que apunta.
      */
     Vertex *getVertexIn();
 
     /**
-     * @brief setVertex_in
-     * @param value referencia a la posición del vértice al que apunta
+     * @brief establece el vértice sobre el que indice la semi-arista
+     * @param _value referencia del vértice al que apunta.
      */
     void setVertexIn(Vertex *_value);
 
     /**
-     * @brief getVertex_out
-     * @return devuelve la posición del vértice del que procede.
+     * @brief Obtiene el vértice del que sale la semi-arista
+     * @return devuelve una referencia del vértice del que sale la semi-arista.
      */
     Vertex *getVertexOut();
 
     /**
-     * @brief setVertex_out
-     * @param value referencia a la posición del vértice del que procede
+     * @brief establece el vértice origen de la semi-arista
+     * @param _value referencia del vértice origen de la semi-arista.
      */
     void setVertexOut(Vertex *_value);
 
     /**
-     * @brief getNext_halfedge
-     * @return la posición del array de la siguiente semi-arista
+     * @brief Obtiene la siguiente semi-arista, dentro de la misma cara.
+     * @return devuelve una referencia de la siguiente semi-arista.
      */
     HalfEdge *getNextHalfedge();
 
     /**
-     * @brief setNext_halfedge
-     * @param value posición del array de semi-aristas aladas de la siguiente semi-arista.
+     * @brief establece la siguiente semi-arista.
+     * @param _value referencia de la siguiente semi-arista.
      */
     void setNextHalfedge(HalfEdge *_value);
 
     /**
-     * @brief getOposite
-     * @return la posición del array de la semi-arista opuesta.
+     * @brief obtiene la semi-arista opuesta.
+     * @return devuelve una referencia de la semi-arista opuesta.
      */
     HalfEdge *getOposite();
 
     /**
-     * @brief setOposite
-     * @param value posición del array de semi-aristas aladas de la semi-arista opuesta.
+     * @brief establece la semi-arista opuesta
+     * @param _value referencia de la semi-arista opuesta.
      */
     void setOposite(HalfEdge *_value);
 
     /**
-     * @brief getPrevious
-     * @return la posición del array de semi-aristas aladas de la anterior semi-arista
+     * @brief obtiene la semi-arista anterior, dentro de la misma cara.
+     * @return devuelve una referencia de la anterior semi-arista.
      */
     HalfEdge* getPrevious();
 
     /**
-     * @brief setPrevious
-     * @param value posición del array de semi-aristas aladas de la semi-arista anterior.
+     * @brief establece la semi-arista anterior.
+     * @param _value referencia de la semi-arista anterior.
      */
     void setPrevious(HalfEdge *_value);
 
-
+    /**
+     * @brief obtiene el Id de la semi-arista
+     */
     int getId() const;
+
+    /**
+     * @brief establece el Id de la semi-arista
+     * @param _value id de la semi-arista.
+     */
     void setId(int _value);
+
+    /**
+     * @brief obtiene el error que produce en la malla si se elimina la semi-arista
+     *
+     */
     float getErrorRemove() const;
+
+    /**
+     * @brief establece el error que se produce en la malla si se
+     * elimina la semi-arista.
+     *
+     * @param _value error de eliminar la semi-arista.
+     */
     void setErrorRemove(float _value);
 
     //Overload the < operator.
@@ -122,6 +142,10 @@ public:
     friend bool operator> (const HalfEdge& _he1, const HalfEdge &_he2)
     {
         return _he1.error_remove < _he2.error_remove;
+    }
+
+    bool operator==(const HalfEdge &rhs) const {
+           return rhs.id == this->id;
     }
 
 };
