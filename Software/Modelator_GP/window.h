@@ -49,7 +49,7 @@ private:
   Camera3D m_camera;
   Transform3D m_transform;
 
-  Malla cubo;
+  Malla objeto;
   Malla esfera;
   Malla objects[2];
   //Malla bethoven;

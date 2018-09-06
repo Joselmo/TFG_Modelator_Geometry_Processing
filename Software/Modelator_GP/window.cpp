@@ -14,11 +14,11 @@ Window::Window()
 {
     m_transform.translate(0.0f, 0.0f, -5.0f);
 
-    cubo.initGeometry("big_dodge.ply");
+    objeto.initGeometry("beethoven.ply");
    // esfera.initGeometry("sphere.ply");
     solidmode = false;
     objectactive = 0;
-    objects[objectactive]= cubo;
+    objects[objectactive]= objeto;
     //objects[objectactive+1]= esfera;
 
 
