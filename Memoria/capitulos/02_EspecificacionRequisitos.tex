@@ -1,51 +1,84 @@
-\chapter*{Especificación de requisitos}
+\chapter{ Especificación de requisitos}
 
-\section*{1. Objetivos}
+\section{Objetivos}
 
 \begin{enumerate}[label=\textbf{\textit{OBJ-\arabic*}}]
-	\item El sistema a desarrollar es un motor gráfico capaz de renderizar y mostrar elementos geométricos al usuario.
-	\item El motor gráfico debe permitir la interacción con el usuario de una forma cómoda y agradable.
+	\item El sistema a desarrollar es un motor gráfico capaz de renderizar y mostrar elementos geométricos al usuario a partir de un fichero con formáto ply que contenga una malla de triángulos.
+	\item El motor gráfico debe permitir la interacción con el usuario de una forma cómoda y agradable mediante la interfaz de usuario que muestre la malla en su estado actual y una cámara para poder visualizarla desde el ángulo deseado.
+	\item Estudio e implementación de algoritmos de procesado geométrico para la simplificación de una malla mediante la reducción de aristas y caras. 
+	\item Implementación de la estructura de datos de semi-aristas aladas con las operaciones necesarias para una correcta navegación e interacción con la malla de triángulos.
+	\item Implementación y análisis del algoritmo de procesado geométrico ``Decimation'' con varias mallas de triángulos. Donde el usuario pueda especificar una tasa de reducción que se vaya a aplicar a la malla.
 	
 \end{enumerate}
 
-\section*{2. Requisitos Funcionales}
+\newpage
+\section{ Requisitos Funcionales}
 
 
-\begin{enumerate}[label=\textbf{\textit{RF-\arabic*}}]
-	\item Almacenar mallas de triángulos.
+\begin{enumerate}[label=\textbf{\textit{RF-\arabic*}},ref=RF-\arabic*]
+	\item \label{RF1}Almacenar mallas de triángulos.
 	
 	\begin{enumerate}[label*=\textbf{\textit{.\arabic*}}]
-		\item \textit{Almacenar los vértices de la malla.} El modelador tiene una estructura de datos para la manipulación de los vértices.
-		\item \textit{Almacenar las caras que componen la malla.} El modelador almacena las caras de la malla en una estructura de datos adecuada.
-		\item \textit{Almacenar las aristas de la malla.} El modelador posee una estructura de datos basada en semi-aristas aladas para las aristas. 
+		\item \textit{Almacenar los vértices de la malla.} El modelador tiene una estructura de datos para la manipulación de los vértices \ref{RI1}, \ref{RI2}. 
+		\item \textit{Almacenar las caras que componen la malla.} El modelador almacena las caras de la malla en una estructura de datos adecuada \ref{RI3}.
+		\item \textit{Almacenar las aristas de la malla.} El modelador posee una estructura de datos basada en semi-aristas aladas para las aristas \ref{RI2}. 
 	\end{enumerate}
 	
-	\item Lectura de mallas de triángulos.
-	
-	\item Mostrar información de mallas de triángulos.
-	
-	\item Interacción con la malla.
+	\item Lectura de mallas de triángulos \ref{RI3}.
 		\begin{enumerate}[label*=\textbf{\textit{.\arabic*}}]
-		\item \textit{Seleccionar un vértice de la malla} El modelador permite seleccionar un vértice de la malla.
-		\item \textit{Almacenar las caras que componen la malla.} El modelador almacena las caras de la malla en una estructura de datos adecuada.
-		\item \textit{Almacenar las aristas de la malla.} El modelador posee una estructura de datos basada en semi-aristas aladas para las aristas. 
-	\end{enumerate}
+		\item \textit{Leer ficheros en formato ``Polygon File Format''.} El modelador tiene que poder leer de un fichero externo con el formato ``Polygon File Format'', sin perder la información contenida en el fichero.
+		\end{enumerate}
 	
+	\item Interacción con la escena 3D \ref{RI3}.
+	\begin{enumerate}[label*=\textbf{\textit{.\arabic*}}]
+		\item \textit{Poder tener interacción con la escena 3D.} La API genera una escena donde se muestran mallas 3D y el usuario tiene que poder navegar por la escena.
+	\end{enumerate}
+
+	
+	\item Mostrar información al usuario de mallas de triángulos.
+	\begin{enumerate}[label*=\textbf{\textit{.\arabic*}}]
+		\item \textit{Número de triangulos.} Mostrar al usuario el número de vértices que contiene la malla actual.  
+		\item \textit{Número de aristas.} Mostrar al usuario el número de aristas que contiene la malla actual.
+		\item \textit{Número de caras.} Mostrar al usuario el número de caras que contine la malla actual.
+		
+	\end{enumerate}
+			
+	
+	\item Realizar operaciones de procesado geométrico sobre la malla.
+		\begin{enumerate}[label*=\textbf{\textit{.\arabic*}}]
+		\item \textit{Converger un vértice en otro.} El modelador tiene que permitir converger un vértice al vértice que apunta su semi-arista alada.
+		\item \textit{Optimización de una malla.} Mediante un parámetro de reducción optimizar la malla para que alcance una reducción del número de triángulos que la componen al deseado.
+		\end{enumerate}	
 	
 \end{enumerate}
 
 
-\section*{3. Requisitos No Funcionales}
+\section{ Requisitos No Funcionales}
 
 
-\begin{enumerate}[label=\textbf{\textit{RNF-\arabic*}}]
+\begin{enumerate}[label=\textbf{\textit{RNF-\arabic*}},ref=RNF-\arabic*]
 	\item Que el renderizado sea rápido.
 	\item Modularizar el código para su posible reutilización.
 	\item Que la interfaz sea agradable.
 	\item Tiene que ser intuitivo para el usuario.
+	\item La visualización de los datos ha de hacerse en tiempo real.
 	\item El código ha de ser abierto.
 	\item El código tiene que estar bien documentado.
-	\item Que los vértices seleccionados se diferencie de los vértices no seleccionados.
+	
+	
+	
+\end{enumerate}
+
+\section{ Requisitos de Información}
+
+
+\begin{enumerate}[label=\textbf{\textit{RI-\arabic*}},ref=RI-\arabic*]
+	\item \label{RI1} Vértices: Listado de vértices. Un vértice es una posición $XYZ$ y una referencia a la semi arista alada que incide en el vértice.  
+	\item \label{RI2} Semi-Arista alada: 
+	\item \label{RI3} Caras: Listado de 3-tuplas que hace referencia a los vércites que delimitan cada una de las caras.
+	\item \label{RI4} Normales de cara: vector unitario que define a dirección de la cara \cite{llcFaceVertexNormal}.
+	\item \label{RI5} Color de vértice: define el color en escala RGB de un vértice.
+	%\item \label{RI4} 
 	
 	
 	

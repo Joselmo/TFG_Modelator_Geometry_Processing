@@ -12,7 +12,8 @@
 #include <functional>
 #include <queue>
 #include <vector>
-
+#include <stdio.h>
+#include <stdlib.h>
 #include <iostream>
 #include <iterator>
 #include <string>

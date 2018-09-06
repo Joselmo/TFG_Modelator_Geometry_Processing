@@ -25,8 +25,11 @@
 \usepackage{enumerate}
 \usepackage{enumitem}
 \usepackage{longtable}
-
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
 \usepackage[pdfborder={000}]{hyperref} %referencia
+\usepackage{amsmath}
 
 % ********************************************************************
 % Re-usable information
@@ -65,9 +68,9 @@ pdfproducer = {pdflatex}
 \usepackage{url}
 \usepackage{colortbl,longtable}
 \usepackage[stable]{footmisc}
-%\usepackage{index}
+\usepackage{index}
 
-%\makeindex
+\makeindex
 %\usepackage[style=long, cols=2,border=plain,toc=true,number=none]{glossary}
 % \makeglossary
 
@@ -175,40 +178,44 @@ pdfproducer = {pdflatex}
 \begin{document}
 \input{portada/portada}
 \input{prefacios/prefacio}
-%\frontmatter
-%\tableofcontents
-%\listoffigures
+\frontmatter
+\tableofcontents
+\listoffigures
 %\listoftables
 %
-%\mainmatter
-%\setlength{\parskip}{5pt}
+\mainmatter
+\setlength{\parskip}{5pt}
 
-%\input{capitulos/01_Introduccion}
+\input{capitulos/01_Introduccion}
 %
 \input{capitulos/02_EspecificacionRequisitos}
 %
-%\input{capitulos/03_Planificacion}
+\input{capitulos/03_Planificacion}
 %
-%\input{capitulos/04_Analisis}
+\input{capitulos/04_Analisis}
 %
-%\input{capitulos/05_Diseno}
+\input{capitulos/05_Diseno}
 %
-%\input{capitulos/06_Implementacion}
+\input{capitulos/06_Implementacion}
 %
-%\input{capitulos/07_Pruebas}
+\input{capitulos/07_Pruebas}
 %
-%\input{capitulos/08_Conclusiones}
+\input{capitulos/08_Conclusiones}
 %
-%%\chapter{Conclusiones y Trabajos Futuros}
+\input{capitulos/09_TrabajosFuturos}
 %
 %
 %%\nocite{*}
-%\bibliography{bibliografia/bibliografia}\addcontentsline{toc}{chapter}{Bibliografía}
+\chapter*{}
+\bibliography{Bibliografia}
+\addcontentsline{toc}{chapter}{Bibliografía}
+\label{bibliografia}
+\bibliographystyle{plain}
 %\bibliographystyle{miunsrturl}
 %
-%\appendix
+\appendix
 %\input{apendices/manual_usuario/manual_usuario}
-%%\input{apendices/paper/paper}
+\input{apendices/anexo}
 %\input{glosario/entradas_glosario}
 % \addcontentsline{toc}{chapter}{Glosario}
 % \printglossary

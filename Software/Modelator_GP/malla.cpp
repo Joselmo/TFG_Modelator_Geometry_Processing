@@ -181,8 +181,12 @@ void Malla::initGeometry(std::string _filename){
     Connectivity con;
 
    std::cout<< "número de caras totales antes="<<indices.size()<<std::endl;
+   double t1=clock();
    con.decimation(this,0.25f);
+   double t2=clock();
+   t2=(t2-t1)/CLOCKS_PER_SEC;
    std::cout<< "número de caras totales después="<<indices.size()<<std::endl;
+   std::cout<<"tiempo de decimation ="<<t2<<std::endl;
    generateGeometry();
 
 

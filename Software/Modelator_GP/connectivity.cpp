@@ -105,9 +105,6 @@ void Connectivity::decimation(Malla *_mesh, float _reduction){
 
     }
 
-
-
-
 }
 
 
@@ -120,9 +117,6 @@ void Connectivity::collapse(HalfEdge *_h, Malla *_mesh){
 
     HalfEdge  *on = o->getNextHalfedge();
     HalfEdge  *op = o->getPrevious();
-
-    Face     *fh = _h->getFace();
-    Face     *fo = o->getFace();
 
     Vertex  *vh = _h->getVertexIn();
     Vertex  *vo = _h->getVertexOut();
