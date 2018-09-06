@@ -1,8 +1,12 @@
 
 #include "malla.h"
 
-QVector<HalfEdge> *Malla::getHalfEdges() {
+QLinkedList<HalfEdge> *Malla::getHalfEdgesPtr() {
     return &half_edges;
+}
+
+QLinkedList<HalfEdge> Malla::getHalfEdges(){
+    return half_edges;
 }
 
 Malla::Malla(){}
@@ -10,7 +14,7 @@ Malla::Malla(){}
 /** Constructor parametrizado
 * Crea una malla dados un vector de vertices y uno de triangulos
 */
-Malla::Malla(QVector<Vertex> _vertex, QVector<Face> _index){
+Malla::Malla(QLinkedList<Vertex> _vertex, QLinkedList<Face> _index){
     vertices = _vertex;
     indices  = _index;
     generateGeometry();
@@ -34,50 +38,47 @@ Malla& Malla::operator=(const Malla& _malla){
 }
 
 
-QVector<Vertex> Malla::getSgVertexes() const
-{
+QVector<Vertex> Malla::getSgVertexes(){
     return sg_vertices;
 }
 
-void Malla::setSgVertexes(const QVector<Vertex> &_value)
-{
+void Malla::setSgVertexes(QVector<Vertex> &_value){
     sg_vertices = _value;
 }
 
-QVector<Vertex> Malla::getVertices() const
-{
+QLinkedList<Vertex> Malla::getVertices(){
     return vertices;
 }
 
-void Malla::setVertices(const QVector<Vertex> &_value)
-{
+QLinkedList<Vertex> *Malla::getVerticesPtr() {
+    return &vertices;
+}
+
+void Malla::setVertices( QLinkedList<Vertex> &_value){
     vertices = _value;
 }
 
-QVector<Face> Malla::getIndices() const
-{
+QLinkedList<Face> Malla::getIndices(){
     return indices;
 }
 
-void Malla::setIndices(const QVector<Face> &_value)
-{
+QLinkedList<Face> *Malla::getIndicesPtr(){
+    return &indices;
+}
+
+void Malla::setIndices(QLinkedList<Face> &_value){
     indices = _value;
 }
 
-Vertex* Malla::getPointSgVertexes()
-{
-    return &(sg_vertices[0]);
+Vertex* Malla::getPointSgVertexes(){
+    return &sg_vertices.first();
 }
 
-int Malla::getSizeOfGeometry()
-{
+int Malla::getSizeOfGeometry(){
     return (indices.size() * 3 * sizeof(Vertex));
 }
 
-
-
-void Malla::initGeometry(std::string _filename)
-{
+void Malla::initGeometry(std::string _filename){
     MyMesh  mesh;
     IO::Options ropt;
     // -------------------- read mesh
@@ -97,9 +98,7 @@ void Malla::initGeometry(std::string _filename)
     // iterate over all vertices
     Vertex point;
     point.setColor(QVector3D(1.0f,1.0f,1.0f));
-    vertices.reserve(mesh.n_vertices());
     for (MyMesh::VertexIter v_it=mesh.vertices_begin(); v_it!=mesh.vertices_end(); ++v_it){
-        //std::cout << "Vertex #" << *v_it << ": " << mesh.point( *v_it )[0]<<std::endl;
         point.setPosition(QVector3D(mesh.point( *v_it )[0],
                                     mesh.point( *v_it )[1],
                                     mesh.point( *v_it )[2]));
@@ -108,119 +107,83 @@ void Malla::initGeometry(std::string _filename)
     }
 
     // iterate over all faces
-    indices.reserve(mesh.n_faces());
     Face face;
     MyMesh::ConstFaceIter f_it,f_end(mesh.faces_end());
     MyMesh::ConstFaceVertexIter fv_it;
-
+    QLinkedList<Vertex>::iterator it_vertices = vertices.begin();
     // Itero sobre el handle de caras
-    std::cout<<"cargando caras =";
     for (f_it = mesh.faces_sbegin(); f_it!=f_end; ++f_it){
         //dentro de cada cara itero sobre sus referencias
         face.clear();
 
         for (fv_it = mesh.fv_iter(*f_it);fv_it.is_valid();++fv_it){
             //std::cout<<fv_it->idx()<<"\t";
-            face.addVertex(vertices[fv_it->idx()]);
+            it_vertices = vertices.begin() + fv_it->idx();
+            face.addVertex(*it_vertices);
 
         }
-        //std::cout<<(*f_it).idx()<<", ";
+
         face.setId((*f_it).idx());
-       // MyMesh::Normal normal = mesh.calc_face_normal((*f_it));
 
         face.generateSurfaceNormal();
-//        std::cout<<" n="<<normal<<"\t ";
-//        std::cout<<" normal:"<<face.getNormal()[0]<<",";
-//        std::cout<<face.getNormal()[1]<<",";
-//        std::cout<<face.getNormal()[2]<<std::endl;
+
         indices.push_back(face);
     }
     std::cout<<std::endl;
 
-    half_edges.reserve(mesh.n_halfedges());
     HalfEdge he;
-    std::cout<<"cargando semiaristas =";
+
     for (MyMesh::HalfedgeIter h_it=mesh.halfedges_begin(); h_it!=mesh.halfedges_end(); ++h_it){
 
-        std::cout<< (*h_it)<<" ";
-//        std::cout<<"-to_vertex_hadle=" << mesh.to_vertex_handle(*h_it).idx() << "\t";
-//        std::cout<<"from_vertex_handle=" << mesh.from_vertex_handle(*h_it).idx() << "\t";
-//        std::cout<<"face_handle=" << mesh.face_handle(*h_it).idx() << "\t";
-//        std::cout<<indices[mesh.face_handle(*h_it).idx()].at(0)<<",";
-//        std::cout<<indices[mesh.face_handle(*h_it).idx()].at(1)<<",";
-//        std::cout<<indices[mesh.face_handle(*h_it).idx()].at(2)<<std::endl;
-//        std::cout<<"next_halfedge_handle=" << mesh.next_halfedge_handle(*h_it).idx() << "\t";
-//        std::cout<<"prev_halfedge_handle=" << mesh.prev_halfedge_handle(*h_it).idx() << "\t";
-//        std::cout<<"opposite_halfedge_handle=" << mesh.opposite_halfedge_handle(*h_it).idx() <<std::endl;
 
         he.setId((*h_it).idx());
-        he.setVertexIn(&vertices[mesh.to_vertex_handle(*h_it).idx()]);
-        he.setVertexOut(&vertices[mesh.from_vertex_handle(*h_it).idx()]);
-        std::cout<<"indices size="<<indices.size()<<" mesh= "<<mesh.face_handle(*h_it).idx()<<std::endl;
+        it_vertices = vertices.begin() + mesh.to_vertex_handle(*h_it).idx();
+        he.setVertexIn(&*it_vertices);
+        it_vertices = vertices.begin() + mesh.from_vertex_handle(*h_it).idx();
+        he.setVertexOut(&*it_vertices);
+
+        QLinkedList<Face>::iterator it_indices = indices.begin();
         if(mesh.face_handle(*h_it).idx() != -1){
-            he.setFace(&indices[mesh.face_handle(*h_it).idx()]);
-    //        he.setNext_halfedge(mesh.next_halfedge_handle(*h_it).idx());
-    //        he.setPrevious(mesh.prev_halfedge_handle(*h_it).idx());
-    //        he.setOposite(mesh.opposite_halfedge_handle(*h_it).idx());
+            it_indices = indices.begin() + mesh.face_handle(*h_it).idx();
+            he.setFace(it_indices.operator ->());
             half_edges.push_back(he);
 
             //Conexiones desde el vértice
-            vertices[mesh.to_vertex_handle(*h_it).idx()].addHalfEdgeIn(he);
-            vertices[mesh.from_vertex_handle(*h_it).idx()].addHalfEdgeOut(he);
+            it_vertices = vertices.begin() + mesh.to_vertex_handle(*h_it).idx();
+            it_vertices->addHalfEdgeIn(&half_edges.back());
+
+            it_vertices = vertices.begin() + mesh.from_vertex_handle(*h_it).idx();
+            it_vertices->addHalfEdgeOut(&half_edges.back());
 
         }else{
             std::cout<<"Cara vacía:"<<mesh.face_handle(*h_it).idx()<<std::endl;
         }
     }
-    std::cout<<std::endl;
-//    for(HalfEdge h:half_edges){
-//        std::cout<<h.getId()<<",";
-//    }
-//    std::cout<<std::endl;
 
     //Añado las referencias a siguiente, anterior y opuesta
+    QLinkedList<HalfEdge>::iterator it_halfedge,it_otherHE;
     for (MyMesh::HalfedgeIter h_it=mesh.halfedges_begin(); h_it!=mesh.halfedges_end(); ++h_it){
 
+        it_halfedge = half_edges.begin() + (*h_it).idx();
+        it_otherHE = half_edges.begin() + mesh.next_halfedge_handle(*h_it).idx();
+        it_halfedge->setNextHalfedge(&*it_otherHE);
 
-        half_edges[(*h_it).idx()].setNextHalfedge(&half_edges[mesh.next_halfedge_handle(*h_it).idx()]);
-        half_edges[(*h_it).idx()].setPrevious(&half_edges[mesh.prev_halfedge_handle(*h_it).idx()]);
-        half_edges[(*h_it).idx()].setOposite(&half_edges[mesh.opposite_halfedge_handle(*h_it).idx()]);
+        it_otherHE = half_edges.begin() + mesh.opposite_halfedge_handle(*h_it).idx();
+        it_halfedge->setOposite(&*it_otherHE);
 
-//        std::cout<<(*h_it).idx()<<"="<<half_edges[(*h_it).idx()].getId()<<" ";
-//        std::cout<<"-to_vertex_hadle=" << half_edges[(*h_it).idx()].getVertex_in()->getId() << "\t";
-//        std::cout<<"from_vertex_handle=" << half_edges[(*h_it).idx()].getVertex_out()->getId() << "\t";
-//        std::cout<<"face_handle=" << half_edges[(*h_it).idx()].getFace()->getId() << "\t";
-//        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(0).getId()<<",";
-//        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(1).getId()<<",";
-//        std::cout<<half_edges[(*h_it).idx()].getFace()->getVertices().at(2).getId()<<"\t";
-//        std::cout<<"next_halfedge_handle=" << half_edges[(*h_it).idx()].getNext_halfedge()->getId() << "\t";
-//        std::cout<<"prev_halfedge_handle=" << half_edges[(*h_it).idx()].getPrevious()->getId() << "\t";
-//        std::cout<<"opposite_halfedge_handle=" << half_edges[(*h_it).idx()].getOposite()->getId() <<std::endl;
+        it_otherHE = half_edges.begin() + mesh.prev_halfedge_handle(*h_it).idx();
+        it_halfedge->setPrevious(&*it_otherHE);
 
-    }
+
+   }
 
     std::cout<<std::endl;
     Connectivity con;
-    // Collapse V2 en V1
 
-
-
-//    con.collapse(half_edges[7],&half_edges, this);
-//    for(Face f:indices){
-//        printf("Cara:%d [",f.getId());
-//        for(Vertex v: f.getVertices()){
-//            printf("%d,",v.getId());
-//        }
-//        printf("]\n");
-//    }
-
-    generateGeometry();
-//    priority_q pq;
-//    con.generateLowerErrorQueue(this, pq);
-
-   con.decimation(this,0.5f);
-
-
+   std::cout<< "número de caras totales antes="<<indices.size()<<std::endl;
+   con.decimation(this,0.25f);
+   std::cout<< "número de caras totales después="<<indices.size()<<std::endl;
+   generateGeometry();
 
 
 }
@@ -232,8 +195,7 @@ void Malla::generateSurfaceNormals(){
     }
 }
 
-void Malla::generateGeometry()
-{
+void Malla::generateGeometry(){
 
     if(indices.empty() || vertices.empty()){
         printf("ERROR: no se puede genera la geometria sin los vertices o indices");
@@ -241,10 +203,9 @@ void Malla::generateGeometry()
         sg_vertices.clear();
         for(Face j: indices){
             for(Vertex i:j.getVertices()){
-                //std::cout<<i.getId()<<",";
                 sg_vertices.push_back(i);
             }
-            //std::cout<<std::endl;
+
         }
     }
 }
