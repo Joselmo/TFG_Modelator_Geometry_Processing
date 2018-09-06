@@ -14,9 +14,9 @@ Window::Window()
 {
     m_transform.translate(0.0f, 0.0f, -5.0f);
 
-    cubo.initGeometry("cube.ply");
+    cubo.initGeometry("big_dodge.ply");
    // esfera.initGeometry("sphere.ply");
-    solidmode = true;
+    solidmode = false;
     objectactive = 0;
     objects[objectactive]= cubo;
     //objects[objectactive+1]= esfera;
@@ -29,7 +29,6 @@ void Window::initializeGL()
 
     // Initialize OpenGL Backend
     initializeOpenGLFunctions();
-    //connect(context(), SIGNAL(aboutToBeDestroyed()), this, SLOT(teardownGL()), Qt::DirectConnection);
     connect(this, SIGNAL(frameSwapped()), this, SLOT(update()));
     // Application-specific initialization
     // Create Shader (Do not release until VAO is created)
@@ -61,11 +60,10 @@ void Window::initializeGL()
     m_object.create();
     m_object.bind();
     int vertexLocation = m_program->attributeLocation("position");
-    int colorLocation = m_program->attributeLocation("color");
+    //int colorLocation =  m_program->attributeLocation("color");
     m_program->enableAttributeArray(vertexLocation);
-    //m_program->enableAttributeArray(1);
     m_program->setAttributeBuffer(vertexLocation, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
-    m_program->setAttributeBuffer(colorLocation, GL_FLOAT, Vertex::colorOffset(), Vertex::ColorTupleSize, Vertex::stride());
+    //m_program->setAttributeBuffer(colorLocation, GL_FLOAT, Vertex::colorOffset(), Vertex::ColorTupleSize, Vertex::stride());
 
     // Release (unbind) all
     m_object.release();
@@ -101,8 +99,7 @@ void Window::paintGL()
         m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
         m_object.bind();
         m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
-        // glPolygonMode(GL_FRONT,GL_LINE);
-        //std::cout<<"Dibujo en modo"<<solidmode<<std::endl;
+
         if(solidmode){
             glDrawArrays(GL_TRIANGLES, 0,  objects[objectactive].getIndices().size() * 3 );
         }else{
@@ -131,7 +128,7 @@ void Window::update()
 
     if(Input::keyReleased(Qt::Key_F1)){
         std::cout << "Pulsada F1"<<std::endl;
-        //solidmode= (solidmode)?false:true;
+        solidmode= (solidmode)?false:true;
         //objectactive = (objectactive+1) % 2;
         //loadObject();
 
